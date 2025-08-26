@@ -11,6 +11,7 @@ import {
 } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme/ThemeProvider"
+import { AuthProvider } from "@/contexts/AuthContext"
 
 const instrumentSans = Instrument_Sans({
   subsets: ["latin"],
@@ -89,7 +90,9 @@ html {
         `}</style>
       </head>
       <body>
-        <ThemeProvider>{children}</ThemeProvider>
+        <AuthProvider>
+          <ThemeProvider>{children}</ThemeProvider>
+        </AuthProvider>
       </body>
     </html>
   )

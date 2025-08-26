@@ -1,5 +1,5 @@
-import WalletDashboard from "@/components/wallet-dashboard"
+import AuthFlow from "@/components/auth/AuthFlow"
 
 export default function Home() {
-  return <WalletDashboard />
+  return <AuthFlow />
 }

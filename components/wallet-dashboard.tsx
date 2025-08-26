@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from "react"
 import type React from "react"
-import { Home, User, CreditCard, Shield, MoreHorizontal, Sun, Moon, Monitor } from "lucide-react"
+import { Home, User, CreditCard, Shield, MoreHorizontal, Sun, Moon, Monitor, LogOut } from "lucide-react"
 import { useTheme } from "next-themes"
+import { useAuth } from "@/contexts/AuthContext"
 import { SettingsDialog } from "@/components/theme/SettingsDialog"
 
 import WalletScreen from "@/components/screens/WalletScreen"
@@ -26,6 +27,7 @@ import type { Currency, Token, ProfileData } from "@/types"
 export default function WalletDashboard() {
   const [activeTab, setActiveTab] = useState("fiat")
   const { theme, setTheme, systemTheme, resolvedTheme } = useTheme()
+  const { logout } = useAuth()
   const [mounted, setMounted] = useState(false)
   const [currentScreen, setCurrentScreen] = useState("wallet")
   const [sidebarWidth, setSidebarWidth] = useState(280)
@@ -67,6 +69,11 @@ export default function WalletDashboard() {
 
   const handleMouseUp = () => {
     setIsResizing(false)
+  }
+
+  const handleLogout = () => {
+    console.log("[v0] Logging out user")
+    logout()
   }
 
   useEffect(() => {
@@ -205,6 +212,14 @@ export default function WalletDashboard() {
             >
               <Shield className="w-5 h-5" />
               <span>KYC and Security</span>
+            </div>
+
+            <div
+              onClick={handleLogout}
+              className="flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 mt-4 border-t border-gray-200 dark:border-gray-700 pt-4"
+            >
+              <LogOut className="w-5 h-5" />
+              <span>Log Out</span>
             </div>
           </div>
         </nav>

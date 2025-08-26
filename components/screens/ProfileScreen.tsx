@@ -1,0 +1,217 @@
+"use client"
+
+import { useState } from "react"
+import { CustomButton } from "@/components/ui/custom-button"
+import { User, Shield, LogOut, Mail, Phone, Calendar, Building, MapPin, Globe, Hash } from "lucide-react"
+
+interface ProfileData {
+  id: string
+  first_name: string
+  last_name: string
+  email: string
+  phone: string
+  dob: string
+  kyc_status: "pending" | "verified" | "rejected"
+  address: {
+    line1: string
+    city: string
+    state: string
+    postal_code: string
+    country_name: string
+    country_code: string
+  }
+  avatar: {
+    type: string
+    background_color: string
+  }
+}
+
+interface ProfileScreenProps {
+  profileData: ProfileData
+  setProfileData: (data: ProfileData | ((prev: ProfileData) => ProfileData)) => void
+}
+
+export default function ProfileScreen({ profileData, setProfileData }: ProfileScreenProps) {
+  const [showAvatarDialog, setShowAvatarDialog] = useState(false)
+
+  const avatarOptions = [
+    { emoji: "😊", color: "from-orange-300 to-yellow-400" },
+    { emoji: "🚀", color: "from-blue-300 to-purple-400" },
+    { emoji: "🌟", color: "from-yellow-300 to-orange-400" },
+    { emoji: "🎯", color: "from-green-300 to-blue-400" },
+    { emoji: "💎", color: "from-purple-300 to-pink-400" },
+    { emoji: "🔥", color: "from-red-300 to-orange-400" },
+    { emoji: "⚡", color: "from-cyan-300 to-blue-400" },
+    { emoji: "🎨", color: "from-pink-300 to-purple-400" },
+  ]
+
+  return (
+    <div className="max-w-[640px] w-full">
+      {/* Profile Avatar Section */}
+      <div className="text-center mb-8">
+        <div className="relative inline-block mb-4">
+          <div
+            className={`w-24 h-24 bg-gradient-to-br from-orange-300 to-yellow-400 rounded-full flex items-center justify-center relative cursor-pointer hover:scale-105 transition-transform`}
+            onClick={() => setShowAvatarDialog(true)}
+          >
+            <div className="text-white text-4xl">{profileData.avatar.type}</div>
+            <div className="absolute -bottom-0.5 -right-0.5 w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center">
+              <span className="text-white text-sm font-bold">+</span>
+            </div>
+          </div>
+        </div>
+        <h2 className="text-xl font-semibold text-gray-900 mb-4">
+          {profileData.first_name} {profileData.last_name}
+        </h2>
+      </div>
+
+      {/* Personal Details Section */}
+      <div className="mb-8">
+        <h3 className="font-semibold text-gray-900 mb-4 text-left text-base">Your Details</h3>
+        <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
+          <div className="flex items-center justify-between p-4 hover:bg-gray-50 transition-colors">
+            <div className="flex items-center gap-3">
+              <User className="w-5 h-5 text-gray-500" />
+              <span className="text-gray-600">First Name</span>
+            </div>
+            <span className="font-medium text-gray-900">{profileData.first_name}</span>
+          </div>
+          <div className="flex items-center justify-between p-4 bg-gray-50 hover:bg-gray-100 transition-colors">
+            <div className="flex items-center gap-3">
+              <User className="w-5 h-5 text-gray-500" />
+              <span className="text-gray-600">Last Name</span>
+            </div>
+            <span className="font-medium text-gray-900">{profileData.last_name}</span>
+          </div>
+          <div className="flex items-center justify-between p-4 hover:bg-gray-50 transition-colors">
+            <div className="flex items-center gap-3">
+              <Mail className="w-5 h-5 text-gray-500" />
+              <span className="text-gray-600">Email</span>
+            </div>
+            <span className="font-medium text-gray-900">{profileData.email}</span>
+          </div>
+          <div className="flex items-center justify-between p-4 bg-gray-50 hover:bg-gray-100 transition-colors">
+            <div className="flex items-center gap-3">
+              <Phone className="w-5 h-5 text-gray-500" />
+              <span className="text-gray-600">Phone</span>
+            </div>
+            <span className="font-medium text-gray-900">{profileData.phone}</span>
+          </div>
+          <div className="flex items-center justify-between p-4 hover:bg-gray-50 transition-colors">
+            <div className="flex items-center gap-3">
+              <Calendar className="w-5 h-5 text-gray-500" />
+              <span className="text-gray-600">Date of Birth</span>
+            </div>
+            <span className="font-medium text-gray-900">{profileData.dob}</span>
+          </div>
+          <div className="flex items-center justify-between p-4 bg-gray-50 hover:bg-gray-100 transition-colors">
+            <div className="flex items-center gap-3">
+              <Shield className="w-5 h-5 text-gray-500" />
+              <span className="text-gray-600">KYC Status</span>
+            </div>
+            <span
+              className={`font-medium px-2 py-1 rounded-full text-xs ${
+                profileData.kyc_status === "verified"
+                  ? "bg-green-100 text-green-800"
+                  : profileData.kyc_status === "pending"
+                    ? "bg-yellow-100 text-yellow-800"
+                    : "bg-red-100 text-red-800"
+              }`}
+            >
+              {profileData.kyc_status.charAt(0).toUpperCase() + profileData.kyc_status.slice(1)}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* Address Section */}
+      <div className="mb-8">
+        <h3 className="font-semibold text-gray-900 mb-4 text-left text-base">Your Address</h3>
+        <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
+          <div className="flex items-center justify-between p-4 hover:bg-gray-50 transition-colors">
+            <div className="flex items-center gap-3">
+              <MapPin className="w-5 h-5 text-gray-500" />
+              <span className="text-gray-600">Street Address</span>
+            </div>
+            <span className="font-medium text-gray-900">{profileData.address.line1}</span>
+          </div>
+          <div className="flex items-center justify-between p-4 bg-gray-50 hover:bg-gray-100 transition-colors">
+            <div className="flex items-center gap-3">
+              <Building className="w-5 h-5 text-gray-500" />
+              <span className="text-gray-600">City</span>
+            </div>
+            <span className="font-medium text-gray-900">{profileData.address.city}</span>
+          </div>
+          <div className="flex items-center justify-between p-4 hover:bg-gray-50 transition-colors">
+            <div className="flex items-center gap-3">
+              <MapPin className="w-5 h-5 text-gray-500" />
+              <span className="text-gray-600">State</span>
+            </div>
+            <span className="font-medium text-gray-900">{profileData.address.state}</span>
+          </div>
+          <div className="flex items-center justify-between p-4 bg-gray-50 hover:bg-gray-100 transition-colors">
+            <div className="flex items-center gap-3">
+              <Hash className="w-5 h-5 text-gray-500" />
+              <span className="text-gray-600">Postal Code</span>
+            </div>
+            <span className="font-medium text-gray-900">{profileData.address.postal_code}</span>
+          </div>
+          <div className="flex items-center justify-between p-4 hover:bg-gray-50 transition-colors">
+            <div className="flex items-center gap-3">
+              <Globe className="w-5 h-5 text-gray-500" />
+              <span className="text-gray-600">Country</span>
+            </div>
+            <span className="font-medium text-gray-900">{profileData.address.country_name}</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Logout Button */}
+      <div className="text-center">
+        <CustomButton
+          variant="outline"
+          size="lg"
+          className="w-full text-red-600 border-red-200 hover:bg-red-50 hover:border-red-300"
+        >
+          <LogOut className="w-4 h-4 mr-2" />
+          Logout
+        </CustomButton>
+      </div>
+
+      {/* Avatar Selection Dialog */}
+      {showAvatarDialog && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl p-6 max-w-md w-full mx-4">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Choose Avatar</h3>
+            <div className="grid grid-cols-4 gap-4 mb-6">
+              {avatarOptions.map((option, index) => (
+                <div
+                  key={index}
+                  className={`w-16 h-16 bg-gradient-to-br ${option.color} rounded-full flex items-center justify-center cursor-pointer hover:scale-105 transition-transform ${
+                    profileData.avatar.type === option.emoji ? "ring-2 ring-blue-500 ring-offset-2" : ""
+                  }`}
+                  onClick={() =>
+                    setProfileData((prev) => ({
+                      ...prev,
+                      avatar: { type: option.emoji, background_color: option.color },
+                    }))
+                  }
+                >
+                  <span className="text-white text-2xl">{option.emoji}</span>
+                </div>
+              ))}
+            </div>
+            <div className="flex gap-3">
+              <CustomButton variant="outline" size="md" className="flex-1" onClick={() => setShowAvatarDialog(false)}>
+                Cancel
+              </CustomButton>
+              <CustomButton variant="primary" size="md" className="flex-1" onClick={() => setShowAvatarDialog(false)}>
+                Save
+              </CustomButton>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}

@@ -46,7 +46,7 @@ export default function ProfileScreen({ profileData, setProfileData }: ProfileSc
   ]
 
   return (
-    <div className="max-w-[640px] w-full">
+    <div className="max-w-[640px] w-full my-0 mb-14">
       {/* Profile Avatar Section */}
       <div className="text-center mb-8">
         <div className="relative inline-block mb-4">

@@ -24,15 +24,8 @@ export default function LoginScreen() {
       <div className="flex-1 flex items-center justify-center px-6">
         <div className="w-full max-w-sm space-y-8">
           {/* Logo */}
-          <div className="flex justify-center">
-            <div className="w-16 h-16 bg-black dark:bg-white rounded-2xl flex items-center justify-center">
-              <div className="grid grid-cols-2 gap-1">
-                <div className="w-2 h-2 bg-white dark:bg-black rounded-sm"></div>
-                <div className="w-2 h-2 bg-white dark:bg-black rounded-sm"></div>
-                <div className="w-2 h-2 bg-white dark:bg-black rounded-sm"></div>
-                <div className="w-2 h-2 bg-white dark:bg-black rounded-sm"></div>
-              </div>
-            </div>
+          <div className="flex justify-center h-12">
+            <img src="/transak-logo.svg" alt="Transak" className="w-24 h-24" />
           </div>
 
           {/* Welcome Text */}
@@ -80,7 +73,6 @@ export default function LoginScreen() {
       </div>
 
       {/* Bottom Branding */}
-      
     </div>
   )
 }

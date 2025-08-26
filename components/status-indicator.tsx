@@ -1,7 +1,9 @@
-import { Loader2, X, AlertTriangle, ArrowUp, ArrowDown } from "your-icon-library"
-import { baseClasses } from "your-styles-module"
+import { Loader2, X, AlertTriangle, ArrowUp, ArrowDown } from "lucide-react"
 
 const StatusIndicator = ({ status, transactionType }) => {
+  const baseClasses =
+    "absolute -top-1 -left-1 w-6 h-6 rounded-full flex items-center justify-center border-[1.5px] border-white"
+
   switch (status) {
     case "loading":
       return (

@@ -19,7 +19,7 @@ export default function LoginScreen() {
   }
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen bg-background-white flex flex-col">
       {/* Main Content */}
       <div className="flex-1 flex items-center justify-center px-6">
         <div className="w-full max-w-sm space-y-8">

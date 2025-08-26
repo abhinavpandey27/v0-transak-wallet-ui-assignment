@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import type React from "react"
-import { Home, User, CreditCard, Shield, MoreHorizontal, Sun, Moon, Monitor, LogOut } from "lucide-react"
+import { Home, User, CreditCard, Shield, MoreHorizontal, LogOut } from "lucide-react"
 import { useTheme } from "next-themes"
 import { useAuth } from "@/contexts/AuthContext"
 import { SettingsDialog } from "@/components/theme/SettingsDialog"
@@ -153,10 +153,8 @@ export default function WalletDashboard() {
         {/* Logo */}
         <div className="p-6 border-gray-200 dark:border-gray-700 flex-shrink-0 border-b-0">
           <div className="flex items-center gap-2">
-            <div className="w-6 h-6 bg-black dark:bg-white rounded-full flex items-center justify-center">
-              <div className="w-3 h-3 bg-white dark:bg-black rounded-full"></div>
-            </div>
-            <span className="font-semibold text-gray-900 dark:text-white">Logoipsum</span>
+            <img src="/transak-logo.svg" alt="Transak" className="w-content h-10" />
+            
             <button
               onClick={() => setShowSettingsDialog(true)}
               className="w-4 h-4 text-gray-400 dark:text-gray-500 ml-auto hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
@@ -225,7 +223,7 @@ export default function WalletDashboard() {
         </nav>
 
         {/* Footer */}
-        <div className="px-4 pb-2 flex-shrink-0">
+        <div className="px-4 flex-shrink-0 pb-4">
           <div className="flex flex-col gap-2 text-xs text-gray-500 dark:text-gray-400">
             <span>Powered by Transak</span>
             <div className="flex items-center gap-3">
@@ -239,43 +237,6 @@ export default function WalletDashboard() {
         </div>
 
         {/* Theme Toggle */}
-        <div className="p-4 border-t border-gray-200 dark:border-gray-700 flex-shrink-0">
-          <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-1 flex">
-            <button
-              onClick={() => handleThemeChange("light")}
-              className={`flex-1 text-xs px-3 py-2 rounded-md transition-all flex items-center justify-center gap-1 ${
-                theme === "light"
-                  ? "bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm"
-                  : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
-              }`}
-            >
-              <Sun className="w-3 h-3" />
-              Light
-            </button>
-            <button
-              onClick={() => handleThemeChange("dark")}
-              className={`flex-1 text-xs px-3 py-2 rounded-md transition-all flex items-center justify-center gap-1 ${
-                theme === "dark"
-                  ? "bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm"
-                  : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
-              }`}
-            >
-              <Moon className="w-3 h-3" />
-              Dark
-            </button>
-            <button
-              onClick={() => handleThemeChange("system")}
-              className={`flex-1 text-xs px-3 py-2 rounded-md transition-all flex items-center justify-center gap-1 ${
-                theme === "system"
-                  ? "bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm"
-                  : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
-              }`}
-            >
-              <Monitor className="w-3 h-3" />
-              System
-            </button>
-          </div>
-        </div>
 
         <div
           className={`absolute top-0 right-0 w-1 h-full cursor-col-resize hover:bg-blue-500 transition-colors ${

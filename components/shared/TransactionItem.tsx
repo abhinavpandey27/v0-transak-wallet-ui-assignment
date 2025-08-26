@@ -26,7 +26,7 @@ export default function TransactionItem({ transaction }: TransactionItemProps) {
 
   const getStatusIndicator = (status: string, transactionType: string) => {
     const baseClasses =
-      "absolute -top-1 -left-1 w-6 h-6 rounded-full border-[1.5px] border-white flex items-center justify-center shadow-sm"
+      "absolute -top-1 -left-1 w-6 h-6 rounded-full border-[1.5px] border-white dark:border-gray-800 flex items-center justify-center shadow-sm"
 
     switch (status) {
       case "pending":
@@ -72,10 +72,10 @@ export default function TransactionItem({ transaction }: TransactionItemProps) {
   }
 
   return (
-    <div className="flex items-center p-4 bg-white rounded-lg border-gray-200 border-0 border-b px-4 justify-start gap-4 py-5">
-      <div className="flex items-center gap-4">
+    <div className="flex items-center p-scaled-4 bg-white dark:bg-gray-800 rounded-lg border-gray-200 dark:border-gray-600 border-0 border-b px-scaled-4 justify-start gap-scaled-4 py-scaled-4">
+      <div className="flex items-center gap-scaled-4">
         <div className="relative">
-          <div className="rounded-xl flex items-center justify-center border border-gray-100 w-16 h-16 bg-transparent border-none">
+          <div className="rounded-xl flex items-center justify-center border border-gray-100 dark:border-gray-700 w-16 h-16 bg-transparent border-none">
             <img
               src={getCryptoLogo(transaction.symbol) || "/placeholder.svg"}
               alt={transaction.currency}
@@ -88,18 +88,18 @@ export default function TransactionItem({ transaction }: TransactionItemProps) {
       <div className="text-right space-y-1 w-full">
         {/* Row 1: Date/Time vs EUR Amount */}
         <div className="flex justify-between items-center">
-          <span className="text-sm text-gray-500">{transaction.date}</span>
-          <span className="text-sm font-medium text-gray-900">{transaction.amount}</span>
+          <span className="text-scaled-sm text-gray-500 dark:text-gray-400">{transaction.date}</span>
+          <span className="text-scaled-sm font-medium text-gray-900 dark:text-white">{transaction.amount}</span>
         </div>
         {/* Row 2: Currency vs Crypto Amount */}
         <div className="flex justify-between items-center">
-          <span className="text-base font-medium text-gray-900">{transaction.currency}</span>
-          <span className="text-base text-gray-900 font-semibold">{transaction.crypto}</span>
+          <span className="text-scaled-base font-medium text-gray-900 dark:text-white">{transaction.currency}</span>
+          <span className="text-scaled-base text-gray-900 dark:text-white font-semibold">{transaction.crypto}</span>
         </div>
         {/* Row 3: Full ID vs Description */}
         <div className="flex justify-between items-center">
-          <span className="text-sm text-gray-500">ID: {transaction.transactionId}</span>
-          <span className="text-sm text-slate-500">Sandbox Testing</span>
+          <span className="text-scaled-sm text-gray-500 dark:text-gray-400">ID: {transaction.transactionId}</span>
+          <span className="text-scaled-sm text-slate-500 dark:text-slate-400">Sandbox Testing</span>
         </div>
       </div>
     </div>

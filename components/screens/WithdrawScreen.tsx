@@ -62,10 +62,10 @@ export default function WithdrawScreen({
 
   return (
     <div className="max-w-[640px] w-full">
-      <div className="bg-gray-100 rounded-xl p-6 mb-8">
+      <div className="bg-gray-100 dark:bg-gray-800 rounded-xl p-6 mb-8">
         {/* You are Sending Section */}
         <div className="flex justify-between mb-4 items-center">
-          <span className="text-gray-600 text-base">You are Sending</span>
+          <span className="text-gray-600 dark:text-gray-300 text-base">You are Sending</span>
           <TokenSelector
             selectedToken={selectedSendingToken}
             onTokenChange={(token) => {
@@ -77,7 +77,7 @@ export default function WithdrawScreen({
         </div>
 
         <div className="flex justify-between mb-8 items-center">
-          <span className="text-gray-600 text-base">You are Withdrawing in</span>
+          <span className="text-gray-600 dark:text-gray-300 text-base">You are Withdrawing in</span>
           <CurrencySelector
             selectedCurrency={selectedWithdrawCurrency}
             onCurrencyChange={(currency) => {
@@ -92,9 +92,9 @@ export default function WithdrawScreen({
           {!showQRCode ? (
             <div className="relative">
               {/* Background QR hint */}
-              <div className="inline-block p-8 bg-white rounded-xl mb-6 opacity-30">
-                <div className="w-80 h-80 bg-gray-200 rounded-lg flex items-center justify-center">
-                  <div className="text-6xl text-gray-400">QR</div>
+              <div className="inline-block p-8 bg-white dark:bg-gray-700 rounded-xl mb-6 opacity-30">
+                <div className="w-80 h-80 bg-gray-200 dark:bg-gray-600 rounded-lg flex items-center justify-center">
+                  <div className="text-6xl text-gray-400 dark:text-gray-500">QR</div>
                 </div>
               </div>
               {/* Overlay button */}
@@ -106,18 +106,18 @@ export default function WithdrawScreen({
             </div>
           ) : (
             <div>
-              <div className="inline-block p-8 bg-white rounded-xl mb-6 shadow-sm">
+              <div className="inline-block p-8 bg-white dark:bg-gray-700 rounded-xl mb-6 shadow-sm">
                 <img
                   src={`https://api.qrserver.com/v1/create-qr-code/?size=320x320&data=${encodeURIComponent(`${selectedSendingToken.symbol}:0x973fF8EcFB22c4Fe69Db152f327587DDfAfB?amount=1&currency=${selectedWithdrawCurrency.code}`)}`}
                   alt="Dynamic QR Code"
                   className="w-80 h-80"
                 />
               </div>
-              <div className="flex items-center justify-center gap-3 text-gray-700">
+              <div className="flex items-center justify-center gap-3 text-gray-700 dark:text-gray-300">
                 <span className="text-base font-sans">0x973fF8EcFB22c4Fe69Db152f327587DDfAfB</span>
                 <button
                   onClick={() => copyToClipboard("0x973fF8EcFB22c4Fe69Db152f327587DDfAfB")}
-                  className="p-2 hover:bg-gray-200 rounded-lg transition-colors"
+                  className="p-2 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path

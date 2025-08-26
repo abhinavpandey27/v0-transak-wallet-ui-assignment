@@ -75,6 +75,35 @@
 @theme inline {
   --font-sans: var(--font-instrument-sans);
   --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --font-instrument-sans: var(--font-instrument-sans);
+  --font-inter: var(--font-inter);
+  --font-roboto: var(--font-roboto);
+  --font-open-sans: var(--font-open-sans);
+  --font-lato: var(--font-lato);
+  --font-montserrat: var(--font-montserrat);
+  --font-source-sans: var(--font-source-sans);
+  --font-nunito: var(--font-nunito);
+  --font-poppins: var(--font-poppins);
+  --font-raleway: var(--font-raleway);
+  --font-primary: var(--font-instrument-sans);
+  --scale-factor: 1;
+  --font-scale-xs: calc(0.75rem * var(--scale-factor));
+  --font-scale-sm: calc(0.875rem * var(--scale-factor));
+  --font-scale-base: calc(1rem * var(--scale-factor));
+  --font-scale-lg: calc(1.125rem * var(--scale-factor));
+  --font-scale-xl: calc(1.25rem * var(--scale-factor));
+  --font-scale-2xl: calc(1.5rem * var(--scale-factor));
+  --font-scale-3xl: calc(1.875rem * var(--scale-factor));
+  --font-scale-4xl: calc(2.25rem * var(--scale-factor));
+  --space-1: calc(0.25rem * var(--scale-factor));
+  --space-2: calc(0.5rem * var(--scale-factor));
+  --space-3: calc(0.75rem * var(--scale-factor));
+  --space-4: calc(1rem * var(--scale-factor));
+  --space-5: calc(1.25rem * var(--scale-factor));
+  --space-6: calc(1.5rem * var(--scale-factor));
+  --space-8: calc(2rem * var(--scale-factor));
+  --space-10: calc(2.5rem * var(--scale-factor));
+  --space-12: calc(3rem * var(--scale-factor));
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -111,6 +140,12 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  --brand-primary: #000000;
+  --brand-primary-foreground: #ffffff;
+  --brand-primary-hover: #1f2937;
+  --brand-primary-active: #111827;
+  --brand-accent: #f3f4f6;
+  --brand-secondary: #ffffff;
 }
 
 @layer base {
@@ -119,5 +154,152 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-primary, var(--font-instrument-sans));
+  }
+  .text-scaled-xs {
+    font-size: var(--font-scale-xs);
+  }
+  .text-scaled-sm {
+    font-size: var(--font-scale-sm);
+  }
+  .text-scaled-base {
+    font-size: var(--font-scale-base);
+  }
+  .text-scaled-lg {
+    font-size: var(--font-scale-lg);
+  }
+  .text-scaled-xl {
+    font-size: var(--font-scale-xl);
+  }
+  .text-scaled-2xl {
+    font-size: var(--font-scale-2xl);
+  }
+  .text-scaled-3xl {
+    font-size: var(--font-scale-3xl);
+  }
+  .text-scaled-4xl {
+    font-size: var(--font-scale-4xl);
+  }
+  .space-scaled-1 {
+    margin: var(--space-1);
+  }
+  .space-scaled-2 {
+    margin: var(--space-2);
+  }
+  .space-scaled-3 {
+    margin: var(--space-3);
+  }
+  .space-scaled-4 {
+    margin: var(--space-4);
+  }
+  .space-scaled-6 {
+    margin: var(--space-6);
+  }
+  .space-scaled-8 {
+    margin: var(--space-8);
+  }
+  .p-scaled-1 {
+    padding: var(--space-1);
+  }
+  .p-scaled-2 {
+    padding: var(--space-2);
+  }
+  .p-scaled-3 {
+    padding: var(--space-3);
+  }
+  .p-scaled-4 {
+    padding: var(--space-4);
+  }
+  .p-scaled-6 {
+    padding: var(--space-6);
+  }
+  .p-scaled-8 {
+    padding: var(--space-8);
+  }
+  .gap-scaled-1 {
+    gap: var(--space-1);
+  }
+  .gap-scaled-2 {
+    gap: var(--space-2);
+  }
+  .gap-scaled-3 {
+    gap: var(--space-3);
+  }
+  .gap-scaled-4 {
+    gap: var(--space-4);
+  }
+  .gap-scaled-6 {
+    gap: var(--space-6);
+  }
+  .gap-scaled-8 {
+    gap: var(--space-8);
+  }
+  .mb-scaled-1 {
+    margin-bottom: var(--space-1);
+  }
+  .mb-scaled-2 {
+    margin-bottom: var(--space-2);
+  }
+  .mb-scaled-3 {
+    margin-bottom: var(--space-3);
+  }
+  .mb-scaled-4 {
+    margin-bottom: var(--space-4);
+  }
+  .mb-scaled-6 {
+    margin-bottom: var(--space-6);
+  }
+  .mb-scaled-8 {
+    margin-bottom: var(--space-8);
+  }
+  .py-scaled-1 {
+    padding-top: var(--space-1);
+    padding-bottom: var(--space-1);
+  }
+  .py-scaled-3 {
+    padding-top: var(--space-3);
+    padding-bottom: var(--space-3);
+  }
+  .py-scaled-4 {
+    padding-top: var(--space-4);
+    padding-bottom: var(--space-4);
+  }
+  .py-scaled-6 {
+    padding-top: var(--space-6);
+    padding-bottom: var(--space-6);
+  }
+  .px-scaled-1 {
+    padding-left: var(--space-1);
+    padding-right: var(--space-1);
+  }
+  .px-scaled-4 {
+    padding-left: var(--space-4);
+    padding-right: var(--space-4);
+  }
+  .px-scaled-6 {
+    padding-left: var(--space-6);
+    padding-right: var(--space-6);
+  }
+  /* Added brand color utility classes */
+  .bg-brand-primary {
+    background-color: var(--brand-primary);
+  }
+  .text-brand-primary {
+    color: var(--brand-primary);
+  }
+  .border-brand-primary {
+    border-color: var(--brand-primary);
+  }
+  .bg-brand-accent {
+    background-color: var(--brand-accent);
+  }
+  .text-brand-accent {
+    color: var(--brand-accent);
+  }
+  .hover\:bg-brand-primary-hover:hover {
+    background-color: var(--brand-primary-hover);
+  }
+  .active\:bg-brand-primary-active:active {
+    background-color: var(--brand-primary-active);
   }
 }

@@ -61,9 +61,9 @@ export default function DepositScreen({
   return (
     <div className="max-w-[640px] w-full">
       {/* You are Depositing Section */}
-      <div className="text-center mb-8 px-6 py-6 bg-gray-100 rounded-xl">
-        <div className="flex justify-between mb-4 items-center">
-          <span className="text-gray-600 text-base">You are Depositing</span>
+      <div className="text-center mb-scaled-8 px-scaled-6 py-scaled-6 bg-gray-100 dark:bg-gray-800 rounded-xl">
+        <div className="flex justify-between mb-scaled-4 items-center">
+          <span className="text-gray-600 dark:text-gray-300 text-scaled-base">You are Depositing</span>
           <CurrencySelector
             selectedCurrency={selectedCurrency}
             onCurrencyChange={setSelectedCurrency}
@@ -71,7 +71,7 @@ export default function DepositScreen({
           />
         </div>
 
-        <div className="relative mb-4">
+        <div className="relative mb-scaled-4">
           <input
             type="text"
             value={depositAmount}
@@ -81,17 +81,19 @@ export default function DepositScreen({
               setDepositAmount(value)
             }}
             placeholder=""
-            className="text-6xl font-semibold text-gray-900 bg-transparent border-none outline-none text-center w-full placeholder-transparent"
+            className="text-scaled-4xl font-semibold text-gray-900 dark:text-white bg-transparent border-none outline-none text-center w-full placeholder-transparent"
             style={{ caretColor: "#374151" }}
           />
           {depositAmount === "" && (
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <span className="text-6xl font-semibold text-gray-300">{selectedCurrency.symbol} 5</span>
+              <span className="text-scaled-4xl font-semibold text-gray-300 dark:text-gray-600">
+                {selectedCurrency.symbol} 5
+              </span>
             </div>
           )}
           {depositAmount !== "" && (
             <span
-              className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 text-6xl font-semibold text-gray-900 pointer-events-none"
+              className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 text-scaled-4xl font-semibold text-gray-900 dark:text-white pointer-events-none"
               style={{ marginLeft: `-${depositAmount.length * 1.8}rem` }}
             >
               {selectedCurrency.symbol}
@@ -104,110 +106,117 @@ export default function DepositScreen({
           value={depositDescription}
           onChange={(e) => setDepositDescription(e.target.value)}
           placeholder="Add Description"
-          className="text-gray-500 text-base mb-8 bg-transparent border-none outline-none text-center w-full placeholder-gray-500"
+          className="text-gray-500 dark:text-gray-400 text-scaled-base mb-scaled-8 bg-transparent border-none outline-none text-center w-full placeholder-gray-500 dark:placeholder-gray-400"
         />
 
         {/* You will get Card */}
         <Card
-          className="p-4 bg-gray-50 border border-gray-200 rounded-xl cursor-pointer hover:bg-gray-100 transition-colors"
+          className="p-scaled-4 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
           onClick={() => setShowTokenDialog(true)}
         >
           {!selectedToken ? (
             // Empty state
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center">
-                  <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center">
-                    <span className="text-gray-400 text-lg font-bold">+</span>
+              <div className="flex items-center gap-scaled-3">
+                <div className="w-12 h-12 rounded-full bg-gray-200 dark:bg-gray-600 flex items-center justify-center">
+                  <div className="w-6 h-6 rounded-full bg-white dark:bg-gray-800 flex items-center justify-center">
+                    <span className="text-gray-400 dark:text-gray-300 text-scaled-lg font-bold">+</span>
                   </div>
                 </div>
                 <div className="text-left">
-                  <div className="text-sm text-gray-600">Choose a token</div>
-                  <div className="font-medium text-gray-500 text-lg">Select your token</div>
+                  <div className="text-scaled-sm text-gray-600 dark:text-gray-300">Choose a token</div>
+                  <div className="font-medium text-gray-500 dark:text-gray-400 text-scaled-lg">Select your token</div>
                 </div>
               </div>
-              <ArrowRight className="w-5 h-5 text-gray-400" />
+              <ArrowRight className="w-5 h-5 text-gray-400 dark:text-gray-500" />
             </div>
           ) : (
             // Selected token state
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-scaled-3">
                 <img
                   src={getCryptoLogo(selectedToken.symbol) || "/placeholder.svg"}
                   alt={selectedToken.name}
                   className="w-12 h-12"
                 />
                 <div className="text-left">
-                  <div className="text-sm text-gray-600">You will get</div>
-                  <div className="font-semibold text-gray-900 text-lg">
+                  <div className="text-scaled-sm text-gray-600 dark:text-gray-300">You will get</div>
+                  <div className="font-semibold text-gray-900 dark:text-white text-scaled-lg">
                     {calculateTokenAmount()} {selectedToken.symbol}
                   </div>
                 </div>
               </div>
-              <ArrowRight className="w-5 h-5 text-gray-400" />
+              <ArrowRight className="w-5 h-5 text-gray-400 dark:text-gray-500" />
             </div>
           )}
         </Card>
       </div>
 
       {/* Bank Details Section */}
-      <div className="space-y-0 mb-8 rounded-xl overflow-hidden border border-gray-200">
-        <div className="flex justify-between items-center py-3 px-4 bg-white">
-          <div className="flex items-center gap-3">
-            <Building2 className="w-4 h-4 text-gray-500" />
-            <span className="text-gray-600">Bank Name</span>
+      <div className="space-y-0 mb-scaled-8 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-600">
+        <div className="flex justify-between items-center py-scaled-3 px-scaled-4 bg-white dark:bg-gray-800">
+          <div className="flex items-center gap-scaled-3">
+            <Building2 className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+            <span className="text-gray-600 dark:text-gray-300 text-scaled-sm">Bank Name</span>
           </div>
-          <span className="font-medium text-gray-900">Simulator Bank</span>
+          <span className="font-medium text-gray-900 dark:text-white text-scaled-sm">Simulator Bank</span>
         </div>
-        <div className="flex justify-between items-center py-3 px-4 bg-gray-50">
-          <div className="flex items-center gap-3">
-            <UserCheck className="w-4 h-4 text-gray-500" />
-            <span className="text-gray-600">Beneficiary Name</span>
+        <div className="flex justify-between items-center py-scaled-3 px-scaled-4 bg-gray-50 dark:bg-gray-700">
+          <div className="flex items-center gap-scaled-3">
+            <UserCheck className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+            <span className="text-gray-600 dark:text-gray-300 text-scaled-sm">Beneficiary Name</span>
           </div>
-          <span className="font-medium text-gray-900">Doe Jane</span>
+          <span className="font-medium text-gray-900 dark:text-white text-scaled-sm">Doe Jane</span>
         </div>
-        <div className="flex justify-between items-center py-3 px-4 bg-white">
-          <div className="flex items-center gap-3">
-            <Hash className="w-4 h-4 text-gray-500" />
-            <span className="text-gray-600">IBAN / Account</span>
+        <div className="flex justify-between items-center py-scaled-3 px-scaled-4 bg-white dark:bg-gray-800">
+          <div className="flex items-center gap-scaled-3">
+            <Hash className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+            <span className="text-gray-600 dark:text-gray-300 text-scaled-sm">IBAN / Account</span>
           </div>
-          <span className="font-medium text-gray-900">GB41SEOU19870010404544</span>
+          <span className="font-medium text-gray-900 dark:text-white text-scaled-sm">GB41SEOU19870010404544</span>
         </div>
-        <div className="flex justify-between items-center py-3 px-4 bg-gray-50">
-          <div className="flex items-center gap-3">
-            <MapPin className="w-4 h-4 text-gray-500" />
-            <span className="text-gray-600">Bank address</span>
+        <div className="flex justify-between items-center py-scaled-3 px-scaled-4 bg-gray-50 dark:bg-gray-700">
+          <div className="flex items-center gap-scaled-3">
+            <MapPin className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+            <span className="text-gray-600 dark:text-gray-300 text-scaled-sm">Bank address</span>
           </div>
-          <span className="font-medium text-gray-900 text-right">The Bower, 207-211 Old Street, London, England</span>
+          <span className="font-medium text-gray-900 dark:text-white text-scaled-sm text-right">
+            The Bower, 207-211 Old Street, London, England
+          </span>
         </div>
-        <div className="flex justify-between items-center py-3 px-4 bg-white">
-          <div className="flex items-center gap-3">
-            <Globe className="w-4 h-4 text-gray-500" />
-            <span className="text-gray-600">Bank country</span>
+        <div className="flex justify-between items-center py-scaled-3 px-scaled-4 bg-white dark:bg-gray-800">
+          <div className="flex items-center gap-scaled-3">
+            <Globe className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+            <span className="text-gray-600 dark:text-gray-300 text-scaled-sm">Bank country</span>
           </div>
-          <span className="font-medium text-gray-900">Malta</span>
+          <span className="font-medium text-gray-900 dark:text-white text-scaled-sm">Malta</span>
         </div>
-        <div className="flex justify-between items-center py-3 px-4 bg-white">
-          <div className="flex items-center gap-3">
-            <Wallet className="w-4 h-4 text-gray-500" />
-            <span className="text-gray-600">Wallet Address</span>
+        <div className="flex justify-between items-center py-scaled-3 px-scaled-4 bg-white dark:bg-gray-800">
+          <div className="flex items-center gap-scaled-3">
+            <Wallet className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+            <span className="text-gray-600 dark:text-gray-300 text-scaled-sm">Wallet Address</span>
           </div>
-          <span className="font-medium text-gray-900">0x973fF8EcFB22c4Fe69Db152f327587DDfA1B</span>
+          <span className="font-medium text-gray-900 dark:text-white text-scaled-sm">
+            0x973fF8EcFB22c4Fe69Db152f327587DDfA1B
+          </span>
         </div>
       </div>
 
       {/* Simulate Deposit Button */}
-      <CustomButton variant="primary" size="lg" fullWidth>
+      <CustomButton variant="primary" size="lg" fullWidth className="text-scaled-base">
         Simulate Deposit
       </CustomButton>
 
       {/* Token Selection Dialog */}
       {showTokenDialog && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-2xl p-6 w-96 max-w-sm mx-4 max-h-96 overflow-y-auto">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">Select Token</h3>
-              <button onClick={() => setShowTokenDialog(false)} className="text-gray-400 hover:text-gray-600">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl p-scaled-6 w-96 max-w-sm mx-4 max-h-96 overflow-y-auto">
+            <div className="flex items-center justify-between mb-scaled-4">
+              <h3 className="text-scaled-lg font-semibold text-gray-900 dark:text-white">Select Token</h3>
+              <button
+                onClick={() => setShowTokenDialog(false)}
+                className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
+              >
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -220,13 +229,15 @@ export default function DepositScreen({
                     setShowTokenDialog(false)
                   }}
                   className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-colors ${
-                    selectedToken?.symbol === token.symbol ? "bg-blue-50 border border-blue-200" : "hover:bg-gray-50"
+                    selectedToken?.symbol === token.symbol
+                      ? "bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700"
+                      : "hover:bg-gray-50 dark:hover:bg-gray-700"
                   }`}
                 >
                   <img src={getCryptoLogo(token.symbol) || "/placeholder.svg"} alt={token.name} className="w-10 h-10" />
                   <div className="flex-1">
-                    <div className="font-medium text-gray-900">{token.name}</div>
-                    <div className="text-sm text-gray-500">{token.symbol}</div>
+                    <div className="font-medium text-gray-900 dark:text-white">{token.name}</div>
+                    <div className="text-sm text-gray-500 dark:text-gray-400">{token.symbol}</div>
                   </div>
                   {selectedToken?.symbol === token.symbol && (
                     <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center">

@@ -99,7 +99,7 @@ export function OTPInput({ length = 6, onComplete, disabled = false, error = fal
               "focus:outline-none focus:ring-2 focus:ring-opacity-20",
               error
                 ? "border-red-500 focus:border-red-500 focus:ring-red-500"
-                : "border-muted-foreground/20 focus:border-cyan-500 focus:ring-cyan-500",
+                : "border-muted-foreground/20 focus:border-blue-500 focus:ring-blue-500",
               disabled && "opacity-50 cursor-not-allowed",
             )}
             aria-label={`Digit ${index + 1} of ${length}`}

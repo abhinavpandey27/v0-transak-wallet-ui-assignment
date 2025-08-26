@@ -7,7 +7,7 @@ import { ThemeProvider as CustomThemeProvider } from "@/contexts/ThemeContext"
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   return (
-    <NextThemeProvider attribute="class" defaultTheme="system" enableSystem>
+    <NextThemeProvider attribute="class" defaultTheme="system" enableSystem suppressHydrationWarning={true}>
       <CustomThemeProvider>{children}</CustomThemeProvider>
     </NextThemeProvider>
   )

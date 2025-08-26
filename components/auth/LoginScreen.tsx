@@ -19,7 +19,7 @@ export default function LoginScreen() {
   }
 
   return (
-    <div className="min-h-screen bg-background-white flex flex-col">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
       {/* Main Content */}
       <div className="flex-1 flex items-center justify-center px-6">
         <div className="w-full max-w-sm space-y-8">
@@ -37,7 +37,7 @@ export default function LoginScreen() {
 
           {/* Welcome Text */}
           <div className="text-center space-y-2">
-            <h1 className="text-2xl font-semibold text-foreground">Welcome to Family</h1>
+            <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-50">Welcome to Transak</h1>
             <p className="text-muted-foreground">Log in or sign up to get started.</p>
           </div>
 
@@ -45,11 +45,11 @@ export default function LoginScreen() {
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
               <Input
-                type="text"
-                placeholder="Email or Phone Number"
+                type="email"
+                placeholder="Enter your Email"
                 value={emailInput}
                 onChange={(e) => setEmailInput(e.target.value)}
-                className="h-12 border-2 border-cyan-400 focus:border-cyan-500 focus:ring-cyan-500"
+                className="h-12 border-2 border-gray-200 dark:border-gray-700 focus:border-blue-500 focus:ring-blue-500 dark:focus:border-blue-400 dark:focus:ring-blue-400"
                 disabled={isLoading}
               />
               {error && <p className="text-sm text-red-500">{error}</p>}
@@ -57,7 +57,7 @@ export default function LoginScreen() {
 
             <Button
               type="submit"
-              className="w-full h-12 bg-cyan-500 hover:bg-cyan-600 text-white font-medium"
+              className="w-full h-12 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white font-medium"
               disabled={isLoading || !emailInput.trim()}
             >
               {isLoading ? "Sending..." : "Continue"}
@@ -80,25 +80,7 @@ export default function LoginScreen() {
       </div>
 
       {/* Bottom Branding */}
-      <div className="bg-black dark:bg-gray-900 px-6 py-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <div className="w-6 h-6 bg-white rounded flex items-center justify-center">
-              <div className="grid grid-cols-2 gap-0.5">
-                <div className="w-1 h-1 bg-black rounded-sm"></div>
-                <div className="w-1 h-1 bg-black rounded-sm"></div>
-                <div className="w-1 h-1 bg-black rounded-sm"></div>
-                <div className="w-1 h-1 bg-black rounded-sm"></div>
-              </div>
-            </div>
-            <span className="text-white font-medium">Family</span>
-          </div>
-          <div className="flex items-center space-x-2 text-white">
-            <span className="text-sm">curated by</span>
-            <span className="font-bold">Mobbin</span>
-          </div>
-        </div>
-      </div>
+      
     </div>
   )
 }

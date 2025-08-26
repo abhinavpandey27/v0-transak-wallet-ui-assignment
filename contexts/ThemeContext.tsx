@@ -18,7 +18,6 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
 
 const DEFAULT_CONFIG: ThemeConfig = {
-  mode: "system",
   typography: DEFAULT_TYPOGRAPHY_CONFIG,
   scaling: {
     level: "normal",
@@ -30,10 +29,14 @@ const DEFAULT_CONFIG: ThemeConfig = {
 }
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const { theme, setTheme } = useNextTheme()
+  const { theme, setTheme, resolvedTheme } = useNextTheme()
   const [config, setConfig] = useState<ThemeConfig>(DEFAULT_CONFIG)
+  const [mounted, setMounted] = useState(false)
 
-  // Load saved configuration from localStorage
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
   useEffect(() => {
     const savedConfig = localStorage.getItem("wallet-theme-config")
     if (savedConfig) {
@@ -46,26 +49,26 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     }
   }, [])
 
-  // Save configuration to localStorage
   useEffect(() => {
-    localStorage.setItem("wallet-theme-config", JSON.stringify(config))
-    applyThemeToDOM(config)
-  }, [config])
-
-  // Sync with next-themes
-  useEffect(() => {
-    if (config.mode !== "system") {
-      setTheme(config.mode)
+    if (mounted) {
+      localStorage.setItem("wallet-theme-config", JSON.stringify(config))
+      applyThemeToDOM(config)
     }
-  }, [config.mode, setTheme])
+  }, [config, mounted])
+
+  useEffect(() => {
+    if (mounted && resolvedTheme) {
+      applyThemeToDOM(config)
+    }
+  }, [resolvedTheme, config, mounted])
 
   const applyThemeToDOM = (themeConfig: ThemeConfig) => {
+    if (!mounted) return
+
     const root = document.documentElement
 
-    // Apply typography
     root.style.setProperty("--font-primary", `var(${themeConfig.typography.fontFamily})`)
 
-    // Apply scaling
     const scaleValues = {
       compact: 0.875,
       normal: 1,
@@ -75,21 +78,16 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     const scale = themeConfig.scaling.customScale || scaleValues[themeConfig.scaling.level]
     root.style.setProperty("--scale-factor", scale.toString())
 
-    // Apply brand colors
     if (themeConfig.brand.primaryColor) {
       const variations = generateColorVariations(themeConfig.brand.primaryColor)
       const secondary = themeConfig.brand.autoGenerateSecondary
         ? generateComplementary(themeConfig.brand.primaryColor)
         : themeConfig.brand.customSecondary || generateComplementary(themeConfig.brand.primaryColor)
 
-      // Determine if we're in dark mode
-      const isDarkMode =
-        theme === "dark" || (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      const isDarkMode = resolvedTheme === "dark"
 
-      // Generate theme-aware colors
       const themeColors = generateThemeAwareBrandColors(themeConfig.brand.primaryColor, isDarkMode)
 
-      // Set brand color variables
       root.style.setProperty("--brand-primary", themeColors.primary)
       root.style.setProperty("--brand-primary-foreground", themeColors.primaryForeground)
       root.style.setProperty("--brand-primary-hover", themeColors.primaryHover)
@@ -97,10 +95,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       root.style.setProperty("--brand-accent", themeColors.accent)
       root.style.setProperty("--brand-secondary", secondary)
 
-      // Update CSS custom properties for primary color with proper OKLCH conversion
       const primaryRgb = hexToRgb(themeColors.primary)
       if (primaryRgb) {
-        // Convert RGB to OKLCH-like values for better color space handling
         const { r, g, b } = primaryRgb
         const luminance = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255
         root.style.setProperty(

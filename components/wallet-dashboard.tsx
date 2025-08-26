@@ -131,10 +131,10 @@ export default function WalletDashboard() {
     console.log("[v0] Changing theme from", theme, "to", newTheme)
     setTheme(newTheme)
 
-    // Force immediate DOM update for debugging
     setTimeout(() => {
       console.log("[v0] After theme change - Document classes:", document.documentElement.classList.toString())
-      console.log("[v0] After theme change - Computed style:", window.getComputedStyle(document.body).backgroundColor)
+      console.log("[v0] After theme change - Theme state:", { theme: newTheme, resolvedTheme })
+      console.log("[v0] After theme change - Body background:", window.getComputedStyle(document.body).backgroundColor)
     }, 100)
   }
 

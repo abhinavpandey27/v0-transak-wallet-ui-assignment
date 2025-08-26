@@ -21,7 +21,7 @@ export default function OTPScreen() {
   }
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
       {/* Header */}
       <div className="px-6 py-4">
         <Button variant="ghost" size="sm" onClick={handleBack} className="p-2 hover:bg-muted">
@@ -34,8 +34,8 @@ export default function OTPScreen() {
         <div className="w-full max-w-sm space-y-8">
           {/* Email Icon */}
           <div className="flex justify-center">
-            <div className="w-16 h-16 bg-cyan-100 dark:bg-cyan-900 rounded-full flex items-center justify-center">
-              <Mail className="w-8 h-8 text-cyan-600 dark:text-cyan-400" />
+            <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center">
+              <Mail className="w-8 h-8 text-blue-600 dark:text-blue-400" />
             </div>
           </div>
 
@@ -79,25 +79,7 @@ export default function OTPScreen() {
       </div>
 
       {/* Bottom Branding */}
-      <div className="bg-black dark:bg-gray-900 px-6 py-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <div className="w-6 h-6 bg-white rounded flex items-center justify-center">
-              <div className="grid grid-cols-2 gap-0.5">
-                <div className="w-1 h-1 bg-black rounded-sm"></div>
-                <div className="w-1 h-1 bg-black rounded-sm"></div>
-                <div className="w-1 h-1 bg-black rounded-sm"></div>
-                <div className="w-1 h-1 bg-black rounded-sm"></div>
-              </div>
-            </div>
-            <span className="text-white font-medium">Family</span>
-          </div>
-          <div className="flex items-center space-x-2 text-white">
-            <span className="text-sm">curated by</span>
-            <span className="font-bold">Mobbin</span>
-          </div>
-        </div>
-      </div>
+      
     </div>
   )
 }

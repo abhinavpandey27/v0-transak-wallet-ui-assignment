@@ -9,20 +9,13 @@ import { SettingsDialog } from "@/components/theme/SettingsDialog"
 
 import WalletScreen from "@/components/screens/WalletScreen"
 import DepositFlow from "@/components/flows/DepositFlow"
-import WithdrawScreen from "@/components/screens/WithdrawScreen"
+import WithdrawalFlow from "@/components/flows/WithdrawalFlow"
 import ProfileScreen from "@/components/screens/ProfileScreen"
 import TransactionLimitsScreen from "@/components/screens/TransactionLimitsScreen"
 import KYCSecurityScreen from "@/components/screens/KYCSecurityScreen"
 
-import {
-  availableCurrencies,
-  cryptoTokens,
-  transactions,
-  cryptoTransactions,
-  bankAccounts,
-  initialProfileData,
-} from "@/data/mockData"
-import type { Currency, Token, ProfileData } from "@/types"
+import { availableCurrencies, transactions, cryptoTransactions, initialProfileData } from "@/data/mockData"
+import type { Currency, ProfileData } from "@/types"
 
 export default function WalletDashboard() {
   const [activeTab, setActiveTab] = useState("fiat")
@@ -33,12 +26,6 @@ export default function WalletDashboard() {
   const [sidebarWidth, setSidebarWidth] = useState(280)
   const [isResizing, setIsResizing] = useState(false)
   const [showSettingsDialog, setShowSettingsDialog] = useState(false)
-
-  // Withdraw screen state
-  const [selectedSendingToken, setSelectedSendingToken] = useState<Token>(cryptoTokens[1]) // ETH
-  const [selectedWithdrawCurrency, setSelectedWithdrawCurrency] = useState<Currency>(availableCurrencies[0])
-  const [selectedBankAccount, setSelectedBankAccount] = useState(0)
-  const [showQRCode, setShowQRCode] = useState(false)
 
   // Transaction limits state
   const [limitsActiveTab, setLimitsActiveTab] = useState("daily")
@@ -128,6 +115,10 @@ export default function WalletDashboard() {
 
   if (currentScreen === "deposit") {
     return <DepositFlow onComplete={() => setCurrentScreen("wallet")} />
+  }
+
+  if (currentScreen === "withdraw") {
+    return <WithdrawalFlow onBack={() => setCurrentScreen("wallet")} onComplete={() => setCurrentScreen("wallet")} />
   }
 
   return (
@@ -261,21 +252,6 @@ export default function WalletDashboard() {
               cryptoTransactions={cryptoTransactions}
               onNavigateToDeposit={() => setCurrentScreen("deposit")}
               onNavigateToWithdraw={() => setCurrentScreen("withdraw")}
-            />
-          )}
-          {currentScreen === "withdraw" && (
-            <WithdrawScreen
-              selectedSendingToken={selectedSendingToken}
-              setSelectedSendingToken={setSelectedSendingToken}
-              selectedWithdrawCurrency={selectedWithdrawCurrency}
-              setSelectedWithdrawCurrency={setSelectedWithdrawCurrency}
-              selectedBankAccount={selectedBankAccount}
-              setSelectedBankAccount={setSelectedBankAccount}
-              showQRCode={showQRCode}
-              setShowQRCode={setShowQRCode}
-              availableCurrencies={availableCurrencies}
-              cryptoTokens={cryptoTokens}
-              bankAccounts={bankAccounts}
             />
           )}
           {currentScreen === "profile" && <ProfileScreen profileData={profileData} setProfileData={setProfileData} />}

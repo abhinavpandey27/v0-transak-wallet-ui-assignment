@@ -144,14 +144,14 @@ export default function EnterAmountScreen({
   }
 
   return (
-    <div className="py-8 space-y-6">
-      <div className="bg-gray-50 dark:bg-gray-800 rounded-2xl p-6 relative">
-        {/* Row 1: Label */}
+    <div className="py-8">
+      {/* Row 1 */}
+      <div className="bg-gray-50 dark:bg-gray-800 rounded-2xl p-6 relative mb-[-0.75rem]">
+        {/* -my-3 equivalent */}
         <div className="text-left mb-6">
           <p className="text-sm text-gray-600 dark:text-gray-400 font-medium">Enter the Fiat Amount</p>
         </div>
 
-        {/* Row 2: Amount + Currency Picker */}
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <input
@@ -169,7 +169,6 @@ export default function EnterAmountScreen({
             />
           </div>
 
-          {/* Currency Picker */}
           <button
             onClick={() => setShowCurrencyDialog(true)}
             disabled={isLoading}
@@ -184,19 +183,19 @@ export default function EnterAmountScreen({
         </div>
       </div>
 
-      <div className="flex justify-center -my-3 relative z-10">
+      {/* Arrow */}
+      <div className="flex justify-center relative z-10 my-[-0.75rem]">
         <div className="w-8 h-8 bg-white dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-700 rounded-full flex items-center justify-center">
           <ChevronDown className="w-4 h-4 text-gray-600 dark:text-gray-300" />
         </div>
       </div>
 
-      <div className="bg-gray-50 dark:bg-gray-800 rounded-2xl p-6 -mt-4">
-        {/* Row 3: Label */}
+      {/* Row 2 */}
+      <div className="bg-gray-50 dark:bg-gray-800 rounded-2xl p-6 mb-8">
         <div className="text-left mb-6">
           <p className="text-sm text-gray-600 dark:text-gray-400 font-medium">You will receive</p>
         </div>
 
-        {/* Row 4: Quote Amount + Token Picker */}
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <span
@@ -208,7 +207,6 @@ export default function EnterAmountScreen({
             </span>
           </div>
 
-          {/* Token Picker */}
           <button
             onClick={() => setShowTokenDialog(true)}
             disabled={isLoading}
@@ -223,26 +221,28 @@ export default function EnterAmountScreen({
         </div>
       </div>
 
-      {/* Next Button */}
-      <CustomButton
-        variant="primary"
-        size="lg"
-        fullWidth
-        onClick={onNext}
-        disabled={!canProceed || isLoading || isEmptyState || !flowState.amount}
-        className="text-base"
-      >
-        {isLoading ? (
-          <div className="flex items-center justify-center gap-2">
-            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-            Loading...
-          </div>
-        ) : (
-          "Next"
-        )}
-      </CustomButton>
+      {/* CTA */}
+      <div className="mb-6">
+        <CustomButton
+          variant="primary"
+          size="lg"
+          fullWidth
+          onClick={onNext}
+          disabled={!canProceed || isLoading || isEmptyState || !flowState.amount}
+          className="text-base"
+        >
+          {isLoading ? (
+            <div className="flex items-center justify-center gap-2">
+              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+              Loading...
+            </div>
+          ) : (
+            "Next"
+          )}
+        </CustomButton>
+      </div>
 
-      {/* Info Text */}
+      {/* Info */}
       <div className="bg-gray-100 dark:bg-gray-800 rounded-xl p-4 flex items-start gap-3">
         <div className="w-5 h-5 bg-gray-400 dark:bg-gray-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
           <span className="text-white text-xs font-bold">i</span>
@@ -254,7 +254,7 @@ export default function EnterAmountScreen({
 
       {showCurrencyDialog && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 w-80 max-w-sm mx-4">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 w-full max-w-sm mx-4">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold">Select Currency</h3>
               <button onClick={() => setShowCurrencyDialog(false)}>
@@ -265,17 +265,15 @@ export default function EnterAmountScreen({
               {availableCurrencies.map((currency) => (
                 <button
                   key={currency.code}
-                  className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700"
                   onClick={() => {
                     updateFlowState({ currency })
                     setShowCurrencyDialog(false)
                   }}
+                  className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
                 >
-                  <span className="text-2xl">{currencyFlags[currency.code] || "🌍"}</span>
-                  <div className="text-left">
-                    <div className="font-medium">{currency.code}</div>
-                    <div className="text-sm text-gray-500">{currency.name}</div>
-                  </div>
+                  <span className="text-xl">{currencyFlags[currency.code] || "🌍"}</span>
+                  <span className="font-medium">{currency.code}</span>
+                  <span className="text-sm text-gray-500">{currency.name}</span>
                 </button>
               ))}
             </div>
@@ -285,7 +283,7 @@ export default function EnterAmountScreen({
 
       {showTokenDialog && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 w-80 max-w-sm mx-4">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 w-full max-w-sm mx-4">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold">Select Token</h3>
               <button onClick={() => setShowTokenDialog(false)}>
@@ -296,17 +294,15 @@ export default function EnterAmountScreen({
               {cryptoTokens.map((token) => (
                 <button
                   key={token.id}
-                  className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700"
                   onClick={() => {
                     updateFlowState({ token })
                     setShowTokenDialog(false)
                   }}
+                  className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
                 >
-                  <span className="text-2xl">{tokenIcons[token.symbol] || "◯"}</span>
-                  <div className="text-left">
-                    <div className="font-medium">{token.name}</div>
-                    <div className="text-sm text-gray-500">{token.symbol}</div>
-                  </div>
+                  <span className="text-xl">{tokenIcons[token.symbol] || "◯"}</span>
+                  <span className="font-medium">{token.symbol}</span>
+                  <span className="text-sm text-gray-500">{token.name}</span>
                 </button>
               ))}
             </div>

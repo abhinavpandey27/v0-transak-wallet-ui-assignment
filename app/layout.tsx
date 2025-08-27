@@ -79,12 +79,10 @@ export default function RootLayout({
   ].join(" ")
 
   return (
-    <html lang="en" className={fontVariables}>
+    <html lang="en" className={`${fontVariables} antialiased`}>
       <body>
         <SimpleThemeProvider>
-          <AuthProvider>
-            {children}
-          </AuthProvider>
+          <AuthProvider>{children}</AuthProvider>
         </SimpleThemeProvider>
       </body>
     </html>

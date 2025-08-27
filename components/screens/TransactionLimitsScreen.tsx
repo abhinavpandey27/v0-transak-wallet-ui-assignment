@@ -81,7 +81,7 @@ export default function TransactionLimitsScreen({
       {/* Bank Transfer Section */}
       <div className="mb-8">
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 text-left">Bank Transfer</h3>
-        <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+        <div className="bg-gray-50 dark:bg-gray-700 rounded-xl p-6">
           <div className="grid grid-cols-3 gap-6">
             <div className="text-left">
               <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300 mb-2">
@@ -123,7 +123,7 @@ export default function TransactionLimitsScreen({
       {/* Credit Card Section */}
       <div className="mb-8">
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 text-left">Credit and Debit Card</h3>
-        <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+        <div className="bg-gray-50 dark:bg-gray-700 rounded-xl p-6">
           <div className="grid grid-cols-3 gap-6">
             <div className="text-left">
               <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300 mb-2">

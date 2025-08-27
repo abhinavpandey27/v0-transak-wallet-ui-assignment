@@ -70,44 +70,26 @@ export default function KYCSecurityScreen({ verificationDate = "12 Mar 2025, 11:
     }
   }
 
-  const getStepIconColor = (index: number) => {
-    const colors = [
-      "bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300", // Personal Details
-      "bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300", // Address
-      "bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300", // Purpose
-      "bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300", // ID Proof
-    ]
-    return colors[index] || "bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300"
-  }
-
   return (
     <div className="max-w-[640px] w-full">
       {/* KYC Verification Section */}
       <div className="mb-8">
         <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">KYC Verification</h2>
-        <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-xl p-4 space-y-6">
+        <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-xl p-4 space-y-4">
           {kycSteps.map((step, index) => {
             const Icon = step.icon
             return (
-              <div key={step.id} className="relative flex items-center gap-4">
-                <div className="absolute -top-0.5 -left-0.5 w-6 h-6 bg-white dark:bg-gray-800 text-black dark:text-white rounded-full flex items-center justify-center text-xs font-semibold z-10 border-slate-300 dark:border-slate-600 border shadow-xs">
+              <div key={step.id} className="flex items-center gap-2">
+                {/* Number circle */}
+                <div className="w-6 h-6 rounded-full flex items-center justify-center text-sm font-semibold flex-shrink-0 text-black bg-slate-100">
                   {index + 1}
                 </div>
-                <div
-                  className={`w-16 h-16 rounded-full flex items-center justify-center flex-shrink-0 ${getStepIconColor(index)}`}
-                >
-                  <Icon className="w-7 h-7" />
+                {/* Smaller icon */}
+                <div className="w-8 h-8 rounded-full dark:bg-gray-700 flex items-center justify-center flex-shrink-0 bg-transparent">
+                  <Icon className="w-4 h-4 text-gray-600 dark:text-gray-300" />
                 </div>
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <h3 className="font-medium text-gray-900 dark:text-white">{step.title}</h3>
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStepStatusColor(step.status)}`}>
-                      {step.status === "completed" ? "✓" : step.status}
-                    </span>
-                  </div>
-                  <p className="text-sm text-gray-600 dark:text-gray-300 mb-1">{step.description}</p>
-                  {step.timestamp && <p className="text-xs text-gray-400 dark:text-gray-500">{step.timestamp}</p>}
-                </div>
+                {/* Simple title only */}
+                <span className="font-medium text-gray-900 dark:text-white">{step.title}</span>
               </div>
             )
           })}
@@ -116,10 +98,9 @@ export default function KYCSecurityScreen({ verificationDate = "12 Mar 2025, 11:
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 bg-green-500 rounded-full"></div>
               <span className="font-semibold text-green-800 dark:text-green-300">
-                KYC Verified | {verificationDate}
+                KYC Verified | All account features unlocked.
               </span>
             </div>
-            <p className="text-sm text-green-700 dark:text-green-400 mt-1">All account features unlocked.</p>
           </div>
         </div>
       </div>

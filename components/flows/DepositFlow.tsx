@@ -1,13 +1,11 @@
 "use client"
 
 import type React from "react"
-
 import { useState, useEffect, useCallback, useMemo } from "react"
 import { ArrowLeft } from "lucide-react"
 import type { Currency, Token } from "@/types"
 import { availableCurrencies, cryptoTokens } from "@/data/mockData"
 import { useDepositFlow } from "@/hooks/useDepositApi"
-import ErrorBoundary from "./ErrorBoundary"
 
 // Flow step types
 type DepositStep = "amount" | "bank-details" | "verification" | "success"
@@ -139,8 +137,9 @@ export default function DepositFlow({ onComplete }: { onComplete: () => void }) 
   const { quote, bankDetails, verification, resetAll } = useDepositFlow()
 
   const goToNextStep = useCallback(async () => {
-    if (validateCurrentStep) {
-      updateFlowState({ error: validateCurrentStep })
+    const validationError = validateCurrentStep
+    if (validationError) {
+      updateFlowState({ error: validationError })
       return
     }
 
@@ -267,10 +266,8 @@ export default function DepositFlow({ onComplete }: { onComplete: () => void }) 
     updateFlowState({ error: null, isLoading: true })
 
     try {
-      // Retry based on current step
       switch (flowState.step) {
         case "amount":
-          // Retry quote fetching
           if (flowState.token && flowState.amount) {
             quote.getQuote({
               amount: Number.parseFloat(flowState.amount),
@@ -281,7 +278,6 @@ export default function DepositFlow({ onComplete }: { onComplete: () => void }) 
           }
           break
         case "bank-details":
-          // Retry bank details fetching
           if (quote.data?.quoteId) {
             await bankDetails.fetchBankDetails({
               amount: Number.parseFloat(flowState.amount),
@@ -292,7 +288,6 @@ export default function DepositFlow({ onComplete }: { onComplete: () => void }) 
           }
           break
         case "verification":
-          // Retry verification
           if (bankDetails.data) {
             await verification.initiateVerification({
               transactionId: bankDetails.data.reference,
@@ -311,127 +306,83 @@ export default function DepositFlow({ onComplete }: { onComplete: () => void }) 
   }, [flowState, quote, bankDetails, verification, updateFlowState, handleError])
 
   return (
-    <ErrorBoundary onError={handleError}>
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-        {/* Header */}
-        <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
-          <div className="max-w-md mx-auto px-4 py-4 flex items-center justify-between">
-            <button
-              onClick={goToPreviousStep}
-              disabled={!flowState.canGoBack}
-              className={`p-2 rounded-full transition-colors ${
-                flowState.canGoBack ? "hover:bg-gray-100 dark:hover:bg-gray-700" : "opacity-50 cursor-not-allowed"
-              }`}
-              aria-label="Go back"
-            >
-              <ArrowLeft className="w-5 h-5 text-gray-600 dark:text-gray-300" />
-            </button>
-            <h1 className="text-lg font-semibold text-gray-900 dark:text-white">{getScreenTitle()}</h1>
-            <div className="w-9" /> {/* Spacer for centering */}
-          </div>
-
-          {/* Progress bar */}
-          <div className="w-full bg-gray-200 dark:bg-gray-700 h-1">
-            <div
-              className="bg-blue-500 h-1 transition-all duration-500 ease-out"
-              style={{ width: `${flowState.progress}%` }}
-            />
-          </div>
+    <div className="min-h-screen dark:bg-gray-900 bg-transparent">
+      {/* Header */}
+      <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+        <div className="max-w-full mx-auto px-4 py-4 flex items-center justify-between">
+          <button
+            onClick={goToPreviousStep}
+            disabled={!flowState.canGoBack}
+            className={`p-2 rounded-full transition-colors ${
+              flowState.canGoBack ? "hover:bg-gray-100 dark:hover:bg-gray-700" : "opacity-50 cursor-not-allowed"
+            }`}
+            aria-label="Go back"
+          >
+            <ArrowLeft className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+          </button>
+          <h1 className="text-lg font-semibold text-gray-900 dark:text-white">{getScreenTitle()}</h1>
+          <div className="w-9" /> {/* Spacer for centering */}
         </div>
 
-        {/* Main Content */}
-        <div className="flex-1 flex justify-center p-4">
-          <div className="w-full max-w-md">
-            {flowState.error && (
-              <div className="mb-4 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl">
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <p className="text-sm text-red-600 dark:text-red-400 mb-2">{flowState.error.message}</p>
-                    {flowState.error.type === "api" && (
-                      <button
-                        onClick={retryCurrentOperation}
-                        disabled={flowState.isLoading}
-                        className="text-sm text-red-700 dark:text-red-300 underline hover:no-underline disabled:opacity-50"
-                      >
-                        {flowState.isLoading ? "Retrying..." : "Try Again"}
-                      </button>
-                    )}
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {process.env.NODE_ENV === "development" && (
-              <div className="mb-4 p-3 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-xl">
-                <details>
-                  <summary className="text-sm font-medium text-yellow-800 dark:text-yellow-200 cursor-pointer">
-                    🧪 Testing Controls
-                  </summary>
-                  <div className="mt-2 space-y-2">
-                    <div className="grid grid-cols-2 gap-2 text-xs">
-                      <button
-                        onClick={() => (window as any).depositTestHelpers?.simulateNetworkIssues()}
-                        className="p-2 bg-yellow-100 dark:bg-yellow-800 rounded text-yellow-800 dark:text-yellow-200"
-                      >
-                        Network Issues
-                      </button>
-                      <button
-                        onClick={() => (window as any).depositTestHelpers?.testValidationErrors()}
-                        className="p-2 bg-yellow-100 dark:bg-yellow-800 rounded text-yellow-800 dark:text-yellow-200"
-                      >
-                        Validation Errors
-                      </button>
-                      <button
-                        onClick={() => (window as any).depositTestHelpers?.testServiceErrors()}
-                        className="p-2 bg-yellow-100 dark:bg-yellow-800 rounded text-yellow-800 dark:text-yellow-200"
-                      >
-                        Service Errors
-                      </button>
-                      <button
-                        onClick={() => (window as any).depositTestHelpers?.resetTests()}
-                        className="p-2 bg-yellow-100 dark:bg-yellow-800 rounded text-yellow-800 dark:text-yellow-200"
-                      >
-                        Reset Tests
-                      </button>
-                    </div>
-                  </div>
-                </details>
-              </div>
-            )}
-
-            {flowState.step === "amount" && (
-              <EnterAmountScreen
-                flowState={flowState}
-                updateFlowState={updateFlowState}
-                onNext={goToNextStep}
-                canProceed={flowState.canProceed}
-                isLoading={flowState.isLoading}
-                availableCurrencies={availableCurrencies}
-                cryptoTokens={cryptoTokens}
-                quoteHook={quote}
-              />
-            )}
-            {flowState.step === "bank-details" && (
-              <BankDetailsScreen
-                flowState={flowState}
-                onNext={goToNextStep}
-                canProceed={flowState.canProceed}
-                isLoading={flowState.isLoading}
-              />
-            )}
-            {flowState.step === "verification" && (
-              <VerificationScreen flowState={flowState} onNext={goToNextStep} verificationHook={verification} />
-            )}
-            {flowState.step === "success" && (
-              <PaymentVerifiedScreen
-                flowState={flowState}
-                onComplete={onComplete}
-                verificationData={verification.data}
-              />
-            )}
-          </div>
+        {/* Progress bar */}
+        <div className="w-full bg-gray-200 dark:bg-gray-700 h-1">
+          <div
+            className="bg-blue-500 h-1 transition-all duration-500 ease-out"
+            style={{ width: `${flowState.progress}%` }}
+          />
         </div>
       </div>
-    </ErrorBoundary>
+
+      {/* Main Content */}
+      <div className="flex-1 flex justify-center p-4">
+        <div className="w-full max-w-md">
+          {flowState.error && (
+            <div className="mb-4 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl">
+              <div className="flex items-start justify-between">
+                <div className="flex-1">
+                  <p className="text-sm text-red-600 dark:text-red-400 mb-2">{flowState.error.message}</p>
+                  {flowState.error.type === "api" && (
+                    <button
+                      onClick={retryCurrentOperation}
+                      disabled={flowState.isLoading}
+                      className="text-sm text-red-700 dark:text-red-300 underline hover:no-underline disabled:opacity-50"
+                    >
+                      {flowState.isLoading ? "Retrying..." : "Try Again"}
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {flowState.step === "amount" && (
+            <EnterAmountScreen
+              flowState={flowState}
+              updateFlowState={updateFlowState}
+              onNext={goToNextStep}
+              canProceed={flowState.canProceed}
+              isLoading={flowState.isLoading}
+              availableCurrencies={availableCurrencies}
+              cryptoTokens={cryptoTokens}
+              quoteHook={quote}
+            />
+          )}
+          {flowState.step === "bank-details" && (
+            <BankDetailsScreen
+              flowState={flowState}
+              onNext={goToNextStep}
+              canProceed={flowState.canProceed}
+              isLoading={flowState.isLoading}
+            />
+          )}
+          {flowState.step === "verification" && (
+            <VerificationScreen flowState={flowState} onNext={goToNextStep} verificationHook={verification} />
+          )}
+          {flowState.step === "success" && (
+            <PaymentVerifiedScreen flowState={flowState} onComplete={onComplete} verificationData={verification.data} />
+          )}
+        </div>
+      </div>
+    </div>
   )
 }

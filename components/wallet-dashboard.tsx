@@ -8,7 +8,7 @@ import { useSimpleTheme } from "@/contexts/SimpleThemeContext"
 import { SettingsDialog } from "@/components/theme/SettingsDialog"
 
 import WalletScreen from "@/components/screens/WalletScreen"
-import DepositScreen from "@/components/screens/DepositScreen"
+import DepositFlow from "@/components/flows/DepositFlow"
 import WithdrawScreen from "@/components/screens/WithdrawScreen"
 import ProfileScreen from "@/components/screens/ProfileScreen"
 import TransactionLimitsScreen from "@/components/screens/TransactionLimitsScreen"
@@ -33,13 +33,6 @@ export default function WalletDashboard() {
   const [sidebarWidth, setSidebarWidth] = useState(280)
   const [isResizing, setIsResizing] = useState(false)
   const [showSettingsDialog, setShowSettingsDialog] = useState(false)
-
-  // Deposit screen state
-  const [depositAmount, setDepositAmount] = useState("")
-  const [depositDescription, setDepositDescription] = useState("")
-  const [selectedCurrency, setSelectedCurrency] = useState<Currency>(availableCurrencies[0])
-  const [selectedToken, setSelectedToken] = useState<Token | null>(null)
-  const [showTokenDialog, setShowTokenDialog] = useState(false)
 
   // Withdraw screen state
   const [selectedSendingToken, setSelectedSendingToken] = useState<Token>(cryptoTokens[1]) // ETH
@@ -131,6 +124,10 @@ export default function WalletDashboard() {
   // Don't render until mounted to avoid hydration mismatch
   if (!mounted) {
     return <div className="flex h-screen bg-gray-50">Loading...</div>
+  }
+
+  if (currentScreen === "deposit") {
+    return <DepositFlow onComplete={() => setCurrentScreen("wallet")} />
   }
 
   return (
@@ -264,22 +261,6 @@ export default function WalletDashboard() {
               cryptoTransactions={cryptoTransactions}
               onNavigateToDeposit={() => setCurrentScreen("deposit")}
               onNavigateToWithdraw={() => setCurrentScreen("withdraw")}
-            />
-          )}
-          {currentScreen === "deposit" && (
-            <DepositScreen
-              depositAmount={depositAmount}
-              setDepositAmount={setDepositAmount}
-              depositDescription={depositDescription}
-              setDepositDescription={setDepositDescription}
-              selectedCurrency={selectedCurrency}
-              setSelectedCurrency={setSelectedCurrency}
-              selectedToken={selectedToken}
-              setSelectedToken={setSelectedToken}
-              availableCurrencies={availableCurrencies}
-              cryptoTokens={cryptoTokens}
-              showTokenDialog={showTokenDialog}
-              setShowTokenDialog={setShowTokenDialog}
             />
           )}
           {currentScreen === "withdraw" && (

@@ -346,7 +346,7 @@ export default function DepositScreen({
   return (
     <div className="max-w-[640px] w-full">
       {/* OUTER SURFACE */}
-      <div className="rounded-3xl max-w-[640px] dark:bg-gray-900 p-6 md:p-8 bg-transparent shadow-none md:px-0 md:py-0">
+      <div className="rounded-3xl max-w-[640px] p-6 md:p-8 shadow-none md:px-0 md:py-0 bg-transparent">
         {/* MAIN CARD (light grey) */}
         <div className="rounded-3xl bg-gray-100/70 dark:bg-white/5 p-6 md:p-8">
           {/* Header */}

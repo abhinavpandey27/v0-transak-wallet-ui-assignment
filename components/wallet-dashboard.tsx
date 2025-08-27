@@ -255,7 +255,7 @@ export default function WalletDashboard() {
         </div>
 
         {/* Main Content */}
-        <div className="flex-1 p-8 flex justify-center overflow-y-auto">
+        <div className="flex-1 p-8 flex justify-center overflow-y-auto pb-72 h-full">
           {currentScreen === "wallet" && (
             <WalletScreen
               activeTab={activeTab}

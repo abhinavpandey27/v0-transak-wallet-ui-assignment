@@ -2,7 +2,7 @@
 
 import { Card } from "@/components/ui/card"
 import { CustomButton } from "@/components/ui/custom-button"
-import { ArrowRight, Building2, UserCheck, Hash, MapPin, Globe, Wallet, X } from "lucide-react"
+import { ArrowRight, Building2, UserCheck, Hash, MapPin, Globe, Wallet, X, CreditCard, User } from "lucide-react"
 import CurrencySelector from "@/components/shared/CurrencySelector"
 
 interface Currency {
@@ -16,6 +16,7 @@ interface Token {
   name: string
   color: string
   rate: number
+  icon: string // Added icon property
 }
 
 interface DepositScreenProps {
@@ -60,159 +61,172 @@ export default function DepositScreen({
 
   return (
     <div className="max-w-[640px] w-full">
-      {/* You are Depositing Section */}
-      <div className="text-center mb-scaled-8 px-scaled-6 py-scaled-6 bg-gray-100 dark:bg-gray-800 rounded-xl">
-        <div className="flex justify-between mb-scaled-4 items-center">
-          <span className="text-gray-600 dark:text-gray-300 text-scaled-base">You are Depositing</span>
-          <CurrencySelector
-            selectedCurrency={selectedCurrency}
-            onCurrencyChange={setSelectedCurrency}
-            availableCurrencies={availableCurrencies}
-          />
+      {/* Amount Input Section */}
+      <div className="text-center mb-8 px-6 py-6 bg-gray-100 dark:bg-gray-800 rounded-xl">
+        <div className="flex justify-between mb-4 items-center">
+          <span className="text-gray-600 dark:text-gray-300 text-base">You are Depositing</span>
+          <span className="text-sm text-gray-500 dark:text-gray-400">
+            Available: {selectedCurrency.symbol}10,000.00
+          </span>
         </div>
-
-        <div className="relative mb-scaled-4">
+        
+        <div className="relative mb-4">
           <input
             type="text"
             value={depositAmount}
-            onChange={(e) => {
-              // Only allow numbers and decimal point
-              const value = e.target.value.replace(/[^0-9.]/g, "")
-              setDepositAmount(value)
-            }}
-            placeholder=""
-            className="text-scaled-4xl font-semibold text-gray-900 dark:text-white bg-transparent border-none outline-none text-center w-full placeholder-transparent"
-            style={{ caretColor: "#374151" }}
+            onChange={(e) => setDepositAmount(e.target.value)}
+            placeholder="0.00"
+            className="text-4xl font-semibold text-gray-900 dark:text-white bg-transparent border-none outline-none text-center w-full placeholder-transparent"
           />
-          {depositAmount === "" && (
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <span className="text-scaled-4xl font-semibold text-gray-300 dark:text-gray-600">
-                {selectedCurrency.symbol} 5
-              </span>
-            </div>
-          )}
-          {depositAmount !== "" && (
-            <span
-              className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 text-scaled-4xl font-semibold text-gray-900 dark:text-white pointer-events-none"
-              style={{ marginLeft: `-${depositAmount.length * 1.8}rem` }}
-            >
-              {selectedCurrency.symbol}
-            </span>
-          )}
+          <span className="text-4xl font-semibold text-gray-300 dark:text-gray-600">
+            {selectedCurrency.symbol}
+          </span>
+          <span
+            className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 text-4xl font-semibold text-gray-900 dark:text-white pointer-events-none"
+            style={{ left: 'calc(50% - 20px)' }}
+          >
+            {selectedCurrency.symbol}
+          </span>
         </div>
+        
+        <div className="text-sm text-gray-500 dark:text-gray-400">
+          ≈ $1,435.20 USD
+        </div>
+      </div>
 
+      {/* Description Input */}
+      <div className="mb-8">
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          Description (Optional)
+        </label>
         <input
           type="text"
           value={depositDescription}
           onChange={(e) => setDepositDescription(e.target.value)}
-          placeholder="Add Description"
-          className="text-gray-500 dark:text-gray-400 text-scaled-base mb-scaled-8 bg-transparent border-none outline-none text-center w-full placeholder-gray-500 dark:placeholder-gray-400"
+          placeholder="What's this deposit for?"
+          className="text-gray-500 dark:text-gray-400 text-base mb-8 bg-transparent border-none outline-none text-center w-full placeholder-gray-500 dark:placeholder-gray-400"
         />
+      </div>
 
-        {/* You will get Card */}
-        <Card
-          className="p-scaled-4 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
+      {/* Token Selection */}
+      <div className="mb-8">
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+          Select Token to Receive
+        </label>
+        <div
           onClick={() => setShowTokenDialog(true)}
+          className="p-4 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
         >
-          {!selectedToken ? (
-            // Empty state
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-scaled-3">
-                <div className="w-12 h-12 rounded-full bg-gray-200 dark:bg-gray-600 flex items-center justify-center">
-                  <div className="w-6 h-6 rounded-full bg-white dark:bg-gray-800 flex items-center justify-center">
-                    <span className="text-gray-400 dark:text-gray-300 text-scaled-lg font-bold">+</span>
-                  </div>
-                </div>
-                <div className="text-left">
-                  <div className="text-scaled-sm text-gray-600 dark:text-gray-300">Choose a token</div>
-                  <div className="font-medium text-gray-500 dark:text-gray-400 text-scaled-lg">Select your token</div>
-                </div>
+          {selectedToken ? (
+            <div className="flex items-center gap-3">
+              <img src={selectedToken.icon} alt={selectedToken.name} className="w-8 h-8 rounded-full" />
+              <div>
+                <div className="text-sm text-gray-600 dark:text-gray-300">Choose a token</div>
+                <div className="font-medium text-gray-500 dark:text-gray-400 text-lg">Select your token</div>
               </div>
-              <ArrowRight className="w-5 h-5 text-gray-400 dark:text-gray-500" />
             </div>
           ) : (
-            // Selected token state
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-scaled-3">
-                <img
-                  src={getCryptoLogo(selectedToken.symbol) || "/placeholder.svg"}
-                  alt={selectedToken.name}
-                  className="w-12 h-12"
-                />
-                <div className="text-left">
-                  <div className="text-scaled-sm text-gray-600 dark:text-gray-300">You will get</div>
-                  <div className="font-semibold text-gray-900 dark:text-white text-scaled-lg">
-                    {calculateTokenAmount()} {selectedToken.symbol}
-                  </div>
-                </div>
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 bg-gray-200 dark:bg-gray-600 rounded-full flex items-center justify-center">
+                <span className="text-gray-400 dark:text-gray-300 text-lg font-bold">+</span>
               </div>
-              <ArrowRight className="w-5 h-5 text-gray-400 dark:text-gray-500" />
+              <div>
+                <div className="text-sm text-gray-600 dark:text-gray-300">Choose a token</div>
+                <div className="font-medium text-gray-500 dark:text-gray-400 text-lg">Select your token</div>
+              </div>
             </div>
           )}
-        </Card>
-      </div>
-
-      {/* Bank Details Section */}
-      <div className="space-y-0 mb-scaled-8 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-600">
-        <div className="flex justify-between items-center py-scaled-3 px-scaled-4 bg-white dark:bg-gray-800">
-          <div className="flex items-center gap-scaled-3">
-            <Building2 className="w-4 h-4 text-gray-500 dark:text-gray-400" />
-            <span className="text-gray-600 dark:text-gray-300 text-scaled-sm">Bank Name</span>
-          </div>
-          <span className="font-medium text-gray-900 dark:text-white text-scaled-sm">Simulator Bank</span>
-        </div>
-        <div className="flex justify-between items-center py-scaled-3 px-scaled-4 bg-gray-50 dark:bg-gray-700">
-          <div className="flex items-center gap-scaled-3">
-            <UserCheck className="w-4 h-4 text-gray-500 dark:text-gray-400" />
-            <span className="text-gray-600 dark:text-gray-300 text-scaled-sm">Beneficiary Name</span>
-          </div>
-          <span className="font-medium text-gray-900 dark:text-white text-scaled-sm">Doe Jane</span>
-        </div>
-        <div className="flex justify-between items-center py-scaled-3 px-scaled-4 bg-white dark:bg-gray-800">
-          <div className="flex items-center gap-scaled-3">
-            <Hash className="w-4 h-4 text-gray-500 dark:text-gray-400" />
-            <span className="text-gray-600 dark:text-gray-300 text-scaled-sm">IBAN / Account</span>
-          </div>
-          <span className="font-medium text-gray-900 dark:text-white text-scaled-sm">GB41SEOU19870010404544</span>
-        </div>
-        <div className="flex justify-between items-center py-scaled-3 px-scaled-4 bg-gray-50 dark:bg-gray-700">
-          <div className="flex items-center gap-scaled-3">
-            <MapPin className="w-4 h-4 text-gray-500 dark:text-gray-400" />
-            <span className="text-gray-600 dark:text-gray-300 text-scaled-sm">Bank address</span>
-          </div>
-          <span className="font-medium text-gray-900 dark:text-white text-scaled-sm text-right">
-            The Bower, 207-211 Old Street, London, England
-          </span>
-        </div>
-        <div className="flex justify-between items-center py-scaled-3 px-scaled-4 bg-white dark:bg-gray-800">
-          <div className="flex items-center gap-scaled-3">
-            <Globe className="w-4 h-4 text-gray-500 dark:text-gray-400" />
-            <span className="text-gray-600 dark:text-gray-300 text-scaled-sm">Bank country</span>
-          </div>
-          <span className="font-medium text-gray-900 dark:text-white text-scaled-sm">Malta</span>
-        </div>
-        <div className="flex justify-between items-center py-scaled-3 px-scaled-4 bg-white dark:bg-gray-800">
-          <div className="flex items-center gap-scaled-3">
-            <Wallet className="w-4 h-4 text-gray-500 dark:text-gray-400" />
-            <span className="text-gray-600 dark:text-gray-300 text-scaled-sm">Wallet Address</span>
-          </div>
-          <span className="font-medium text-gray-900 dark:text-white text-scaled-sm">
-            0x973fF8EcFB22c4Fe69Db152f327587DDfA1B
-          </span>
         </div>
       </div>
 
-      {/* Simulate Deposit Button */}
-      <CustomButton variant="primary" size="lg" fullWidth className="text-scaled-base">
-        Simulate Deposit
+      {/* You Will Get Section */}
+      <div className="mb-8">
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center">
+            <span className="text-green-600 dark:text-green-400 text-lg font-bold">→</span>
+          </div>
+          <div>
+            <div className="text-sm text-gray-600 dark:text-gray-300">You will get</div>
+            <div className="font-semibold text-gray-900 dark:text-white text-lg">
+              {selectedToken ? `${depositAmount || '0.00'} ${selectedToken.symbol}` : 'Select token first'}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Bank Account Details */}
+      <div className="space-y-0 mb-8 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-600">
+        <div className="flex justify-between items-center py-3 px-4 bg-white dark:bg-gray-800">
+          <div className="flex items-center gap-3">
+            <div className="w-6 h-6 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center">
+              <CreditCard className="w-3 h-3 text-blue-600 dark:text-blue-400" />
+            </div>
+            <span className="text-gray-600 dark:text-gray-300 text-sm">Bank Name</span>
+          </div>
+          <span className="font-medium text-gray-900 dark:text-white text-sm">Simulator Bank</span>
+        </div>
+        <div className="flex justify-between items-center py-3 px-4 bg-gray-50 dark:bg-gray-700">
+          <div className="flex items-center gap-3">
+            <div className="w-6 h-6 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center">
+              <User className="w-3 h-3 text-green-600 dark:text-green-400" />
+            </div>
+            <span className="text-gray-600 dark:text-gray-300 text-sm">Beneficiary Name</span>
+          </div>
+          <span className="font-medium text-gray-900 dark:text-white text-sm">Doe Jane</span>
+        </div>
+        <div className="flex justify-between items-center py-3 px-4 bg-white dark:bg-gray-800">
+          <div className="flex items-center gap-3">
+            <div className="w-6 h-6 bg-purple-100 dark:bg-purple-900 rounded-full flex items-center justify-center">
+              <Hash className="w-3 h-3 text-purple-600 dark:text-purple-400" />
+            </div>
+            <span className="text-gray-600 dark:text-gray-300 text-sm">IBAN / Account</span>
+          </div>
+          <span className="font-medium text-gray-900 dark:text-white text-sm">GB41SEOU19870010404544</span>
+        </div>
+        <div className="flex justify-between items-center py-3 px-4 bg-gray-50 dark:bg-gray-700">
+          <div className="flex items-center gap-3">
+            <div className="w-6 h-6 bg-orange-100 dark:bg-orange-900 rounded-full flex items-center justify-center">
+              <MapPin className="w-3 h-3 text-orange-600 dark:text-orange-400" />
+            </div>
+            <span className="text-gray-600 dark:text-gray-300 text-sm">Bank address</span>
+          </div>
+          <span className="font-medium text-gray-900 dark:text-white text-sm text-right">
+            Malta
+          </span>
+        </div>
+        <div className="flex justify-between items-center py-3 px-4 bg-white dark:bg-gray-800">
+          <div className="flex items-center gap-3">
+            <div className="w-6 h-6 bg-red-100 dark:bg-red-900 rounded-full flex items-center justify-center">
+              <Globe className="w-3 h-3 text-red-600 dark:text-red-400" />
+            </div>
+            <span className="text-gray-600 dark:text-gray-300 text-sm">Bank country</span>
+          </div>
+          <span className="font-medium text-gray-900 dark:text-white text-sm">Malta</span>
+        </div>
+        <div className="flex justify-between items-center py-3 px-4 bg-gray-50 dark:bg-gray-700">
+          <div className="flex items-center gap-3">
+            <div className="w-6 h-6 bg-indigo-100 dark:bg-indigo-900 rounded-full flex items-center justify-center">
+              <Wallet className="w-3 h-3 text-indigo-600 dark:text-indigo-400" />
+            </div>
+            <span className="text-gray-600 dark:text-gray-300 text-sm">Wallet Address</span>
+          </div>
+          <span className="font-medium text-gray-900 dark:text-white text-sm">
+            0x742d35...a3b4
+          </span>
+        </div>
+      </div>
+
+      {/* Deposit Button */}
+      <CustomButton variant="primary" size="lg" fullWidth className="text-base">
+        Deposit {selectedCurrency.symbol}{depositAmount || '0.00'}
       </CustomButton>
 
       {/* Token Selection Dialog */}
       {showTokenDialog && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-gray-800 rounded-2xl p-scaled-6 w-96 max-w-sm mx-4 max-h-96 overflow-y-auto">
-            <div className="flex items-center justify-between mb-scaled-4">
-              <h3 className="text-scaled-lg font-semibold text-gray-900 dark:text-white">Select Token</h3>
+          <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 w-96 max-w-sm mx-4 max-h-96 overflow-y-auto">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Select Token</h3>
               <button
                 onClick={() => setShowTokenDialog(false)}
                 className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"

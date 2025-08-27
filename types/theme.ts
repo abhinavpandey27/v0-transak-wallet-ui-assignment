@@ -6,22 +6,9 @@ export interface TypographyConfig {
   bodyWeight: "light" | "normal" | "medium"
 }
 
-export interface ScalingConfig {
-  level: "compact" | "normal" | "comfortable" | "large"
-  customScale?: number
-}
-
-export interface BrandConfig {
-  primaryColor: string
-  autoGenerateSecondary: boolean
-  customSecondary?: string
-}
-
 export interface ThemeConfig {
-  mode: "light" | "dark" | "system"
+  mode: "light" | "dark"
   typography: TypographyConfig
-  scaling: ScalingConfig
-  brand: BrandConfig
 }
 
 export interface GoogleFont {

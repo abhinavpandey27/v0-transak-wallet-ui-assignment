@@ -3,8 +3,8 @@
 import { useState, useEffect } from "react"
 import type React from "react"
 import { Home, User, CreditCard, Shield, MoreHorizontal, LogOut } from "lucide-react"
-import { useTheme } from "next-themes"
 import { useAuth } from "@/contexts/AuthContext"
+import { useSimpleTheme } from "@/contexts/SimpleThemeContext"
 import { SettingsDialog } from "@/components/theme/SettingsDialog"
 
 import WalletScreen from "@/components/screens/WalletScreen"
@@ -26,7 +26,7 @@ import type { Currency, Token, ProfileData } from "@/types"
 
 export default function WalletDashboard() {
   const [activeTab, setActiveTab] = useState("fiat")
-  const { theme, setTheme, systemTheme, resolvedTheme } = useTheme()
+  const { theme } = useSimpleTheme()
   const { logout } = useAuth()
   const [mounted, setMounted] = useState(false)
   const [currentScreen, setCurrentScreen] = useState("wallet")
@@ -97,16 +97,17 @@ export default function WalletDashboard() {
     }
   }, [isResizing])
 
+  // Initialize on mount
   useEffect(() => {
     setMounted(true)
   }, [])
 
   useEffect(() => {
     if (mounted) {
-      console.log("[v0] Theme state:", { theme, systemTheme, resolvedTheme })
+      console.log("[v0] Theme state:", { theme })
       console.log("[v0] Document class list:", document.documentElement.classList.toString())
     }
-  }, [theme, systemTheme, resolvedTheme, mounted])
+  }, [theme, mounted])
 
   const getScreenTitle = () => {
     switch (currentScreen) {
@@ -125,18 +126,7 @@ export default function WalletDashboard() {
     }
   }
 
-  const currentTheme = theme === "system" ? systemTheme || "light" : theme || "light"
-
-  const handleThemeChange = (newTheme: string) => {
-    console.log("[v0] Changing theme from", theme, "to", newTheme)
-    setTheme(newTheme)
-
-    setTimeout(() => {
-      console.log("[v0] After theme change - Document classes:", document.documentElement.classList.toString())
-      console.log("[v0] After theme change - Theme state:", { theme: newTheme, resolvedTheme })
-      console.log("[v0] After theme change - Body background:", window.getComputedStyle(document.body).backgroundColor)
-    }, 100)
-  }
+  const currentTheme = theme || "light"
 
   // Don't render until mounted to avoid hydration mismatch
   if (!mounted) {

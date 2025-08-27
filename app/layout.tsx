@@ -10,8 +10,8 @@ import {
   Be_Vietnam_Pro,
 } from "next/font/google"
 import "./globals.css"
-import { ThemeProvider } from "@/components/theme/ThemeProvider"
 import { AuthProvider } from "@/contexts/AuthContext"
+import { SimpleThemeProvider } from "@/contexts/SimpleThemeContext"
 
 const instrumentSans = Instrument_Sans({
   subsets: ["latin"],
@@ -80,19 +80,12 @@ export default function RootLayout({
 
   return (
     <html lang="en" className={fontVariables}>
-      <head>
-        <style>{`
-html {
-  font-family: ${instrumentSans.style.fontFamily};
-  --font-sans: ${instrumentSans.style.fontFamily};
-  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-}
-        `}</style>
-      </head>
       <body>
-        <AuthProvider>
-          <ThemeProvider>{children}</ThemeProvider>
-        </AuthProvider>
+        <SimpleThemeProvider>
+          <AuthProvider>
+            {children}
+          </AuthProvider>
+        </SimpleThemeProvider>
       </body>
     </html>
   )

@@ -26,7 +26,7 @@ import type { Currency, Token, ProfileData } from "@/types"
 
 export default function WalletDashboard() {
   const [activeTab, setActiveTab] = useState("fiat")
-  const { theme } = useSimpleTheme()
+  const { theme, setTheme } = useSimpleTheme()
   const { logout } = useAuth()
   const [mounted, setMounted] = useState(false)
   const [currentScreen, setCurrentScreen] = useState("wallet")
@@ -144,7 +144,7 @@ export default function WalletDashboard() {
         <div className="p-6 border-gray-200 dark:border-gray-700 flex-shrink-0 border-b-0">
           <div className="flex items-center gap-2">
             <img src="/transak-logo.svg" alt="Transak" className="w-content h-10" />
-            
+
             <button
               onClick={() => setShowSettingsDialog(true)}
               className="w-4 h-4 text-gray-400 dark:text-gray-500 ml-auto hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
@@ -214,14 +214,23 @@ export default function WalletDashboard() {
 
         {/* Footer */}
         <div className="px-4 flex-shrink-0 pb-4">
-          <div className="flex flex-col gap-2 text-xs text-gray-500 dark:text-gray-400">
-            <span>Powered by Transak</span>
-            <div className="flex items-center gap-3">
-              <button className="hover:text-gray-700 dark:hover:text-gray-300 transition-colors">Developer</button>
-              <span className="text-gray-300 dark:text-gray-600">|</span>
-              <button className="hover:text-gray-700 dark:hover:text-gray-300 transition-colors">Terms</button>
-              <span className="text-gray-300 dark:text-gray-600">|</span>
-              <button className="hover:text-gray-700 dark:hover:text-gray-300 transition-colors">Privacy Policy</button>
+          <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-2 text-xs text-gray-500 dark:text-gray-400">
+              <div className="flex items-center justify-between">
+                <span>Powered by</span>
+                <span className="font-medium">Transak</span>
+              </div>
+              <div className="flex items-center justify-center gap-4 pt-2 border-t border-gray-200 dark:border-gray-700">
+                <a href="#" className="hover:text-gray-700 dark:hover:text-gray-300 transition-colors">
+                  Developers
+                </a>
+                <a href="#" className="hover:text-gray-700 dark:hover:text-gray-300 transition-colors">
+                  Privacy
+                </a>
+                <a href="#" className="hover:text-gray-700 dark:hover:text-gray-300 transition-colors">
+                  Terms
+                </a>
+              </div>
             </div>
           </div>
         </div>

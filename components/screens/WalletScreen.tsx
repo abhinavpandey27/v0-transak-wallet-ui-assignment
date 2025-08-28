@@ -48,22 +48,26 @@ export default function WalletScreen({
 
   return (
     <div className="w-full">
-      {/* Enhanced Balance Overview */}
-      <Card className="p-6 mb-8 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
-        <div className="flex justify-between items-center">
-          <div>
-            <p className="text-gray-600 dark:text-gray-300 text-sm mb-1">Your Total Balance</p>
-            <h2 className="text-3xl text-gray-900 dark:text-white font-semibold">$1435.20</h2>
-          </div>
-          <div className="text-right">
-            <p className="text-gray-600 dark:text-gray-300 text-sm mb-1">Change in 6 Months</p>
-            <p className="text-green-600 dark:text-green-400 text-lg font-semibold">+32%</p>
-          </div>
+      {/* Enhanced Balance Overview - Narrow, Centered */}
+      <div className="flex justify-center">
+        <div className="max-w-[640px] w-full">
+          <Card className="p-6 mb-8 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+            <div className="flex justify-between items-center">
+              <div>
+                <p className="text-gray-600 dark:text-gray-300 text-sm mb-1">Your Total Balance</p>
+                <h2 className="text-3xl text-gray-900 dark:text-white font-semibold">$1435.20</h2>
+              </div>
+              <div className="text-right">
+                <p className="text-gray-600 dark:text-gray-300 text-sm mb-1">Change in 6 Months</p>
+                <p className="text-green-600 dark:text-green-400 text-lg font-semibold">+32%</p>
+              </div>
+            </div>
+          </Card>
         </div>
-      </Card>
+      </div>
 
-      {/* Balance Chart */}
-      <Card className="p-6 mb-8 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+      {/* Balance Chart - Full Width */}
+      <Card className="p-6 mb-8 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 mx-4">
         <div className="mb-4">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
             Balance History
@@ -125,49 +129,61 @@ export default function WalletScreen({
         </div>
       </Card>
 
-      {/* Action Buttons */}
-      <div className="flex gap-4 mb-8">
-        <CustomButton variant="primary" size="lg" onClick={onNavigateToDeposit} className="flex-1">
-          <Download className="w-5 h-5" />
-          Deposit
-        </CustomButton>
-        <CustomButton variant="primary" size="lg" onClick={onNavigateToWithdraw} className="flex-1">
-          <Upload className="w-5 h-5" />
-          Withdraw
-        </CustomButton>
-      </div>
-
-      {/* Tabs and Filters */}
-      <div className="flex items-center justify-between mb-6">
-        <div className="relative bg-gray-100 dark:bg-gray-700 p-1 flex rounded-full">
-          <CustomButton
-            variant="ghost"
-            size="sm"
-            onClick={() => setActiveTab("fiat")}
-            className={`rounded-full text-sm ${activeTab === "fiat" ? "bg-white dark:bg-gray-600 text-gray-900 dark:text-white shadow-sm" : "text-gray-600 dark:text-gray-300"}`}
-          >
-            Fiat Account
-          </CustomButton>
-          <CustomButton
-            variant="ghost"
-            size="sm"
-            onClick={() => setActiveTab("crypto")}
-            className={`rounded-full text-sm ${activeTab === "crypto" ? "bg-white dark:bg-gray-600 text-gray-900 dark:text-white shadow-sm" : "text-gray-600 dark:text-gray-300"}`}
-          >
-            Crypto Wallet
-          </CustomButton>
+      {/* Action Buttons - Narrow, Centered */}
+      <div className="flex justify-center">
+        <div className="max-w-[640px] w-full">
+          <div className="flex gap-4 mb-8">
+            <CustomButton variant="primary" size="lg" onClick={onNavigateToDeposit} className="flex-1">
+              <Download className="w-5 h-5" />
+              Deposit
+            </CustomButton>
+            <CustomButton variant="primary" size="lg" onClick={onNavigateToWithdraw} className="flex-1">
+              <Upload className="w-5 h-5" />
+              Withdraw
+            </CustomButton>
+          </div>
         </div>
-        <CustomButton variant="outline" size="sm" className="text-sm">
-          <Filter className="w-4 h-4" />
-          Filters
-        </CustomButton>
       </div>
 
-      {/* Transactions List */}
-      <div className="transition-opacity duration-200 ease-in-out">
-        {(activeTab === "fiat" ? transactions : cryptoTransactions).map((transaction) => (
-          <TransactionItem key={transaction.id} transaction={transaction} />
-        ))}
+      {/* Tabs and Filters - Narrow, Centered */}
+      <div className="flex justify-center">
+        <div className="max-w-[640px] w-full">
+          <div className="flex items-center justify-between mb-6">
+            <div className="relative bg-gray-100 dark:bg-gray-700 p-1 flex rounded-full">
+              <CustomButton
+                variant="ghost"
+                size="sm"
+                onClick={() => setActiveTab("fiat")}
+                className={`rounded-full text-sm ${activeTab === "fiat" ? "bg-white dark:bg-gray-600 text-gray-900 dark:text-white shadow-sm" : "text-gray-600 dark:text-gray-300"}`}
+              >
+                Fiat Account
+              </CustomButton>
+              <CustomButton
+                variant="ghost"
+                size="sm"
+                onClick={() => setActiveTab("crypto")}
+                className={`rounded-full text-sm ${activeTab === "crypto" ? "bg-white dark:bg-gray-600 text-gray-900 dark:text-white shadow-sm" : "text-gray-600 dark:text-gray-300"}`}
+              >
+                Crypto Wallet
+              </CustomButton>
+            </div>
+            <CustomButton variant="outline" size="sm" className="text-sm">
+              <Filter className="w-4 h-4" />
+              Filters
+            </CustomButton>
+          </div>
+        </div>
+      </div>
+
+      {/* Transactions List - Narrow, Centered */}
+      <div className="flex justify-center">
+        <div className="max-w-[640px] w-full">
+          <div className="transition-opacity duration-200 ease-in-out">
+            {(activeTab === "fiat" ? transactions : cryptoTransactions).map((transaction) => (
+              <TransactionItem key={transaction.id} transaction={transaction} />
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   )

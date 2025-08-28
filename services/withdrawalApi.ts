@@ -141,7 +141,7 @@ export const withdrawalApi = {
     // Simulate network delay
     await new Promise((resolve) => setTimeout(resolve, 800 + Math.random() * 800))
 
-    if (Math.random() < 0.005) {
+    if (Math.random() < 0.0001) {
       throw new WithdrawalApiError("Status check service unavailable", "STATUS_SERVICE_ERROR", 503)
     }
 

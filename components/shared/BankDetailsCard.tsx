@@ -136,7 +136,7 @@ export default function BankDetailsCard({ bankDetails, showCopyButtons = true, c
             <div
               key={row.key}
               className={`flex justify-between items-center py-4 px-4 ${
-                isEven ? "bg-gray-50 dark:bg-gray-750" : "bg-white dark:bg-gray-800"
+                isEven ? "bg-gray-50 dark:bg-gray-700" : "bg-white dark:bg-gray-800"
               }`}
             >
               <div className="flex items-center gap-3 flex-shrink-0">

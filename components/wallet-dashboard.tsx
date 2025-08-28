@@ -236,14 +236,10 @@ export default function WalletDashboard() {
       {/* Right Pane */}
       <div className="flex-1 flex flex-col bg-white dark:bg-gray-800">
         {/* Page Header Section */}
-        <div className="flex justify-center border-b border-gray-200 dark:border-gray-700 py-6">
-          <div className="max-w-[640px] w-full text-center">
-            <h1 className="font-semibold text-gray-900 dark:text-white text-xl">{getScreenTitle()}</h1>
-          </div>
-        </div>
+        
 
         {/* Main Content */}
-        <div className="flex-1 p-8 flex justify-center overflow-y-auto pb-72 h-full">
+        <div className="flex-1 p-8 flex justify-center overflow-y-auto pb-72 h-full pt-8 pl-0 pr-0">
           {currentScreen === "wallet" && (
             <WalletScreen
               activeTab={activeTab}

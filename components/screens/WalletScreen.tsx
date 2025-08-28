@@ -58,7 +58,7 @@ export default function WalletScreen({
                 <h2 className="text-3xl text-gray-900 dark:text-white font-semibold">$1435.20</h2>
               </div>
               <div className="text-right">
-                <p className="text-gray-600 dark:text-gray-300 text-sm mb-1">Change in 6 Months</p>
+                <p className="text-gray-600 dark:text-gray-300 text-sm mb-1">% Change in 6M</p>
                 <p className="text-green-600 dark:text-green-400 text-lg font-semibold">+32%</p>
               </div>
             </div>
@@ -69,12 +69,8 @@ export default function WalletScreen({
       {/* Balance Chart - Full Width */}
       <Card className="p-6 mb-8 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 mx-4">
         <div className="mb-4">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-            Balance History
-          </h3>
-          <p className="text-sm text-gray-600 dark:text-gray-400">
-            Your balance over the last 6 months
-          </p>
+          
+          
         </div>
         <div className="h-48">
           <ResponsiveContainer width="100%" height="100%">

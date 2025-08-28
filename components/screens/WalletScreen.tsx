@@ -36,31 +36,29 @@ export default function WalletScreen({
   onNavigateToDeposit,
   onNavigateToWithdraw,
 }: WalletScreenProps) {
-  // Dummy data for the balance chart
+  // Dummy data for the balance chart - 6 months
   const chartData = [
-    { day: "Mon", balance: 1200 },
-    { day: "Tue", balance: 1350 },
-    { day: "Wed", balance: 1280 },
-    { day: "Thu", balance: 1420 },
-    { day: "Fri", balance: 1380 },
-    { day: "Sat", balance: 1450 },
-    { day: "Sun", balance: 1435.20 },
+    { month: "Jul", balance: 980 },
+    { month: "Aug", balance: 1120 },
+    { month: "Sep", balance: 1080 },
+    { month: "Oct", balance: 1250 },
+    { month: "Nov", balance: 1380 },
+    { month: "Dec", balance: 1435.20 },
   ]
 
   return (
-    <div className="max-w-[640px] w-full">
-      {/* Balance Card */}
-      <Card className="p-8 mb-8 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700 border-0 shadow-none px-6 py-6">
-        <div className="text-center">
-          <p className="text-gray-600 dark:text-gray-300 mb-2 text-left font-sans text-base">
-            Your Total Balance
-          </p>
-          <h2 className="text-4xl text-gray-900 dark:text-white mb-4 text-left font-semibold">
-            $1435.20
-          </h2>
-          <p className="mx-auto text-left text-sm text-slate-500 dark:text-slate-400">
-            Your Virtual Account is active to perform fiat and crypto transactions
-          </p>
+    <div className="w-full">
+      {/* Enhanced Balance Overview */}
+      <Card className="p-6 mb-8 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+        <div className="flex justify-between items-center">
+          <div>
+            <p className="text-gray-600 dark:text-gray-300 text-sm mb-1">Your Total Balance</p>
+            <h2 className="text-3xl text-gray-900 dark:text-white font-semibold">$1435.20</h2>
+          </div>
+          <div className="text-right">
+            <p className="text-gray-600 dark:text-gray-300 text-sm mb-1">Change in 6 Months</p>
+            <p className="text-green-600 dark:text-green-400 text-lg font-semibold">+32%</p>
+          </div>
         </div>
       </Card>
 
@@ -71,7 +69,7 @@ export default function WalletScreen({
             Balance History
           </h3>
           <p className="text-sm text-gray-600 dark:text-gray-400">
-            Your balance over the last 7 days
+            Your balance over the last 6 months
           </p>
         </div>
         <div className="h-48">
@@ -83,7 +81,7 @@ export default function WalletScreen({
                 vertical={false}
               />
               <XAxis 
-                dataKey="day" 
+                dataKey="month" 
                 stroke="#6b7280"
                 fontSize={12}
                 tickLine={false}

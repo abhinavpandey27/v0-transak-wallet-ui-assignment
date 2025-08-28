@@ -16,28 +16,25 @@ interface EnterAmountScreenProps {
   quoteHook: any
 }
 
-const currencyFlags: Record<string, string> = {
-  USD: "🇺🇸",
-  EUR: "🇪🇺",
-  GBP: "🇬🇧",
-  INR: "🇮🇳",
-  CAD: "🇨🇦",
-  AUD: "🇦🇺",
-  JPY: "🇯🇵",
-  CHF: "🇨🇭",
-  CNY: "🇨🇳",
-  KRW: "🇰🇷",
+const getCurrencyFlag = (currencyCode: string): string => {
+  const flagMap: Record<string, string> = {
+    USD: "us",
+    EUR: "eu",
+    GBP: "gb",
+    INR: "in",
+    CAD: "ca",
+    AUD: "au",
+    JPY: "jp",
+    CHF: "ch",
+    CNY: "cn",
+    KRW: "kr",
+  }
+  const countryCode = flagMap[currencyCode] || "us"
+  return `https://flagcdn.com/24x18/${countryCode}.png`
 }
 
-const tokenIcons: Record<string, string> = {
-  ETH: "Ⓔ",
-  BTC: "₿",
-  USDT: "₮",
-  USDC: "Ⓤ",
-  DAI: "◈",
-  MATIC: "⬟",
-  BNB: "◆",
-  ADA: "₳",
+const getTokenIcon = (tokenSymbol: string): string => {
+  return `https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/128/color/${tokenSymbol.toLowerCase()}.png`
 }
 
 export default function EnterAmountScreen({
@@ -53,6 +50,7 @@ export default function EnterAmountScreen({
   const [showCurrencyDialog, setShowCurrencyDialog] = useState(false)
   const [showTokenDialog, setShowTokenDialog] = useState(false)
   const [isEmptyState, setIsEmptyState] = useState(true)
+  const [validationError, setValidationError] = useState<string | null>(null)
 
   const sampleAmount = "25"
 
@@ -107,6 +105,16 @@ export default function EnterAmountScreen({
         if (isEmptyState && value) {
           setIsEmptyState(false)
         }
+
+        const amountNum = Number.parseFloat(value)
+        if (value && amountNum < 10) {
+          setValidationError("Minimum amount is $10")
+        } else if (value && amountNum > 10000) {
+          setValidationError("Maximum amount is $10,000")
+        } else {
+          setValidationError(null)
+        }
+
         updateFlowState({ amount: value })
       }
     },
@@ -147,9 +155,14 @@ export default function EnterAmountScreen({
     <div className="py-8">
       {/* Row 1 */}
       <div className="bg-gray-50 dark:bg-gray-800 rounded-2xl p-6 relative mb-[-0.75rem]">
-        {/* -my-3 equivalent */}
-        <div className="text-left mb-6">
-          <p className="text-sm text-gray-600 dark:text-gray-400 font-medium">Enter the Fiat Amount</p>
+        <div className="text-left mb-4">
+          <p
+            className={`text-sm font-medium ${
+              validationError ? "text-red-600 dark:text-red-400" : "text-gray-600 dark:text-gray-400"
+            }`}
+          >
+            {validationError || "Enter the Fiat Amount"}
+          </p>
         </div>
 
         <div className="flex items-center justify-between">
@@ -160,8 +173,12 @@ export default function EnterAmountScreen({
               onChange={(e) => handleAmountChange(e.target.value)}
               onFocus={handleInputFocus}
               placeholder={sampleAmount}
-              className={`text-4xl font-bold bg-transparent border-none outline-none tabular-nums ${
-                isEmptyState ? "text-gray-400 dark:text-gray-500" : "text-gray-900 dark:text-white"
+              className={`text-4xl bg-transparent border-none outline-none tabular-nums font-sans font-semibold tracking-wide ${
+                isEmptyState
+                  ? "text-gray-400 dark:text-gray-500"
+                  : validationError
+                    ? "text-red-600 dark:text-red-400"
+                    : "text-gray-900 dark:text-white"
               }`}
               style={{ width: `${Math.max((getDisplayAmount() || "").length || 2, 2)}ch` }}
               inputMode="decimal"
@@ -176,7 +193,17 @@ export default function EnterAmountScreen({
               isLoading ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-300 dark:hover:bg-gray-600"
             }`}
           >
-            <span className="text-lg">{currencyFlags[flowState.currency?.code] || "🌍"}</span>
+            <img
+              src={getCurrencyFlag(flowState.currency?.code || "USD")}
+              alt={`${flowState.currency?.code || "USD"} flag`}
+              className="w-6 h-4 rounded-sm object-cover"
+              onError={(e) => {
+                // Fallback to emoji if image fails to load
+                e.currentTarget.style.display = "none"
+                e.currentTarget.nextElementSibling!.textContent = "🌍"
+              }}
+            />
+            <span className="hidden">🌍</span>
             <span>{flowState.currency?.code || "USD"}</span>
             <ChevronDown className="w-4 h-4" />
           </button>
@@ -192,14 +219,14 @@ export default function EnterAmountScreen({
 
       {/* Row 2 */}
       <div className="bg-gray-50 dark:bg-gray-800 rounded-2xl p-6 mb-8">
-        <div className="text-left mb-6">
+        <div className="text-left mb-4">
           <p className="text-sm text-gray-600 dark:text-gray-400 font-medium">You will receive</p>
         </div>
 
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <span
-              className={`text-4xl font-bold tabular-nums ${
+              className={`text-4xl tabular-nums font-semibold tracking-wide ${
                 isEmptyState ? "text-gray-400 dark:text-gray-500" : "text-gray-900 dark:text-white"
               }`}
             >
@@ -214,7 +241,17 @@ export default function EnterAmountScreen({
               isLoading ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-300 dark:hover:bg-gray-600"
             }`}
           >
-            <span className="text-lg">{tokenIcons[flowState.token?.symbol] || "◯"}</span>
+            <img
+              src={getTokenIcon(flowState.token?.symbol || "ETH")}
+              alt={`${flowState.token?.symbol || "ETH"} icon`}
+              className="w-6 h-6 rounded-full object-cover"
+              onError={(e) => {
+                // Fallback to text symbol if image fails to load
+                e.currentTarget.style.display = "none"
+                e.currentTarget.nextElementSibling!.textContent = "◯"
+              }}
+            />
+            <span className="hidden text-lg">◯</span>
             <span>{flowState.token?.symbol || "ETH"}</span>
             <ChevronDown className="w-4 h-4" />
           </button>
@@ -228,7 +265,7 @@ export default function EnterAmountScreen({
           size="lg"
           fullWidth
           onClick={onNext}
-          disabled={!canProceed || isLoading || isEmptyState || !flowState.amount}
+          disabled={!canProceed || isLoading || isEmptyState || !flowState.amount || !!validationError}
           className="text-base"
         >
           {isLoading ? (
@@ -244,11 +281,11 @@ export default function EnterAmountScreen({
 
       {/* Info */}
       <div className="bg-gray-100 dark:bg-gray-800 rounded-xl p-4 flex items-start gap-3">
-        <div className="w-5 h-5 bg-gray-400 dark:bg-gray-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+        <div className="w-5 h-5 bg-blue-500 dark:bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
           <span className="text-white text-xs font-bold">i</span>
         </div>
         <p className="text-sm text-gray-600 dark:text-gray-400">
-          You will have to deposit the said amount in Transak's bank account
+          Deposit this amount to Transak's secure bank account and receive your selected tokens directly in your wallet.
         </p>
       </div>
 
@@ -271,7 +308,16 @@ export default function EnterAmountScreen({
                   }}
                   className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
                 >
-                  <span className="text-xl">{currencyFlags[currency.code] || "🌍"}</span>
+                  <img
+                    src={getCurrencyFlag(currency.code) || "/placeholder.svg"}
+                    alt={`${currency.code} flag`}
+                    className="w-8 h-6 rounded-sm object-cover"
+                    onError={(e) => {
+                      e.currentTarget.style.display = "none"
+                      e.currentTarget.nextElementSibling!.textContent = "🌍"
+                    }}
+                  />
+                  <span className="hidden text-xl">🌍</span>
                   <span className="font-medium">{currency.code}</span>
                   <span className="text-sm text-gray-500">{currency.name}</span>
                 </button>
@@ -300,7 +346,16 @@ export default function EnterAmountScreen({
                   }}
                   className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
                 >
-                  <span className="text-xl">{tokenIcons[token.symbol] || "◯"}</span>
+                  <img
+                    src={getTokenIcon(token.symbol) || "/placeholder.svg"}
+                    alt={`${token.symbol} icon`}
+                    className="w-8 h-8 rounded-full object-cover"
+                    onError={(e) => {
+                      e.currentTarget.style.display = "none"
+                      e.currentTarget.nextElementSibling!.textContent = "◯"
+                    }}
+                  />
+                  <span className="hidden text-xl">◯</span>
                   <span className="font-medium">{token.symbol}</span>
                   <span className="text-sm text-gray-500">{token.name}</span>
                 </button>

@@ -336,25 +336,6 @@ export default function DepositFlow({ onComplete }: { onComplete: () => void }) 
       {/* Main Content */}
       <div className="flex-1 flex justify-center p-4">
         <div className="w-full max-w-md">
-          {flowState.error && (
-            <div className="mb-4 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl">
-              <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <p className="text-sm text-red-600 dark:text-red-400 mb-2">{flowState.error.message}</p>
-                  {flowState.error.type === "api" && (
-                    <button
-                      onClick={retryCurrentOperation}
-                      disabled={flowState.isLoading}
-                      className="text-sm text-red-700 dark:text-red-300 underline hover:no-underline disabled:opacity-50"
-                    >
-                      {flowState.isLoading ? "Retrying..." : "Try Again"}
-                    </button>
-                  )}
-                </div>
-              </div>
-            </div>
-          )}
-
           {flowState.step === "amount" && (
             <EnterAmountScreen
               flowState={flowState}

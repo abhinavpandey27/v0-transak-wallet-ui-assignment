@@ -189,8 +189,7 @@ export const withdrawalApi = {
     // Simulate network delay
     await new Promise((resolve) => setTimeout(resolve, 400 + Math.random() * 300))
 
-    // Simulate occasional API errors
-    if (Math.random() < 0.03) {
+    if (Math.random() < 0.003) {
       throw new WithdrawalApiError("Bank accounts service unavailable", "BANK_ACCOUNTS_ERROR", 503)
     }
 

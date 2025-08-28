@@ -3,7 +3,6 @@
 import { useState, useCallback, useMemo, useEffect } from "react"
 import { ArrowLeft } from "lucide-react"
 import TokenSelectionScreen from "./screens/TokenSelectionScreen"
-import WithdrawalBankDetailsScreen from "./screens/WithdrawalBankDetailsScreen"
 import WithdrawalQRScreen from "./screens/WithdrawalQRScreen"
 import WithdrawalSuccessScreen from "./screens/WithdrawalSuccessScreen"
 import { useWithdrawalFlow } from "@/hooks/useWithdrawalApi"
@@ -23,7 +22,8 @@ export interface Currency {
   flag: string
 }
 
-export interface BankDetails {
+export interface BankAccount {
+  id: string
   bankName: string
   beneficiaryName: string
   iban: string
@@ -33,10 +33,10 @@ export interface BankDetails {
 }
 
 export interface WithdrawalState {
-  step: "token-selection" | "bank-details" | "qr-send" | "success"
+  step: "token-selection" | "qr-send" | "success"
   selectedToken: Token | null
   selectedCurrency: Currency | null
-  bankDetails: BankDetails | null
+  bankAccount: BankAccount | null
   walletAddress: string
   transactionId: string
   amount: string
@@ -53,7 +53,7 @@ const INITIAL_STATE: WithdrawalState = {
   step: "token-selection",
   selectedToken: null,
   selectedCurrency: null,
-  bankDetails: null,
+  bankAccount: null,
   walletAddress: "",
   transactionId: "",
   amount: "",
@@ -74,6 +74,28 @@ export default function WithdrawalFlow({ onBack, onComplete }: WithdrawalFlowPro
     currencies.fetchCurrencies()
     bankAccounts.fetchBankAccounts()
   }, [])
+
+  useEffect(() => {
+    if (
+      state.selectedToken &&
+      state.selectedCurrency &&
+      !state.bankAccount &&
+      bankAccounts.data &&
+      bankAccounts.data.length > 0
+    ) {
+      console.log("[v0] Auto-populating bank account:", bankAccounts.data[0])
+      updateState({
+        bankAccount: bankAccounts.data[0],
+        isLoading: false,
+      })
+    }
+  }, [state.selectedToken, state.selectedCurrency, state.bankAccount, bankAccounts.data, updateState])
+
+  useEffect(() => {
+    if (state.selectedToken && state.selectedCurrency && !state.bankAccount && bankAccounts.loading) {
+      updateState({ isLoading: true })
+    }
+  }, [state.selectedToken, state.selectedCurrency, state.bankAccount, bankAccounts.loading, updateState])
 
   useEffect(() => {
     if (state.step === "qr-send" && state.selectedToken && state.selectedCurrency && !state.walletAddress) {
@@ -127,20 +149,7 @@ export default function WithdrawalFlow({ onBack, onComplete }: WithdrawalFlowPro
   const goToNextStep = useCallback(() => {
     switch (state.step) {
       case "token-selection":
-        if (state.selectedToken && state.selectedCurrency) {
-          const mockBankDetails: BankDetails = {
-            bankName: "Simulator Bank",
-            beneficiaryName: "Doe Jane",
-            iban: "GB41SEOU19870010404544",
-            bankAddress: "The Bower, 207-211 Old Street, London, England",
-            bankCountry: "Malta",
-            walletAddress: "0x973fF8EcFB22c4Fe69Db152f327587DDfAfB",
-          }
-          updateState({ step: "bank-details", bankDetails: mockBankDetails })
-        }
-        break
-      case "bank-details":
-        if (state.bankDetails) {
+        if (state.selectedToken && state.selectedCurrency && state.bankAccount) {
           updateState({ step: "qr-send" })
         }
         break
@@ -151,17 +160,14 @@ export default function WithdrawalFlow({ onBack, onComplete }: WithdrawalFlowPro
         onComplete()
         break
     }
-  }, [state.step, state.selectedToken, state.selectedCurrency, state.bankDetails, updateState, onComplete])
+  }, [state.step, state.selectedToken, state.selectedCurrency, state.bankAccount, updateState, onComplete])
 
   const goToPreviousStep = useCallback(() => {
     switch (state.step) {
-      case "bank-details":
-        updateState({ step: "token-selection" })
-        break
       case "qr-send":
         status.stopPolling()
         updateState({
-          step: "bank-details",
+          step: "token-selection",
           walletAddress: "",
           transactionId: "",
         })
@@ -185,10 +191,19 @@ export default function WithdrawalFlow({ onBack, onComplete }: WithdrawalFlowPro
 
   const handleCurrencySelect = useCallback(
     (currency: Currency) => {
+      console.log("[v0] Currency selected:", currency)
       updateState({ selectedCurrency: currency })
+      if (!bankAccounts.data || bankAccounts.data.length === 0) {
+        bankAccounts.fetchBankAccounts()
+      }
     },
-    [updateState],
+    [updateState, bankAccounts],
   )
+
+  const handleChangeBankAccount = useCallback(() => {
+    console.log("[v0] Change bank account requested")
+    // TODO: Implement bank account selection dialog
+  }, [])
 
   const handleWithdrawalTimeout = useCallback(() => {
     updateState({
@@ -200,8 +215,6 @@ export default function WithdrawalFlow({ onBack, onComplete }: WithdrawalFlowPro
   const screenTitle = useMemo(() => {
     switch (state.step) {
       case "token-selection":
-        return "Withdraw"
-      case "bank-details":
         return "Withdraw"
       case "qr-send":
         return "Withdraw"
@@ -222,23 +235,12 @@ export default function WithdrawalFlow({ onBack, onComplete }: WithdrawalFlowPro
             onTokenSelect={handleTokenSelect}
             onCurrencySelect={handleCurrencySelect}
             onNext={goToNextStep}
+            onChangeBankAccount={handleChangeBankAccount}
             availableTokens={tokens.data || []}
             availableCurrencies={currencies.data || []}
-            isLoading={state.isLoading || tokens.loading || currencies.loading}
-            error={state.error || tokens.error || currencies.error}
-          />
-        )
-      case "bank-details":
-        return (
-          <WithdrawalBankDetailsScreen
-            selectedToken={state.selectedToken!}
-            selectedCurrency={state.selectedCurrency!}
-            bankDetails={state.bankDetails!}
-            onNext={goToNextStep}
-            onChangeBankAccount={() => {
-              /* TODO: Implement bank account change */
-            }}
-            onBack={goToPreviousStep}
+            bankAccount={state.bankAccount}
+            isLoading={state.isLoading || tokens.loading || currencies.loading || bankAccounts.loading}
+            error={state.error || tokens.error || currencies.error || bankAccounts.error}
           />
         )
       case "qr-send":
@@ -256,7 +258,7 @@ export default function WithdrawalFlow({ onBack, onComplete }: WithdrawalFlowPro
           <WithdrawalSuccessScreen
             amount={state.amount}
             currency={state.selectedCurrency!}
-            bankDetails={state.bankDetails!}
+            bankDetails={state.bankAccount!}
             onDone={onComplete}
           />
         )
@@ -266,7 +268,7 @@ export default function WithdrawalFlow({ onBack, onComplete }: WithdrawalFlowPro
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen dark:bg-gray-900 bg-transparent">
       <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
         <div className="max-w-full mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
@@ -283,7 +285,7 @@ export default function WithdrawalFlow({ onBack, onComplete }: WithdrawalFlowPro
         </div>
       </div>
 
-      <div className="max-w-md mx-auto px-4 py-6">{renderCurrentScreen()}</div>
+      <div className="max-w-md mx-auto px-0 py-0">{renderCurrentScreen()}</div>
     </div>
   )
 }

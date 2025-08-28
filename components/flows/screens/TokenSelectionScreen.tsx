@@ -1,9 +1,9 @@
 "use client"
 
 import { useState } from "react"
-import { ChevronRight, X, AlertCircle, Loader2 } from "lucide-react"
+import { ChevronRight, X, AlertCircle, Loader2, Building, User, Hash, MapPin, Globe, Wallet } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import type { Token, Currency } from "../WithdrawalFlow"
+import type { Token, Currency, BankAccount } from "../WithdrawalFlow"
 
 interface TokenSelectionScreenProps {
   selectedToken: Token | null
@@ -11,8 +11,10 @@ interface TokenSelectionScreenProps {
   onTokenSelect: (token: Token) => void
   onCurrencySelect: (currency: Currency) => void
   onNext: () => void
+  onChangeBankAccount?: () => void
   availableTokens?: Token[]
   availableCurrencies?: Currency[]
+  bankAccount?: BankAccount | null
   isLoading: boolean
   error: string | null
 }
@@ -23,24 +25,24 @@ export default function TokenSelectionScreen({
   onTokenSelect,
   onCurrencySelect,
   onNext,
+  onChangeBankAccount,
   availableTokens = [],
   availableCurrencies = [],
+  bankAccount,
   isLoading,
   error,
 }: TokenSelectionScreenProps) {
   const [showTokenDialog, setShowTokenDialog] = useState(false)
   const [showCurrencyDialog, setShowCurrencyDialog] = useState(false)
 
-  const canProceed = selectedToken && selectedCurrency && !isLoading
+  const canProceed = selectedToken && selectedCurrency && bankAccount && !isLoading
+  const showBankDetails = selectedToken && selectedCurrency && bankAccount
 
   const hasTokens = availableTokens.length > 0
   const hasCurrencies = availableCurrencies.length > 0
 
   const handleNext = () => {
-    if (!selectedToken) {
-      return // Validation handled by button state
-    }
-    if (!selectedCurrency) {
+    if (!selectedToken || !selectedCurrency || !bankAccount) {
       return // Validation handled by button state
     }
     onNext()
@@ -48,7 +50,7 @@ export default function TokenSelectionScreen({
 
   return (
     <div className="space-y-6">
-      <div className="bg-white dark:bg-gray-800 rounded-xl p-6">
+      <div className="dark:bg-gray-800 rounded-xl p-6 bg-gray-50">
         <div className="flex items-center justify-between">
           <span className="text-gray-600 dark:text-gray-300 text-lg font-medium">You are Sending</span>
           {selectedToken ? (
@@ -78,7 +80,7 @@ export default function TokenSelectionScreen({
       </div>
 
       {selectedToken && (
-        <div className="bg-white dark:bg-gray-800 rounded-xl p-6">
+        <div className="dark:bg-gray-800 rounded-xl p-6 bg-gray-50">
           <div className="flex items-center justify-between">
             <span className="text-gray-600 dark:text-gray-300 text-lg font-medium">You are Withdrawing</span>
             {selectedCurrency ? (
@@ -106,6 +108,61 @@ export default function TokenSelectionScreen({
         </div>
       )}
 
+      {showBankDetails && (
+        <div className="space-y-4">
+          <div className="text-sm text-gray-600 dark:text-gray-400 text-center">
+            Fiat will be deposited in this bank account
+          </div>
+
+          <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-xl overflow-hidden">
+            <div className="flex items-center justify-between p-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+              <div className="flex items-center gap-3">
+                <Building className="w-5 h-5 text-gray-500 dark:text-gray-400" />
+                <span className="text-gray-600 dark:text-gray-300">Bank Name</span>
+              </div>
+              <span className="font-medium text-gray-900 dark:text-white">{bankAccount.bankName}</span>
+            </div>
+            <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
+              <div className="flex items-center gap-3">
+                <User className="w-5 h-5 text-gray-500 dark:text-gray-400" />
+                <span className="text-gray-600 dark:text-gray-300">Beneficiary Name</span>
+              </div>
+              <span className="font-medium text-gray-900 dark:text-white">{bankAccount.beneficiaryName}</span>
+            </div>
+            <div className="flex items-center justify-between p-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+              <div className="flex items-center gap-3">
+                <Hash className="w-5 h-5 text-gray-500 dark:text-gray-400" />
+                <span className="text-gray-600 dark:text-gray-300">IBAN / Account</span>
+              </div>
+              <span className="font-medium text-gray-900 dark:text-white">{bankAccount.iban}</span>
+            </div>
+            <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
+              <div className="flex items-center gap-3">
+                <MapPin className="w-5 h-5 text-gray-500 dark:text-gray-400" />
+                <span className="text-gray-600 dark:text-gray-300">Bank address</span>
+              </div>
+              <span className="font-medium text-gray-900 dark:text-white">{bankAccount.bankAddress}</span>
+            </div>
+            <div className="flex items-center justify-between p-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+              <div className="flex items-center gap-3">
+                <Globe className="w-5 h-5 text-gray-500 dark:text-gray-400" />
+                <span className="text-gray-600 dark:text-gray-300">Bank country</span>
+              </div>
+              <span className="font-medium text-gray-900 dark:text-white">{bankAccount.bankCountry}</span>
+            </div>
+            <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
+              <div className="flex items-center gap-3">
+                <Wallet className="w-5 h-5 text-gray-500 dark:text-gray-400" />
+                <span className="text-gray-600 dark:text-gray-300">Wallet Address</span>
+              </div>
+              <span className="font-medium text-gray-900 dark:text-white font-mono text-sm">
+                {bankAccount.walletAddress}
+              </span>
+            </div>
+          </div>
+        </div>
+      )}
+
       {error && (
         <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
           <div className="flex items-start gap-3">
@@ -125,17 +182,33 @@ export default function TokenSelectionScreen({
         </div>
       )}
 
-      {selectedToken && selectedCurrency && (
-        <Button onClick={handleNext} disabled={!canProceed} className="w-full bg-blue-500 hover:bg-blue-600 text-white">
-          {isLoading ? (
-            <>
-              <Loader2 className="w-4 h-4 animate-spin mr-2" />
-              Processing...
-            </>
-          ) : (
-            "Next"
-          )}
-        </Button>
+      {showBankDetails && (
+        <div className="space-y-3">
+          <Button
+            onClick={handleNext}
+            disabled={!canProceed}
+            className="w-full bg-blue-500 hover:bg-blue-600 text-white py-4 text-lg font-medium"
+            size="lg"
+          >
+            {isLoading ? (
+              <>
+                <Loader2 className="w-5 h-5 animate-spin mr-2" />
+                Processing...
+              </>
+            ) : (
+              "Next"
+            )}
+          </Button>
+
+          <div className="text-center">
+            <button
+              onClick={onChangeBankAccount}
+              className="text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300 text-sm font-medium underline transition-colors"
+            >
+              Want to withdraw in another account? Change Bank Account
+            </button>
+          </div>
+        </div>
       )}
 
       {/* Token Selection Dialog */}

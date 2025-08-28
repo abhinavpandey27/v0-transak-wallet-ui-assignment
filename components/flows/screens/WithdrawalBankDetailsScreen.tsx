@@ -36,16 +36,16 @@ export default function WithdrawalBankDetailsScreen({
   onBack,
 }: WithdrawalBankDetailsScreenProps) {
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
+    <div className="min-h-screen bg-white dark:bg-gray-900 flex flex-col">
       {/* Header */}
       
 
       {/* Content */}
-      <div className="flex-1 flex items-start justify-center p-4">
+      <div className="flex-1 flex items-start justify-center p-4 bg-transparent px-0 py-0">
         <div className="w-full max-w-md space-y-6">
           {/* Token and Currency Selection */}
           <div className="space-y-4">
-            <div className="bg-gray-100 dark:bg-gray-800 rounded-xl p-4 flex items-center justify-between">
+            <div className="dark:bg-gray-800 rounded-xl p-4 flex items-center justify-between bg-gray-50">
               <span className="text-gray-600 dark:text-gray-300">You are Sending</span>
               <div className="flex items-center gap-2 bg-gray-200 dark:bg-gray-700 rounded-full px-3 py-1">
                 <div className="w-5 h-5 bg-gray-400 rounded-full flex items-center justify-center text-xs font-bold text-white">
@@ -58,7 +58,7 @@ export default function WithdrawalBankDetailsScreen({
               </div>
             </div>
 
-            <div className="bg-gray-100 dark:bg-gray-800 rounded-xl p-4 flex items-center justify-between">
+            <div className="dark:bg-gray-800 rounded-xl p-4 flex items-center justify-between bg-gray-50">
               <span className="text-gray-600 dark:text-gray-300">You are Withdrawing</span>
               <div className="flex items-center gap-2 bg-gray-200 dark:bg-gray-700 rounded-full px-3 py-1">
                 <span className="text-lg">{selectedCurrency.flag}</span>

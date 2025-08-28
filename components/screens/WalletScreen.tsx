@@ -4,30 +4,6 @@ import { Card } from "@/components/ui/card"
 import { CustomButton } from "@/components/ui/custom-button"
 import { Download, Upload, Filter } from "lucide-react"
 import TransactionItem from "@/components/shared/TransactionItem"
-import { Line } from "react-chartjs-2"
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-  Filler,
-} from "chart.js"
-
-// Register Chart.js components
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-  Filler
-)
 
 interface Transaction {
   id: number
@@ -59,82 +35,6 @@ export default function WalletScreen({
   onNavigateToDeposit,
   onNavigateToWithdraw,
 }: WalletScreenProps) {
-  // Dummy data for the balance chart
-  const chartData = {
-    labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-    datasets: [
-      {
-        label: "Balance",
-        data: [1200, 1350, 1280, 1420, 1380, 1450, 1435.20],
-        borderColor: "rgb(59, 130, 246)",
-        backgroundColor: "rgba(59, 130, 246, 0.1)",
-        borderWidth: 2,
-        fill: true,
-        tension: 0.4,
-        pointBackgroundColor: "rgb(59, 130, 246)",
-        pointBorderColor: "#ffffff",
-        pointBorderWidth: 2,
-        pointRadius: 4,
-        pointHoverRadius: 6,
-      },
-    ],
-  }
-
-  const chartOptions = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: {
-        display: false,
-      },
-      tooltip: {
-        backgroundColor: "rgba(0, 0, 0, 0.8)",
-        titleColor: "#ffffff",
-        bodyColor: "#ffffff",
-        borderColor: "rgba(59, 130, 246, 0.5)",
-        borderWidth: 1,
-        displayColors: false,
-        callbacks: {
-          label: function(context: any) {
-            return `Balance: $${context.parsed.y.toFixed(2)}`
-          }
-        }
-      },
-    },
-    scales: {
-      x: {
-        grid: {
-          display: false,
-        },
-        ticks: {
-          color: "#6b7280",
-          font: {
-            size: 12,
-          },
-        },
-      },
-      y: {
-        grid: {
-          color: "rgba(156, 163, 175, 0.2)",
-        },
-        ticks: {
-          color: "#6b7280",
-          font: {
-            size: 12,
-          },
-          callback: function(value: any) {
-            return `$${value}`
-          }
-        },
-      },
-    },
-    elements: {
-      point: {
-        hoverBackgroundColor: "rgb(59, 130, 246)",
-      },
-    },
-  }
-
   return (
     <div className="max-w-[640px] w-full">
       {/* Balance Card */}
@@ -149,21 +49,6 @@ export default function WalletScreen({
           <p className="mx-auto text-left text-sm text-slate-500 dark:text-slate-400">
             Your Virtual Account is active to perform fiat and crypto transactions
           </p>
-        </div>
-      </Card>
-
-      {/* Balance Chart */}
-      <Card className="p-6 mb-8 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
-        <div className="mb-4">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-            Balance History
-          </h3>
-          <p className="text-sm text-gray-600 dark:text-gray-400">
-            Your balance over the last 7 days
-          </p>
-        </div>
-        <div className="h-48">
-          <Line data={chartData} options={chartOptions} />
         </div>
       </Card>
 

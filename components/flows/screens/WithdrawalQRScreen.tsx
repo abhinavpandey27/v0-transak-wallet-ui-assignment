@@ -71,10 +71,10 @@ export default function WithdrawalQRScreen({
       
 
       {/* Content */}
-      <div className="flex-1 flex items-start justify-center p-4">
+      <div className="flex-1 flex items-start justify-center p-4 bg-white py-10">
         <div className="w-full max-w-md space-y-6">
           {/* Instructions */}
-          <div className="bg-gray-100 dark:bg-gray-800 rounded-xl p-6 text-center space-y-4">
+          <div className="bg-gray-white dark:bg-gray-900 rounded-xl p-6 text-center space-y-4 px-0 py-0">
             <p className="text-gray-700 dark:text-gray-300">
               Send <span className="font-semibold">{selectedToken.symbol}</span> to the below wallet address to receive{" "}
               <span className="font-semibold">{selectedCurrency.code}</span> directly in your selected bank account.
@@ -82,7 +82,7 @@ export default function WithdrawalQRScreen({
 
             {/* QR Code */}
             <div className="flex justify-center">
-              <div className="bg-white p-4 rounded-xl shadow-sm">
+              <div className="p-4 rounded-xl shadow-sm bg-gray-50">
                 {qrLoading && (
                   <div className="w-80 h-80 bg-gray-200 dark:bg-gray-600 rounded-lg animate-pulse flex items-center justify-center">
                     <div className="text-gray-400 dark:text-gray-500">
@@ -107,7 +107,7 @@ export default function WithdrawalQRScreen({
             </div>
 
             {/* Wallet Address */}
-            <div className="flex items-center justify-between bg-white dark:bg-gray-700 rounded-lg p-3">
+            <div className="flex items-center justify-between dark:bg-gray-700 rounded-lg p-3 bg-gray-50">
               <span className="text-sm font-mono text-gray-700 dark:text-gray-300 truncate">{walletAddress}</span>
               <button onClick={copyToClipboard} className="ml-2 p-1 hover:bg-gray-100 dark:hover:bg-gray-600 rounded">
                 {copied ? (
@@ -129,7 +129,7 @@ export default function WithdrawalQRScreen({
           </div>
 
           {/* Timer */}
-          <div className="flex items-center gap-3 bg-white dark:bg-gray-800 rounded-xl p-4">
+          <div className="flex items-center gap-3 dark:bg-gray-800 rounded-xl p-4 bg-gray-50">
             <div className="bg-blue-500 text-white rounded-lg px-3 py-1 text-sm font-medium">
               {formatTime(timeLeft)}
             </div>

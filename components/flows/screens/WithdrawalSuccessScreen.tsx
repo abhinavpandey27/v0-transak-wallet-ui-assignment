@@ -33,7 +33,7 @@ export default function WithdrawalSuccessScreen({
       
 
       {/* Content */}
-      <div className="flex-1 flex items-start justify-center p-4">
+      <div className="flex-1 flex items-start justify-center p-4 bg-white">
         <div className="w-full max-w-md space-y-6">
           {/* Success Message */}
           <div className="bg-white dark:bg-gray-800 rounded-xl p-6 text-center space-y-4">

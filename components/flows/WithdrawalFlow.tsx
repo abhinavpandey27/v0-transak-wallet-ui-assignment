@@ -268,7 +268,7 @@ export default function WithdrawalFlow({ onBack, onComplete }: WithdrawalFlowPro
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
-        <div className="max-w-md mx-auto px-4 py-4">
+        <div className="max-w-full mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <button
               onClick={goToPreviousStep}

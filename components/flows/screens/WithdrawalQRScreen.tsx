@@ -27,6 +27,7 @@ export default function WithdrawalQRScreen({
 }: WithdrawalQRScreenProps) {
   const [timeLeft, setTimeLeft] = useState(260) // 4m 20s in seconds
   const [copied, setCopied] = useState(false)
+  const [qrLoading, setQrLoading] = useState(true)
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -60,21 +61,17 @@ export default function WithdrawalQRScreen({
     }
   }
 
+  const handleQrLoad = () => {
+    setQrLoading(false)
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
       {/* Header */}
-      <div className="flex items-center justify-between p-4 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
-        <button onClick={onBack} className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-          </svg>
-        </button>
-        <h1 className="text-lg font-semibold text-gray-900 dark:text-white">Withdraw</h1>
-        <div className="w-9" />
-      </div>
+      
 
       {/* Content */}
-      <div className="flex-1 flex items-center justify-center p-4">
+      <div className="flex-1 flex items-start justify-center p-4">
         <div className="w-full max-w-md space-y-6">
           {/* Instructions */}
           <div className="bg-gray-100 dark:bg-gray-800 rounded-xl p-6 text-center space-y-4">
@@ -86,10 +83,25 @@ export default function WithdrawalQRScreen({
             {/* QR Code */}
             <div className="flex justify-center">
               <div className="bg-white p-4 rounded-xl shadow-sm">
+                {qrLoading && (
+                  <div className="w-80 h-80 bg-gray-200 dark:bg-gray-600 rounded-lg animate-pulse flex items-center justify-center">
+                    <div className="text-gray-400 dark:text-gray-500">
+                      <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={1}
+                          d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                )}
                 <img
                   src={`https://api.qrserver.com/v1/create-qr-code/?size=320x320&data=${encodeURIComponent(walletAddress)}`}
                   alt="Wallet QR Code"
-                  className="w-80 h-80"
+                  className={`w-80 h-80 ${qrLoading ? "hidden" : "block"}`}
+                  onLoad={handleQrLoad}
                 />
               </div>
             </div>

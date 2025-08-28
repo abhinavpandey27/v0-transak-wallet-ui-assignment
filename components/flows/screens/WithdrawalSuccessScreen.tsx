@@ -30,12 +30,10 @@ export default function WithdrawalSuccessScreen({
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
       {/* Header */}
-      <div className="flex items-center justify-center p-4 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
-        <h1 className="text-lg font-semibold text-gray-900 dark:text-white">Withdraw</h1>
-      </div>
+      
 
       {/* Content */}
-      <div className="flex-1 flex items-center justify-center p-4">
+      <div className="flex-1 flex items-start justify-center p-4">
         <div className="w-full max-w-md space-y-6">
           {/* Success Message */}
           <div className="bg-white dark:bg-gray-800 rounded-xl p-6 text-center space-y-4">

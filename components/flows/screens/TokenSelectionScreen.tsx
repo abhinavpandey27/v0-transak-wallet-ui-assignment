@@ -48,59 +48,63 @@ export default function TokenSelectionScreen({
 
   return (
     <div className="space-y-6">
-      <div className="bg-white dark:bg-gray-800 rounded-xl p-6 space-y-4">
+      <div className="bg-white dark:bg-gray-800 rounded-xl p-6">
         <div className="flex items-center justify-between">
-          <span className="text-gray-600 dark:text-gray-300 text-base">You are Sending</span>
+          <span className="text-gray-600 dark:text-gray-300 text-lg font-medium">You are Sending</span>
           {selectedToken ? (
             <button
               onClick={() => setShowTokenDialog(true)}
               disabled={isLoading || !hasTokens}
-              className="flex items-center gap-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 px-3 py-2 rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center gap-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 px-4 py-3 rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <div className="w-6 h-6 rounded-full bg-gray-300 dark:bg-gray-600 flex items-center justify-center text-xs font-medium">
                 {selectedToken.icon || selectedToken.symbol.slice(0, 2)}
               </div>
               <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{selectedToken.symbol}</span>
-              <ChevronRight className="w-4 h-4 text-gray-400 rotate-90" />
+              <ChevronRight className="w-5 h-5 text-gray-400" />
             </button>
           ) : (
             <button
               onClick={() => setShowTokenDialog(true)}
               disabled={isLoading || !hasTokens}
-              className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+              className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-3 rounded-full text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
             >
               {isLoading && <Loader2 className="w-4 h-4 animate-spin" />}
               {!hasTokens && !isLoading ? "No Tokens Available" : "Select Token"}
+              <ChevronRight className="w-4 h-4" />
             </button>
           )}
         </div>
+      </div>
 
-        {selectedToken && (
+      {selectedToken && (
+        <div className="bg-white dark:bg-gray-800 rounded-xl p-6">
           <div className="flex items-center justify-between">
-            <span className="text-gray-600 dark:text-gray-300 text-base">You are Withdrawing</span>
+            <span className="text-gray-600 dark:text-gray-300 text-lg font-medium">You are Withdrawing</span>
             {selectedCurrency ? (
               <button
                 onClick={() => setShowCurrencyDialog(true)}
                 disabled={isLoading || !hasCurrencies}
-                className="flex items-center gap-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 px-3 py-2 rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex items-center gap-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 px-4 py-3 rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <span className="text-lg">{selectedCurrency.flag}</span>
                 <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{selectedCurrency.code}</span>
-                <ChevronRight className="w-4 h-4 text-gray-400 rotate-90" />
+                <ChevronRight className="w-5 h-5 text-gray-400" />
               </button>
             ) : (
               <button
                 onClick={() => setShowCurrencyDialog(true)}
                 disabled={isLoading || !hasCurrencies}
-                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-3 rounded-full text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
               >
                 {isLoading && <Loader2 className="w-4 h-4 animate-spin" />}
                 {!hasCurrencies && !isLoading ? "No Currencies Available" : "Select Currency"}
+                <ChevronRight className="w-4 h-4" />
               </button>
             )}
           </div>
-        )}
-      </div>
+        </div>
+      )}
 
       {error && (
         <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">

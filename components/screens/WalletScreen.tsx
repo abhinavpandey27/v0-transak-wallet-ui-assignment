@@ -4,6 +4,7 @@ import { Card } from "@/components/ui/card"
 import { CustomButton } from "@/components/ui/custom-button"
 import { Download, Upload, Filter } from "lucide-react"
 import TransactionItem from "@/components/shared/TransactionItem"
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts"
 
 interface Transaction {
   id: number
@@ -35,6 +36,17 @@ export default function WalletScreen({
   onNavigateToDeposit,
   onNavigateToWithdraw,
 }: WalletScreenProps) {
+  // Dummy data for the balance chart
+  const chartData = [
+    { day: "Mon", balance: 1200 },
+    { day: "Tue", balance: 1350 },
+    { day: "Wed", balance: 1280 },
+    { day: "Thu", balance: 1420 },
+    { day: "Fri", balance: 1380 },
+    { day: "Sat", balance: 1450 },
+    { day: "Sun", balance: 1435.20 },
+  ]
+
   return (
     <div className="max-w-[640px] w-full">
       {/* Balance Card */}
@@ -49,6 +61,69 @@ export default function WalletScreen({
           <p className="mx-auto text-left text-sm text-slate-500 dark:text-slate-400">
             Your Virtual Account is active to perform fiat and crypto transactions
           </p>
+        </div>
+      </Card>
+
+      {/* Balance Chart */}
+      <Card className="p-6 mb-8 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+        <div className="mb-4">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+            Balance History
+          </h3>
+          <p className="text-sm text-gray-600 dark:text-gray-400">
+            Your balance over the last 7 days
+          </p>
+        </div>
+        <div className="h-48">
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart data={chartData}>
+              <CartesianGrid 
+                strokeDasharray="3 3" 
+                stroke="rgba(156, 163, 175, 0.2)"
+                vertical={false}
+              />
+              <XAxis 
+                dataKey="day" 
+                stroke="#6b7280"
+                fontSize={12}
+                tickLine={false}
+                axisLine={false}
+              />
+              <YAxis 
+                stroke="#6b7280"
+                fontSize={12}
+                tickLine={false}
+                axisLine={false}
+                tickFormatter={(value) => `$${value}`}
+              />
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: "rgba(0, 0, 0, 0.8)",
+                  border: "1px solid rgba(59, 130, 246, 0.5)",
+                  borderRadius: "8px",
+                  color: "#ffffff"
+                }}
+                labelStyle={{ color: "#ffffff" }}
+                formatter={(value: any) => [`$${value}`, "Balance"]}
+              />
+              <Line
+                type="monotone"
+                dataKey="balance"
+                stroke="rgb(59, 130, 246)"
+                strokeWidth={2}
+                dot={{ 
+                  fill: "rgb(59, 130, 246)", 
+                  stroke: "#ffffff", 
+                  strokeWidth: 2, 
+                  r: 4 
+                }}
+                activeDot={{ 
+                  r: 6, 
+                  fill: "rgb(59, 130, 246)" 
+                }}
+              />
+            </LineChart>
+          </ResponsiveContainer>
         </div>
       </Card>
 

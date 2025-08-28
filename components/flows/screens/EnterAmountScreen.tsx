@@ -69,8 +69,122 @@ export default function EnterAmountScreen({
         amount: flowState.amount || "",
       })
     }
-  }, []) // Empty dependency array - run only once on mount
+  }, [sampleCurrency, defaultToken, flowState.currency, flowState.token, flowState.amount])
 
+  useEffect(() => {
+    const estimatedAmount = quoteHook.data?.estimatedAmount
+    if (estimatedAmount) {
+      updateFlowState({ tokenAmount: estimatedAmount })
+    }
+  }, [quoteHook.data?.estimatedAmount])
+
+  const calculateTokenAmount = useCallback((amount: string, currency: Currency, token: Token): number => {
+    const amountNum = Number.parseFloat(amount)
+    if (!amountNum || amountNum <= 0) return 0
+
+    // Realistic exchange rates (approximate market rates)
+    const currencyToUSD: Record<string, number> = {
+      USD: 1.0,
+      EUR: 1.08,
+      GBP: 1.27,
+      INR: 0.012,
+      CAD: 0.74,
+      AUD: 0.66,
+      JPY: 0.0067,
+      CHF: 1.11,
+      CNY: 0.14,
+      KRW: 0.00076,
+    }
+
+    const tokenPricesUSD: Record<string, number> = {
+      BTC: 43000,
+      ETH: 2300,
+      USDT: 1.0,
+      USDC: 1.0,
+      BNB: 310,
+      ADA: 0.38,
+      SOL: 98,
+      DOT: 5.2,
+      MATIC: 0.75,
+      AVAX: 24,
+    }
+
+    const usdAmount = amountNum * (currencyToUSD[currency.code] || 1.0)
+    const tokenPrice = tokenPricesUSD[token.symbol] || 1.0
+
+    return usdAmount / tokenPrice
+  }, [])
+
+  const calculatedTokenAmount = useMemo(() => {
+    if (!flowState.amount || !flowState.currency || !flowState.token) return 0
+    return calculateTokenAmount(flowState.amount, flowState.currency, flowState.token)
+  }, [flowState.amount, flowState.currency, flowState.token, calculateTokenAmount])
+
+  useEffect(() => {
+    updateFlowState({ tokenAmount: calculatedTokenAmount })
+  }, [calculatedTokenAmount])
+
+  const handleAmountChange = useCallback(
+    (value: string) => {
+      const regex = /^\d*\.?\d{0,2}$/
+      if (regex.test(value) || value === "") {
+        if (isEmptyState && value) {
+          setIsEmptyState(false)
+        }
+
+        const amountNum = Number.parseFloat(value)
+        if (value && amountNum < 10) {
+          setValidationError("Minimum amount is $10")
+        } else if (value && amountNum > 10000) {
+          setValidationError("Maximum amount is $10,000")
+        } else {
+          setValidationError(null)
+        }
+
+        updateFlowState({ amount: value })
+      }
+    },
+    [isEmptyState],
+  )
+
+  const handleInputFocus = useCallback(() => {
+    if (isEmptyState) {
+      setIsEmptyState(false)
+      updateFlowState({ amount: "" })
+    }
+  }, [isEmptyState])
+
+  const formatCrypto = (qty: number, symbol: string) => {
+    if (qty === 0) return "0.0000"
+    if (qty >= 1) {
+      return qty.toFixed(4).replace(/\.?0+$/, "")
+    } else if (qty >= 0.0001) {
+      return qty.toFixed(6).replace(/\.?0+$/, "")
+    } else {
+      // For very small amounts, use scientific notation or more decimal places
+      return qty.toPrecision(4)
+    }
+  }
+
+  const getDisplayAmount = () => {
+    if (isEmptyState || !flowState.amount) {
+      return sampleAmount
+    }
+    return flowState.amount
+  }
+
+  const getQuoteAmount = () => {
+    if (isEmptyState) return "0.0089" // Sample quote for $25
+    if (!flowState.token) return "---"
+
+    // Use immediate calculation instead of API
+    const amount = calculatedTokenAmount
+    if (amount === 0) return "0.0000"
+
+    return formatCrypto(amount, flowState.token.symbol)
+  }
+
+  // Keep API call for validation but don't depend on it for display
   useEffect(() => {
     const amountNum = Number.parseFloat(flowState.amount)
     const currencyCode = flowState.currency?.code
@@ -93,63 +207,10 @@ export default function EnterAmountScreen({
           tokenId: tokenId,
         })
       }
-    }, 500) // Debounce for 500ms
+    }, 1000) // Longer debounce since this is just for validation
 
     return () => clearTimeout(timeoutId)
   }, [flowState.amount, flowState.currency?.code, flowState.token?.symbol, flowState.token?.id])
-
-  const handleAmountChange = useCallback(
-    (value: string) => {
-      const regex = /^\d*\.?\d{0,2}$/
-      if (regex.test(value) || value === "") {
-        if (isEmptyState && value) {
-          setIsEmptyState(false)
-        }
-
-        const amountNum = Number.parseFloat(value)
-        if (value && amountNum < 10) {
-          setValidationError("Minimum amount is $10")
-        } else if (value && amountNum > 10000) {
-          setValidationError("Maximum amount is $10,000")
-        } else {
-          setValidationError(null)
-        }
-
-        updateFlowState({ amount: value })
-      }
-    },
-    [isEmptyState, updateFlowState],
-  )
-
-  const handleInputFocus = useCallback(() => {
-    if (isEmptyState) {
-      setIsEmptyState(false)
-      updateFlowState({ amount: "" })
-    }
-  }, [isEmptyState, updateFlowState])
-
-  const formatCrypto = (qty: number, symbol: string) => {
-    const formatted = qty.toPrecision(6).replace(/\.?0+$/, "")
-    return `${formatted}`
-  }
-
-  const getDisplayAmount = () => {
-    if (isEmptyState || !flowState.amount) {
-      return sampleAmount
-    }
-    return flowState.amount
-  }
-
-  const getQuoteAmount = () => {
-    if (isEmptyState) return "0.0089" // Sample quote for $25
-    if (!flowState.token) return "---"
-    if (quoteHook.loading) return "..."
-    if (quoteHook.error) return "Error"
-    if (quoteHook.data?.estimatedAmount) {
-      return formatCrypto(quoteHook.data.estimatedAmount, flowState.token.symbol)
-    }
-    return "0.0000"
-  }
 
   return (
     <div className="py-8">

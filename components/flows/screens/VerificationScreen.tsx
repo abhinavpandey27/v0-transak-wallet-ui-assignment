@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react"
 import { CustomButton } from "@/components/ui/custom-button"
-import { CreditCard, User, Hash, MapPin, Globe, Wallet, AlertCircle, RefreshCw } from "lucide-react"
+import { AlertCircle, RefreshCw } from "lucide-react"
+import BankDetailsCard from "@/components/shared/BankDetailsCard"
 
 interface VerificationScreenProps {
   flowState: any
@@ -99,69 +100,11 @@ export default function VerificationScreen({ flowState, onNext, verificationHook
       </div>
 
       {/* Bank Details Card (Read-only) */}
-      <div
-        className={`bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden ${
-          isVerificationFailed ? "opacity-50" : "opacity-75"
-        }`}
-      >
-        <div className="divide-y divide-gray-200 dark:divide-gray-700">
-          <div className="flex justify-between items-center py-4 px-4">
-            <div className="flex items-center gap-3">
-              <CreditCard className="w-4 h-4 text-gray-400" />
-              <span className="text-gray-600 dark:text-gray-300 text-sm">Bank Name</span>
-            </div>
-            <span className="font-medium text-gray-900 dark:text-white text-sm">{flowState.bankDetails?.bankName}</span>
-          </div>
-
-          <div className="flex justify-between items-center py-4 px-4 bg-gray-50 dark:bg-gray-700">
-            <div className="flex items-center gap-3">
-              <User className="w-4 h-4 text-gray-400" />
-              <span className="text-gray-600 dark:text-gray-300 text-sm">Beneficiary Name</span>
-            </div>
-            <span className="font-medium text-gray-900 dark:text-white text-sm">
-              {flowState.bankDetails?.beneficiaryName}
-            </span>
-          </div>
-
-          <div className="flex justify-between items-center py-4 px-4">
-            <div className="flex items-center gap-3">
-              <Hash className="w-4 h-4 text-gray-400" />
-              <span className="text-gray-600 dark:text-gray-300 text-sm">IBAN / Account</span>
-            </div>
-            <span className="font-medium text-gray-900 dark:text-white text-sm">{flowState.bankDetails?.iban}</span>
-          </div>
-
-          <div className="flex justify-between items-center py-4 px-4 bg-gray-50 dark:bg-gray-700">
-            <div className="flex items-center gap-3">
-              <MapPin className="w-4 h-4 text-gray-400" />
-              <span className="text-gray-600 dark:text-gray-300 text-sm">Bank address</span>
-            </div>
-            <span className="font-medium text-gray-900 dark:text-white text-sm text-right">
-              {flowState.bankDetails?.bankAddress}
-            </span>
-          </div>
-
-          <div className="flex justify-between items-center py-4 px-4">
-            <div className="flex items-center gap-3">
-              <Globe className="w-4 h-4 text-gray-400" />
-              <span className="text-gray-600 dark:text-gray-300 text-sm">Bank country</span>
-            </div>
-            <span className="font-medium text-gray-900 dark:text-white text-sm">
-              {flowState.bankDetails?.bankCountry}
-            </span>
-          </div>
-
-          <div className="flex justify-between items-center py-4 px-4 bg-gray-50 dark:bg-gray-700">
-            <div className="flex items-center gap-3">
-              <Wallet className="w-4 h-4 text-gray-400" />
-              <span className="text-gray-600 dark:text-gray-300 text-sm">Wallet Address</span>
-            </div>
-            <span className="font-medium text-gray-900 dark:text-white text-sm">
-              {flowState.bankDetails?.walletAddress}
-            </span>
-          </div>
-        </div>
-      </div>
+      <BankDetailsCard
+        bankDetails={flowState.bankDetails}
+        showCopyButtons={false}
+        className={isVerificationFailed ? "opacity-50" : "opacity-75"}
+      />
 
       {/* Verifying Button (Disabled/Loading) */}
       <CustomButton variant="primary" size="lg" fullWidth disabled={true} className="text-base opacity-75">

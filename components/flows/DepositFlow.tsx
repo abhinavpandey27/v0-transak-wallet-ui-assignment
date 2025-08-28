@@ -23,6 +23,7 @@ interface DepositFlowState {
   amount: string
   currency: Currency
   token: Token | null
+  tokenAmount: number | null // Added tokenAmount to store calculated crypto amount
   description: string
   bankDetails: BankDetails | null
   transactionId: string | null
@@ -55,6 +56,7 @@ export default function DepositFlow({ onComplete }: { onComplete: () => void }) 
     amount: "25",
     currency: availableCurrencies[0], // EUR
     token: cryptoTokens[0], // ETH
+    tokenAmount: null, // Initialize tokenAmount
     description: "",
     bankDetails: null,
     transactionId: null,

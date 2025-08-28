@@ -1,7 +1,7 @@
 "use client"
 
 import { CustomButton } from "@/components/ui/custom-button"
-import { CreditCard, User, Hash, MapPin, Globe, Wallet } from "lucide-react"
+import BankDetailsCard from "@/components/shared/BankDetailsCard"
 
 interface BankDetailsScreenProps {
   flowState: any
@@ -15,7 +15,7 @@ export default function BankDetailsScreen({ flowState, onNext, canProceed, isLoa
     <div className="py-8 space-y-8">
       {/* Header Text */}
       <div className="text-center">
-        <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+        <p className="dark:text-gray-400 leading-relaxed text-gray-900">
           Deposit{" "}
           <span className="font-semibold">
             {flowState.amount} {flowState.currency.code}
@@ -26,65 +26,7 @@ export default function BankDetailsScreen({ flowState, onNext, canProceed, isLoa
       </div>
 
       {/* Bank Details Card */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
-        <div className="divide-y divide-gray-200 dark:divide-gray-700">
-          <div className="flex justify-between items-center py-4 px-4">
-            <div className="flex items-center gap-3">
-              <CreditCard className="w-4 h-4 text-gray-400" />
-              <span className="text-gray-600 dark:text-gray-300 text-sm">Bank Name</span>
-            </div>
-            <span className="font-medium text-gray-900 dark:text-white text-sm">{flowState.bankDetails?.bankName}</span>
-          </div>
-
-          <div className="flex justify-between items-center py-4 px-4 bg-gray-50 dark:bg-gray-700">
-            <div className="flex items-center gap-3">
-              <User className="w-4 h-4 text-gray-400" />
-              <span className="text-gray-600 dark:text-gray-300 text-sm">Beneficiary Name</span>
-            </div>
-            <span className="font-medium text-gray-900 dark:text-white text-sm">
-              {flowState.bankDetails?.beneficiaryName}
-            </span>
-          </div>
-
-          <div className="flex justify-between items-center py-4 px-4">
-            <div className="flex items-center gap-3">
-              <Hash className="w-4 h-4 text-gray-400" />
-              <span className="text-gray-600 dark:text-gray-300 text-sm">IBAN / Account</span>
-            </div>
-            <span className="font-medium text-gray-900 dark:text-white text-sm">{flowState.bankDetails?.iban}</span>
-          </div>
-
-          <div className="flex justify-between items-center py-4 px-4 bg-gray-50 dark:bg-gray-700">
-            <div className="flex items-center gap-3">
-              <MapPin className="w-4 h-4 text-gray-400" />
-              <span className="text-gray-600 dark:text-gray-300 text-sm">Bank address</span>
-            </div>
-            <span className="font-medium text-gray-900 dark:text-white text-sm text-right">
-              {flowState.bankDetails?.bankAddress}
-            </span>
-          </div>
-
-          <div className="flex justify-between items-center py-4 px-4">
-            <div className="flex items-center gap-3">
-              <Globe className="w-4 h-4 text-gray-400" />
-              <span className="text-gray-600 dark:text-gray-300 text-sm">Bank country</span>
-            </div>
-            <span className="font-medium text-gray-900 dark:text-white text-sm">
-              {flowState.bankDetails?.bankCountry}
-            </span>
-          </div>
-
-          <div className="flex justify-between items-center py-4 px-4 bg-gray-50 dark:bg-gray-700">
-            <div className="flex items-center gap-3">
-              <Wallet className="w-4 h-4 text-gray-400" />
-              <span className="text-gray-600 dark:text-gray-300 text-sm">Wallet Address</span>
-            </div>
-            <span className="font-medium text-gray-900 dark:text-white text-sm">
-              {flowState.bankDetails?.walletAddress}
-            </span>
-          </div>
-        </div>
-      </div>
+      <BankDetailsCard bankDetails={flowState.bankDetails} showCopyButtons={true} />
 
       {/* I have paid Button */}
       <CustomButton

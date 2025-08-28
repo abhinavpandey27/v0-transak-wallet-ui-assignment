@@ -83,16 +83,40 @@ export const depositApi = {
       throw new DepositApiError("Maximum deposit amount is 10,000", "MAX_AMOUNT_ERROR", 400)
     }
 
-    // Mock exchange rates
-    const rates: Record<string, number> = {
-      ETH: 0.0004,
-      BTC: 0.000015,
-      USDT: 0.98,
-      USDC: 0.99,
+    // Currency to USD conversion rates
+    const currencyToUSD: Record<string, number> = {
+      USD: 1.0,
+      EUR: 1.08,
+      GBP: 1.27,
+      INR: 0.012,
+      CAD: 0.74,
+      AUD: 0.66,
+      JPY: 0.0067,
+      CHF: 1.11,
+      CNY: 0.14,
+      KRW: 0.00076,
     }
 
-    const rate = rates[request.toCurrency] || 0.0004
-    const estimatedAmount = request.amount * rate
+    // Crypto token prices in USD
+    const tokenPricesUSD: Record<string, number> = {
+      BTC: 43000,
+      ETH: 2300,
+      USDT: 1.0,
+      USDC: 1.0,
+      ADA: 0.38,
+      DOT: 5.2,
+      MATIC: 0.75,
+      LINK: 14.5,
+    }
+
+    const usdRate = currencyToUSD[request.fromCurrency] || 1.0
+    const tokenPriceUSD = tokenPricesUSD[request.toCurrency] || 2300
+
+    // Convert fiat amount to USD, then to crypto tokens
+    const amountInUSD = request.amount * usdRate
+    const estimatedAmount = amountInUSD / tokenPriceUSD
+    const rate = estimatedAmount / request.amount // Rate per unit of fiat currency
+
     const transactionFee = request.amount * 0.01 // 1%
     const networkFee = 2.5
 

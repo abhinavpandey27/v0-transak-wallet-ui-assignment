@@ -1,10 +1,9 @@
 "use client"
 
 import type React from "react"
-
+import { CustomButton } from "@/components/ui/custom-button"
 import { useState } from "react"
 import { useAuth } from "@/contexts/AuthContext"
-import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 
 export default function LoginScreen() {
@@ -48,13 +47,15 @@ export default function LoginScreen() {
               {error && <p className="text-sm text-red-500">{error}</p>}
             </div>
 
-            <Button
+            <CustomButton
               type="submit"
-              className="w-full h-12 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white font-medium"
+              variant="primary"
+              size="lg"
+              className="w-full"
               disabled={isLoading || !emailInput.trim()}
             >
               {isLoading ? "Sending..." : "Continue"}
-            </Button>
+            </CustomButton>
 
             <p className="text-center text-sm text-muted-foreground">
               We'll create an account if you don't have one yet.

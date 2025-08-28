@@ -1,5 +1,5 @@
 "use client"
-import { Button } from "@/components/ui/button"
+import { CustomButton } from "@/components/ui/custom-button"
 
 interface BankDetails {
   bankName: string
@@ -30,7 +30,6 @@ export default function WithdrawalSuccessScreen({
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
       {/* Header */}
-      
 
       {/* Content */}
       <div className="flex-1 flex items-start justify-center p-4 bg-white">
@@ -93,9 +92,9 @@ export default function WithdrawalSuccessScreen({
           </div>
 
           {/* Done Button */}
-          <Button onClick={onDone} className="w-full bg-blue-500 hover:bg-blue-600 text-white">
+          <CustomButton onClick={onDone} variant="primary" size="lg" className="w-full">
             Done
-          </Button>
+          </CustomButton>
         </div>
       </div>
     </div>

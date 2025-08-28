@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { ChevronRight, X, AlertCircle, Loader2, Building, User, Hash, MapPin, Globe, Wallet } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { CustomButton } from "@/components/ui/custom-button"
 import type { Token, Currency, BankAccount } from "../WithdrawalFlow"
 
 interface TokenSelectionScreenProps {
@@ -184,12 +184,7 @@ export default function TokenSelectionScreen({
 
       {showBankDetails && (
         <div className="space-y-3">
-          <Button
-            onClick={handleNext}
-            disabled={!canProceed}
-            className="w-full bg-blue-500 hover:bg-blue-600 text-white py-4 text-lg font-medium"
-            size="lg"
-          >
+          <CustomButton onClick={handleNext} disabled={!canProceed} variant="primary" size="lg" className="w-full">
             {isLoading ? (
               <>
                 <Loader2 className="w-5 h-5 animate-spin mr-2" />
@@ -198,7 +193,7 @@ export default function TokenSelectionScreen({
             ) : (
               "Next"
             )}
-          </Button>
+          </CustomButton>
 
           <div className="text-center">
             <button

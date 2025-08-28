@@ -145,7 +145,7 @@ export default function WalletScreen({
                 <h2 className="text-gray-900 dark:text-white font-semibold text-4xl">$1435.20</h2>
                 <div className="flex items-center">
                   <span
-                    className={`text-xl font-bold px-3 py-1.5 rounded-lg ${
+                    className={`text-xl px-3 py-1.5 rounded-lg font-semibold ${
                       calculateChange(selectedPeriod) >= 0
                         ? "text-green-600 dark:text-green-400 bg-green-100 dark:bg-green-900/30"
                         : "text-red-600 dark:text-red-400 bg-red-100 dark:bg-red-900/30"

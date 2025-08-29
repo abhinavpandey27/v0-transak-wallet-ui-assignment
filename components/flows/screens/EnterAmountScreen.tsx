@@ -319,6 +319,24 @@ export default function EnterAmountScreen({
         </div>
       </div>
 
+      {/* Description (optional) */}
+      <div className="mb-4">
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          Description (optional)
+        </label>
+        <textarea
+          rows={2}
+          maxLength={140}
+          value={flowState.description || ""}
+          onChange={(e) => updateFlowState({ description: e.target.value })}
+          placeholder="Add a note for this deposit (e.g., invoice #1234)"
+          className="w-full resize-none rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 px-3 py-2 text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+        <div className="mt-1 text-xs text-gray-500 dark:text-gray-400 text-right">
+          {(flowState.description?.length || 0)}/140
+        </div>
+      </div>
+
       {/* CTA */}
       <div className="mb-6">
         <CustomButton

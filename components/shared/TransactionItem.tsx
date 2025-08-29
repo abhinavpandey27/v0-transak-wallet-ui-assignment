@@ -13,6 +13,7 @@ interface Transaction {
   crypto: string
   status: string
   transactionType: string
+  description?: string
 }
 
 interface TransactionItemProps {
@@ -99,7 +100,22 @@ export default function TransactionItem({ transaction }: TransactionItemProps) {
         {/* Row 3: Full ID vs Description */}
         <div className="flex justify-between items-center">
           <span className="text-sm text-gray-500 dark:text-gray-400">ID: {transaction.transactionId}</span>
-          <span className="text-sm text-slate-500 dark:text-slate-400">Sandbox Testing</span>
+          <span className="text-sm text-slate-500 dark:text-slate-400">
+            {transaction.description ||
+              (transaction.status === "pending"
+                ? "Pending confirmation"
+                : transaction.status === "error"
+                  ? "Failed — see details"
+                  : transaction.status === "warning"
+                    ? "Action required"
+                    : transaction.transactionType === "deposit"
+                      ? "Bank transfer deposit"
+                      : transaction.transactionType === "withdraw"
+                        ? "On-chain withdrawal"
+                        : transaction.transactionType === "buy"
+                          ? "Card purchase"
+                          : "Completed")}
+          </span>
         </div>
       </div>
     </div>

@@ -36,6 +36,7 @@ export const transactions: Transaction[] = [
     crypto: "0.0025 BTC",
     status: "completed",
     transactionType: "buy",
+    description: "Card purchase — Visa ••2841",
   },
   {
     id: 2,
@@ -48,6 +49,7 @@ export const transactions: Transaction[] = [
     crypto: "0.025 ETH",
     status: "completed",
     transactionType: "withdraw",
+    description: "On-chain withdrawal — 0x9f...c2A1",
   },
   {
     id: 3,
@@ -60,6 +62,7 @@ export const transactions: Transaction[] = [
     crypto: "1.25 SOL",
     status: "completed",
     transactionType: "withdraw",
+    description: "Sent to Phantom — 6K3...9Qe",
   },
   {
     id: 4,
@@ -72,6 +75,7 @@ export const transactions: Transaction[] = [
     crypto: "85 ADA",
     status: "pending",
     transactionType: "deposit",
+    description: "Bank transfer — awaiting funds",
   },
   {
     id: 5,
@@ -84,6 +88,7 @@ export const transactions: Transaction[] = [
     crypto: "35 MATIC",
     status: "error",
     transactionType: "withdraw",
+    description: "Failed — network fee too low",
   },
   {
     id: 6,
@@ -96,6 +101,7 @@ export const transactions: Transaction[] = [
     crypto: "4.2 LINK",
     status: "completed",
     transactionType: "deposit",
+    description: "SEPA deposit — Ref 7482",
   },
   {
     id: 7,
@@ -108,6 +114,7 @@ export const transactions: Transaction[] = [
     crypto: "1.8 AVAX",
     status: "warning",
     transactionType: "withdraw",
+    description: "Action required — verify address",
   },
 ]
 
@@ -123,6 +130,7 @@ export const cryptoTransactions: Transaction[] = [
     crypto: "85 EUR",
     status: "completed",
     transactionType: "deposit",
+    description: "Airdrop received",
   },
   {
     id: 2,
@@ -135,6 +143,7 @@ export const cryptoTransactions: Transaction[] = [
     crypto: "65 EUR",
     status: "completed",
     transactionType: "withdraw",
+    description: "To external wallet — 1zH...m9p",
   },
   {
     id: 3,
@@ -147,6 +156,7 @@ export const cryptoTransactions: Transaction[] = [
     crypto: "45 EUR",
     status: "pending",
     transactionType: "deposit",
+    description: "Staking rewards pending",
   },
   {
     id: 4,
@@ -159,6 +169,7 @@ export const cryptoTransactions: Transaction[] = [
     crypto: "55 EUR",
     status: "completed",
     transactionType: "withdraw",
+    description: "Swapped for ETH",
   },
 ]
 

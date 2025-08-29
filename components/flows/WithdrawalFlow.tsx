@@ -267,6 +267,19 @@ export default function WithdrawalFlow({ onBack, onComplete }: WithdrawalFlowPro
     }
   }
 
+  const progress = useMemo(() => {
+    switch (state.step) {
+      case "token-selection":
+        return 33
+      case "qr-send":
+        return 66
+      case "success":
+        return 100
+      default:
+        return 0
+    }
+  }, [state.step])
+
   return (
     <div className="min-h-screen dark:bg-gray-900 bg-transparent">
       <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
@@ -282,6 +295,11 @@ export default function WithdrawalFlow({ onBack, onComplete }: WithdrawalFlowPro
             <h1 className="text-lg font-semibold text-gray-900 dark:text-white">{screenTitle}</h1>
             <div className="w-9" /> {/* Spacer for centering */}
           </div>
+        </div>
+
+        {/* Progress bar */}
+        <div className="w-full bg-gray-200 dark:bg-gray-700 h-1">
+          <div className="bg-blue-500 h-1 transition-all duration-500 ease-out" style={{ width: `${progress}%` }} />
         </div>
       </div>
 

@@ -22,6 +22,7 @@ export interface Transaction {
   crypto: string
   status: string
   transactionType: string
+  description?: string
 }
 
 export interface BankAccount {

@@ -251,6 +251,10 @@ export default function EnterAmountScreen({
           <button
             onClick={() => setShowCurrencyDialog(true)}
             disabled={isLoading}
+            aria-label="Select currency"
+            aria-haspopup="dialog"
+            aria-expanded={showCurrencyDialog}
+            aria-controls="currency-sheet"
             className={`flex items-center gap-2 bg-gray-200 dark:bg-gray-700 px-4 py-2 rounded-full text-sm font-medium transition-colors ${
               isLoading ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-300 dark:hover:bg-gray-600"
             }`}
@@ -299,6 +303,10 @@ export default function EnterAmountScreen({
           <button
             onClick={() => setShowTokenDialog(true)}
             disabled={isLoading}
+            aria-label="Select token"
+            aria-haspopup="dialog"
+            aria-expanded={showTokenDialog}
+            aria-controls="token-sheet"
             className={`flex items-center gap-2 bg-gray-200 dark:bg-gray-700 px-4 py-2 rounded-full text-sm font-medium transition-colors ${
               isLoading ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-300 dark:hover:bg-gray-600"
             }`}
@@ -371,7 +379,7 @@ export default function EnterAmountScreen({
 
       {showCurrencyDialog && (
         <Sheet open={showCurrencyDialog} onOpenChange={setShowCurrencyDialog}>
-          <SheetContent>
+          <SheetContent id="currency-sheet">
             <div className="flex items-center justify-between mb-2">
               <SheetTitle>Select Currency</SheetTitle>
               <SheetClose aria-label="Close" className="text-sm text-gray-500 hover:underline">
@@ -409,7 +417,7 @@ export default function EnterAmountScreen({
 
       {showTokenDialog && (
         <Sheet open={showTokenDialog} onOpenChange={setShowTokenDialog}>
-          <SheetContent>
+          <SheetContent id="token-sheet">
             <div className="flex items-center justify-between mb-2">
               <SheetTitle>Select Token</SheetTitle>
               <SheetClose aria-label="Close" className="text-sm text-gray-500 hover:underline">

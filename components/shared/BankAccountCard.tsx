@@ -28,11 +28,11 @@ export default function BankAccountCard({ account, isSelected, onSelect }: BankA
         }`}
       >
         <div className="flex items-start gap-3">
-          <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-xl flex items-center justify-center">
+          <div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-100 dark:bg-blue-900 rounded-xl flex items-center justify-center">
             <CreditCard className="w-6 h-6 text-blue-600 dark:text-blue-400" />
           </div>
           <div className="flex-1 min-w-0">
-            <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center justify-between mb-2 gap-2 flex-wrap">
               <div className="font-semibold text-gray-900 dark:text-white truncate">
                 {account.beneficiary}
               </div>
@@ -41,18 +41,18 @@ export default function BankAccountCard({ account, isSelected, onSelect }: BankA
               </div>
             </div>
             <div className="space-y-1">
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between gap-2">
                 <span className="text-sm text-gray-600 dark:text-gray-400">Bank Name</span>
                 <span className="text-sm font-medium text-gray-900 dark:text-white">{account.bankName}</span>
               </div>
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between gap-2">
                 <span className="text-sm text-gray-600 dark:text-gray-400">IBAN / Account</span>
-                <span className="text-sm font-medium text-gray-900 dark:text-white">{account.iban}</span>
+                <span className="text-sm font-medium text-gray-900 dark:text-white break-all">{account.iban}</span>
               </div>
             </div>
             <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-600">
               <div className="font-medium text-gray-900 dark:text-white text-sm mb-1">{account.beneficiary}</div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">{account.address}</div>
+              <div className="text-sm text-gray-600 dark:text-gray-400 break-words">{account.address}</div>
             </div>
           </div>
         </div>

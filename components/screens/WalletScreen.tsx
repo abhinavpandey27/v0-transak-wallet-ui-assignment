@@ -187,6 +187,10 @@ export default function WalletScreen({
             options={{
               responsive: true,
               maintainAspectRatio: false,
+              resizeDelay: 150,
+              animation: {
+                duration: 250,
+              },
               interaction: { mode: 'index', intersect: false },
               plugins: {
                 legend: {

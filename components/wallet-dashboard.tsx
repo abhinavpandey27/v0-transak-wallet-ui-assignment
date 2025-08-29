@@ -251,6 +251,9 @@ export default function WalletDashboard() {
           <div className="px-4 py-3 flex items-center justify-between">
             <button
               aria-label="Open navigation"
+              aria-haspopup="dialog"
+              aria-expanded={mobileNavOpen}
+              aria-controls="mobile-nav-sheet"
               className="w-9 h-9 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center justify-center"
               onClick={() => setMobileNavOpen(true)}
             >
@@ -259,6 +262,7 @@ export default function WalletDashboard() {
             <h1 className="text-base font-semibold text-gray-900 dark:text-white">{getScreenTitle()}</h1>
             <button
               aria-label="Open settings"
+              aria-haspopup="dialog"
               onClick={() => setShowSettingsDialog(true)}
               className="w-9 h-9 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center justify-center"
             >
@@ -298,14 +302,14 @@ export default function WalletDashboard() {
 
       {/* Mobile Navigation Sheet */}
       <Sheet open={mobileNavOpen} onOpenChange={setMobileNavOpen}>
-        <SheetContent>
+        <SheetContent id="mobile-nav-sheet">
           <div className="flex items-center justify-between mb-2">
             <SheetTitle>Navigation</SheetTitle>
             <SheetClose aria-label="Close navigation" className="text-sm text-gray-500 hover:underline">
               Close
             </SheetClose>
           </div>
-          <div className="mt-2 divide-y divide-gray-200 dark:divide-gray-700">
+          <nav aria-label="Main navigation" className="mt-2 divide-y divide-gray-200 dark:divide-gray-700">
             <button
               type="button"
               onClick={() => {
@@ -356,7 +360,7 @@ export default function WalletDashboard() {
             >
               Log Out
             </button>
-          </div>
+          </nav>
         </SheetContent>
       </Sheet>
     </div>

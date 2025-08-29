@@ -113,14 +113,15 @@ export default function WithdrawalQRScreen({
               </span>
               <button
                 onClick={copyToClipboard}
+                aria-label="Copy wallet address"
                 className="ml-2 p-2 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-lg transition-colors flex-shrink-0"
               >
                 {copied ? (
-                  <svg className="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" role="img" aria-label="Copied">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
                 ) : (
-                  <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" role="img" aria-label="Copy">
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -130,6 +131,7 @@ export default function WithdrawalQRScreen({
                   </svg>
                 )}
               </button>
+              <span className="sr-only" aria-live="polite">{copied ? "Address copied" : ""}</span>
             </div>
           </div>
 

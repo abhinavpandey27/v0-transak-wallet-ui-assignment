@@ -3,10 +3,10 @@
 import { useEffect, useState } from "react"
 import { Sun, Moon } from "lucide-react"
 import { CustomButton } from "@/components/ui/custom-button"
-import { useSimpleTheme } from "@/contexts/SimpleThemeContext"
+import { useTheme } from "next-themes"
 
 export function ThemeToggle() {
-  const { theme, toggleTheme } = useSimpleTheme()
+  const { theme, setTheme, resolvedTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
 
   // Initialize on mount
@@ -23,14 +23,16 @@ export function ThemeToggle() {
     )
   }
 
+  const current = (theme === 'system' ? resolvedTheme : theme) || 'light'
+
   return (
     <CustomButton
       variant="outline"
       size="sm"
-      onClick={toggleTheme}
+      onClick={() => setTheme(current === 'light' ? 'dark' : 'light')}
       className="flex items-center gap-2"
     >
-      {theme === 'light' ? (
+      {current === 'light' ? (
         <>
           <Sun className="w-4 h-4" />
           <span className="hidden sm:inline">Light</span>

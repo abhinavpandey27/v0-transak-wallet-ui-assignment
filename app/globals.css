@@ -1,6 +1,9 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/* Ensure Tailwind dark: variants use the .dark class on html */
+@custom-variant dark (&:is(.dark *));
+
 @layer base {
   html {
     /* Use dynamic primary font to reflect ThemeSettings changes */

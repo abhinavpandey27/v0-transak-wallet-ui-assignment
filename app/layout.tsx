@@ -11,7 +11,7 @@ import {
 } from "next/font/google"
 import "./globals.css"
 import { AuthProvider } from "@/contexts/AuthContext"
-import { SimpleThemeProvider } from "@/contexts/SimpleThemeContext"
+import { ThemeProvider } from "@/components/theme-provider"
 
 const instrumentSans = Instrument_Sans({
   subsets: ["latin"],
@@ -79,11 +79,11 @@ export default function RootLayout({
   ].join(" ")
 
   return (
-    <html lang="en" className={`${fontVariables} antialiased`}>
+    <html lang="en" className={`${fontVariables} antialiased`} suppressHydrationWarning>
       <body>
-        <SimpleThemeProvider>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem storageKey="theme">
           <AuthProvider>{children}</AuthProvider>
-        </SimpleThemeProvider>
+        </ThemeProvider>
       </body>
     </html>
   )

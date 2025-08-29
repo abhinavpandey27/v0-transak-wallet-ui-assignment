@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import type React from "react"
 import { Home, User, CreditCard, Shield, MoreHorizontal, LogOut } from "lucide-react"
 import { useAuth } from "@/contexts/AuthContext"
-import { useSimpleTheme } from "@/contexts/SimpleThemeContext"
+import { useTheme } from "next-themes"
 import { SettingsDialog } from "@/components/theme/SettingsDialog"
 
 import WalletScreen from "@/components/screens/WalletScreen"
@@ -19,7 +19,7 @@ import type { Currency, ProfileData } from "@/types"
 
 export default function WalletDashboard() {
   const [activeTab, setActiveTab] = useState("fiat")
-  const { theme, setTheme } = useSimpleTheme()
+  const { theme } = useTheme()
   const { logout } = useAuth()
   const [mounted, setMounted] = useState(false)
   const [currentScreen, setCurrentScreen] = useState("wallet")

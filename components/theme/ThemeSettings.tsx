@@ -3,12 +3,12 @@
 import { useState, useEffect } from "react"
 import { Card } from "@/components/ui/card"
 import { CustomButton } from "@/components/ui/custom-button"
-import { Sun, Moon, Monitor, Palette, Type } from "lucide-react"
+import { Sun, Moon, Monitor } from "lucide-react"
 import { TOP_GOOGLE_FONTS } from "@/data/fonts"
-import { useSimpleTheme } from "@/contexts/SimpleThemeContext"
+import { useTheme } from "next-themes"
 
 export function ThemeSettings() {
-  const { theme, setTheme } = useSimpleTheme()
+  const { theme, setTheme, resolvedTheme } = useTheme()
   const [selectedFont, setSelectedFont] = useState('--font-instrument-sans')
   const [mounted, setMounted] = useState(false)
 
@@ -35,6 +35,13 @@ export function ThemeSettings() {
 
   const themeOptions = [
     {
+      value: "system" as const,
+      label: "System",
+      description: "Follow your OS appearance",
+      icon: <Monitor className="w-5 h-5" />,
+      preview: "bg-white text-gray-900 border-gray-200 dark:bg-gray-900 dark:text-white dark:border-gray-700",
+    },
+    {
       value: "light" as const,
       label: "Light Mode",
       description: "Clean, bright interface",
@@ -51,90 +58,66 @@ export function ThemeSettings() {
   ]
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-          <Palette className="w-5 h-5" />
-          Appearance
-        </h3>
-
-        {/* Theme Mode Selection */}
-        <div className="space-y-3">
-          <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Theme Mode</label>
-          <div className="grid grid-cols-1 gap-3">
-            {themeOptions.map((option) => (
+    <div className="space-y-8">
+      {/* Theme Mode */}
+      <section className="space-y-3">
+        <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Theme Mode</label>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3" role="radiogroup" aria-label="Theme Mode">
+          {themeOptions.map((option) => {
+            const selected = (theme || 'system') === option.value
+            return (
               <Card
                 key={option.value}
-                className={`p-4 cursor-pointer transition-all ${
-                  theme === option.value
-                    ? "ring-2 ring-blue-500 bg-blue-50 dark:bg-blue-950"
-                    : "hover:bg-gray-50 dark:hover:bg-gray-800"
-                }`}
+                role="radio"
+                aria-checked={selected}
+                tabIndex={0}
                 onClick={() => setTheme(option.value)}
-              >
-                <div className="flex items-center gap-4">
-                  <div className="flex-shrink-0">{option.icon}</div>
-                  <div className="flex-1">
-                    <div className="font-medium">{option.label}</div>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{option.description}</p>
-                  </div>
-                  <div className={`w-12 h-8 rounded border-2 ${option.preview} flex-shrink-0`} />
-                </div>
-              </Card>
-            ))}
-          </div>
-        </div>
-
-        {/* Typography Selection */}
-        <div className="space-y-3">
-          <label className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-2">
-            <Type className="w-4 h-4" />
-            Typography
-          </label>
-          <div className="grid grid-cols-2 gap-3">
-            {TOP_GOOGLE_FONTS.map((font) => (
-              <Card
-                key={font.variable}
-                className={`p-3 cursor-pointer transition-all ${
-                  selectedFont === font.variable
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') setTheme(option.value)
+                }}
+                className={`p-3 cursor-pointer transition-all flex items-center gap-3 ${
+                  selected
                     ? "ring-2 ring-blue-500 bg-blue-50 dark:bg-blue-950"
                     : "hover:bg-gray-50 dark:hover:bg-gray-800"
                 }`}
-                onClick={() => changeFont(font.variable)}
               >
-                <div className="text-center">
-                  <div className="font-medium text-sm">{font.name}</div>
-                  <div className="text-xs text-gray-600 dark:text-gray-400 mt-1">
-                    {font.weights.join(', ')} weights
-                  </div>
+                <div className="flex-shrink-0">{option.icon}</div>
+                <div className="flex-1 min-w-0">
+                  <div className="font-medium truncate">{option.label}</div>
+                  <p className="text-xs text-gray-600 dark:text-gray-400 truncate">{option.description}</p>
                 </div>
               </Card>
-            ))}
-          </div>
+            )
+          })}
         </div>
+      </section>
 
-        {/* Quick Theme Toggle */}
-        <div className="flex gap-2">
-          <CustomButton
-            variant={theme === "light" ? "primary" : "outline"}
-            size="sm"
-            onClick={() => setTheme("light")}
-            className="flex-1"
-          >
-            <Sun className="w-4 h-4 mr-2" />
-            Light
-          </CustomButton>
-          <CustomButton
-            variant={theme === "dark" ? "primary" : "outline"}
-            size="sm"
-            onClick={() => setTheme("dark")}
-            className="flex-1"
-          >
-            <Moon className="w-4 h-4 mr-2" />
-            Dark
-          </CustomButton>
+      <hr className="border-gray-200 dark:border-gray-700" />
+
+      {/* Typography */}
+      <section className="space-y-3">
+        <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Typography</label>
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+          {TOP_GOOGLE_FONTS.map((font) => (
+            <Card
+              key={font.variable}
+              className={`p-3 cursor-pointer transition-all text-center ${
+                selectedFont === font.variable
+                  ? "ring-2 ring-blue-500 bg-blue-50 dark:bg-blue-950"
+                  : "hover:bg-gray-50 dark:hover:bg-gray-800"
+              }`}
+              onClick={() => changeFont(font.variable)}
+            >
+              <div className="font-medium text-sm truncate">{font.name}</div>
+              <div className="text-[11px] text-gray-600 dark:text-gray-400 mt-1 truncate">
+                {font.weights.join(', ')} weights
+              </div>
+            </Card>
+          ))}
         </div>
-      </div>
+      </section>
+
+      {/* No extra quick actions to avoid duplication */}
     </div>
   )
 }

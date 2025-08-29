@@ -12,4 +12,3 @@ import {
 
 // Central Chart.js registration to avoid duplicate registrations across components
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler)
-

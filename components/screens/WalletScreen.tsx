@@ -40,6 +40,7 @@ export default function WalletScreen({
 }: WalletScreenProps) {
   // Time period state
   const [selectedPeriod, setSelectedPeriod] = useState("6M")
+  const [showFilterHint, setShowFilterHint] = useState(false)
 
   // Time period options
   const timePeriods = ["1D", "1W", "1M", "3M", "6M", "1Y"]
@@ -105,7 +106,7 @@ export default function WalletScreen({
       {/* Enhanced Balance Overview - Narrow, Centered */}
       <div className="flex justify-center">
         <div className="max-w-full sm:max-w-[640px] w-full">
-          <Card className="mb-8 bg-white dark:bg-gray-800 border-0 shadow-none">
+          <Card className="mb-4 bg-transparent dark:bg-transparent border-0 shadow-none">
             <div className="bg-gray-50 dark:bg-gray-700 rounded-xl px-5 py-5">
               {/* Row 1: Your Total Balance on Left and Change Toggle on Right */}
               <div className="flex justify-between items-center mb-2">
@@ -152,7 +153,7 @@ export default function WalletScreen({
       </div>
 
       {/* Balance Chart - Full Width */}
-      <Card className="p-6 mb-8 bg-white dark:bg-gray-800 mx-3 sm:mx-4">
+      <Card className="p-4 sm:p-6 mb-8 bg-white dark:bg-gray-800 mx-0">
         <div className="h-56 sm:h-72 md:h-80">
           <Line
             data={{
@@ -225,6 +226,7 @@ export default function WalletScreen({
                   },
                   ticks: {
                     color: "#6b7280",
+                    maxTicksLimit: 6,
                     font: {
                       size: 12,
                     },
@@ -261,12 +263,12 @@ export default function WalletScreen({
       {/* Action Buttons - Narrow, Centered */}
       <div className="flex justify-center">
         <div className="max-w-full sm:max-w-[640px] w-full">
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-8">
-            <CustomButton variant="primary" size="lg" onClick={onNavigateToDeposit} className="flex-1 w-full sm:w-auto">
+          <div className="flex flex-row gap-3 mb-8">
+            <CustomButton variant="primary" size="lg" onClick={onNavigateToDeposit} className="flex-1">
               <Download className="w-5 h-5" />
               Deposit
             </CustomButton>
-            <CustomButton variant="primary" size="lg" onClick={onNavigateToWithdraw} className="flex-1 w-full sm:w-auto">
+            <CustomButton variant="primary" size="lg" onClick={onNavigateToWithdraw} className="flex-1">
               <Upload className="w-5 h-5" />
               Withdraw
             </CustomButton>
@@ -277,7 +279,7 @@ export default function WalletScreen({
       {/* Tabs and Filters - Narrow, Centered */}
       <div className="flex justify-center">
         <div className="max-w-full sm:max-w-[640px] w-full">
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-0 mb-6">
+          <div className="flex flex-row items-center justify-between gap-3 mb-6">
             <div className="relative bg-gray-100 dark:bg-gray-700 p-1 flex rounded-full">
               <CustomButton
                 variant="ghost"
@@ -296,10 +298,25 @@ export default function WalletScreen({
                 Crypto Wallet
               </CustomButton>
             </div>
-            <CustomButton variant="outline" size="sm" className="text-sm self-start sm:self-auto">
-              <Filter className="w-4 h-4" />
-              Filters
-            </CustomButton>
+            <div className="relative">
+              <CustomButton
+                variant="outline"
+                size="sm"
+                className="text-sm"
+                onClick={() => {
+                  setShowFilterHint(true)
+                  window.setTimeout(() => setShowFilterHint(false), 2000)
+                }}
+              >
+                <Filter className="w-4 h-4" />
+                Filters
+              </CustomButton>
+              {showFilterHint && (
+                <div className="absolute right-0 mt-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg px-3 py-2 z-10 text-xs text-gray-700 dark:text-gray-300">
+                  Coming soon
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>

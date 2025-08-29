@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { Sheet, SheetContent, SheetTitle, SheetClose } from "@/components/ui/sheet"
 import { CustomButton } from "@/components/ui/custom-button"
 import { User, Shield, LogOut, Mail, Phone, Calendar, Building, MapPin, Globe, Hash } from "lucide-react"
 
@@ -74,35 +75,45 @@ export default function ProfileScreen({ profileData, setProfileData }: ProfileSc
               <User className="w-5 h-5 text-gray-500 dark:text-gray-400" />
               <span className="text-gray-600 dark:text-gray-300">First Name</span>
             </div>
-            <span className="font-medium text-gray-900 dark:text-white">{profileData.first_name}</span>
+            <span className="font-medium text-gray-900 dark:text-white break-words text-right max-w-[60%]">
+              {profileData.first_name}
+            </span>
           </div>
           <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
             <div className="flex items-center gap-3">
               <User className="w-5 h-5 text-gray-500 dark:text-gray-400" />
               <span className="text-gray-600 dark:text-gray-300">Last Name</span>
             </div>
-            <span className="font-medium text-gray-900 dark:text-white">{profileData.last_name}</span>
+            <span className="font-medium text-gray-900 dark:text-white break-words text-right max-w-[60%]">
+              {profileData.last_name}
+            </span>
           </div>
           <div className="flex items-center justify-between p-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
             <div className="flex items-center gap-3">
               <Mail className="w-5 h-5 text-gray-500 dark:text-gray-400" />
               <span className="text-gray-600 dark:text-gray-300">Email</span>
             </div>
-            <span className="font-medium text-gray-900 dark:text-white">{profileData.email}</span>
+            <span className="font-medium text-gray-900 dark:text-white break-words text-right max-w-[60%]">
+              {profileData.email}
+            </span>
           </div>
           <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
             <div className="flex items-center gap-3">
               <Phone className="w-5 h-5 text-gray-500 dark:text-gray-400" />
               <span className="text-gray-600 dark:text-gray-300">Phone</span>
             </div>
-            <span className="font-medium text-gray-900 dark:text-white">{profileData.phone}</span>
+            <span className="font-medium text-gray-900 dark:text-white break-words text-right max-w-[60%]">
+              {profileData.phone}
+            </span>
           </div>
           <div className="flex items-center justify-between p-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
             <div className="flex items-center gap-3">
               <Calendar className="w-5 h-5 text-gray-500 dark:text-gray-400" />
               <span className="text-gray-600 dark:text-gray-300">Date of Birth</span>
             </div>
-            <span className="font-medium text-gray-900 dark:text-white">{profileData.dob}</span>
+            <span className="font-medium text-gray-900 dark:text-white break-words text-right max-w-[60%]">
+              {profileData.dob}
+            </span>
           </div>
           <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
             <div className="flex items-center gap-3">
@@ -133,35 +144,45 @@ export default function ProfileScreen({ profileData, setProfileData }: ProfileSc
               <MapPin className="w-5 h-5 text-gray-500 dark:text-gray-400" />
               <span className="text-gray-600 dark:text-gray-300">Street Address</span>
             </div>
-            <span className="font-medium text-gray-900 dark:text-white">{profileData.address.line1}</span>
+            <span className="font-medium text-gray-900 dark:text-white break-words text-right max-w-[60%]">
+              {profileData.address.line1}
+            </span>
           </div>
           <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
             <div className="flex items-center gap-3">
               <Building className="w-5 h-5 text-gray-500 dark:text-gray-400" />
               <span className="text-gray-600 dark:text-gray-300">City</span>
             </div>
-            <span className="font-medium text-gray-900 dark:text-white">{profileData.address.city}</span>
+            <span className="font-medium text-gray-900 dark:text-white break-words text-right max-w-[60%]">
+              {profileData.address.city}
+            </span>
           </div>
           <div className="flex items-center justify-between p-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
             <div className="flex items-center gap-3">
               <MapPin className="w-5 h-5 text-gray-500 dark:text-gray-400" />
               <span className="text-gray-600 dark:text-gray-300">State</span>
             </div>
-            <span className="font-medium text-gray-900 dark:text-white">{profileData.address.state}</span>
+            <span className="font-medium text-gray-900 dark:text-white break-words text-right max-w-[60%]">
+              {profileData.address.state}
+            </span>
           </div>
           <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
             <div className="flex items-center gap-3">
               <Hash className="w-5 h-5 text-gray-500 dark:text-gray-400" />
               <span className="text-gray-600 dark:text-gray-300">Postal Code</span>
             </div>
-            <span className="font-medium text-gray-900 dark:text-white">{profileData.address.postal_code}</span>
+            <span className="font-medium text-gray-900 dark:text-white break-words text-right max-w-[60%]">
+              {profileData.address.postal_code}
+            </span>
           </div>
           <div className="flex items-center justify-between p-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
             <div className="flex items-center gap-3">
               <Globe className="w-5 h-5 text-gray-500 dark:text-gray-400" />
               <span className="text-gray-600 dark:text-gray-300">Country</span>
             </div>
-            <span className="font-medium text-gray-900 dark:text-white">{profileData.address.country_name}</span>
+            <span className="font-medium text-gray-900 dark:text-white break-words text-right max-w-[60%]">
+              {profileData.address.country_name}
+            </span>
           </div>
         </div>
       </div>
@@ -180,12 +201,15 @@ export default function ProfileScreen({ profileData, setProfileData }: ProfileSc
 
       {/* Avatar Selection Dialog */}
       {showAvatarDialog && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 max-w-md w-full mx-4">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Choose Avatar</h3>
-            <div className="grid grid-cols-4 gap-4 mb-6">
+        <Sheet open={showAvatarDialog} onOpenChange={setShowAvatarDialog}>
+          <SheetContent>
+            <div className="flex items-center justify-between mb-2">
+              <SheetTitle>Choose Avatar</SheetTitle>
+              <SheetClose aria-label="Close" className="text-sm text-gray-500 hover:underline">Close</SheetClose>
+            </div>
+            <div className="grid grid-cols-4 gap-4 mb-4">
               {avatarOptions.map((option, index) => (
-                <div
+                <button
                   key={index}
                   className={`w-16 h-16 bg-gradient-to-br ${option.color} rounded-full flex items-center justify-center cursor-pointer hover:scale-105 transition-transform ${
                     profileData.avatar.type === option.emoji
@@ -200,7 +224,7 @@ export default function ProfileScreen({ profileData, setProfileData }: ProfileSc
                   }
                 >
                   <span className="text-white text-2xl">{option.emoji}</span>
-                </div>
+                </button>
               ))}
             </div>
             <div className="flex gap-3">
@@ -211,8 +235,8 @@ export default function ProfileScreen({ profileData, setProfileData }: ProfileSc
                 Save
               </CustomButton>
             </div>
-          </div>
-        </div>
+          </SheetContent>
+        </Sheet>
       )}
     </div>
   )

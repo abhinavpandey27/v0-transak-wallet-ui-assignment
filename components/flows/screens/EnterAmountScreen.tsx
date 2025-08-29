@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo, useCallback } from "react"
 import { CustomButton } from "@/components/ui/custom-button"
 import { X, ChevronDown } from "lucide-react"
 import { Sheet, SheetContent, SheetTitle, SheetClose } from "@/components/ui/sheet"
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog"
 import type { Currency, Token } from "@/types"
 
 interface EnterAmountScreenProps {
@@ -50,6 +51,7 @@ export default function EnterAmountScreen({
 }: EnterAmountScreenProps) {
   const [showCurrencyDialog, setShowCurrencyDialog] = useState(false)
   const [showTokenDialog, setShowTokenDialog] = useState(false)
+  const [isDesktop, setIsDesktop] = useState(false)
   const [isEmptyState, setIsEmptyState] = useState(true)
   const [validationError, setValidationError] = useState<string | null>(null)
 
@@ -61,6 +63,20 @@ export default function EnterAmountScreen({
   )
 
   const defaultToken = useMemo(() => cryptoTokens.find((t) => t.symbol === "ETH") || cryptoTokens[0], [cryptoTokens])
+
+  useEffect(() => {
+    const mq = typeof window !== "undefined" ? window.matchMedia("(min-width: 768px)") : null
+    const update = () => setIsDesktop(!!mq?.matches)
+    update()
+    if (mq) {
+      if (mq.addEventListener) mq.addEventListener("change", update)
+      else mq.addListener(update)
+      return () => {
+        if (mq.removeEventListener) mq.removeEventListener("change", update)
+        else mq.removeListener(update)
+      }
+    }
+  }, [])
 
   useEffect(() => {
     if (!flowState.currency || !flowState.token) {
@@ -378,79 +394,145 @@ export default function EnterAmountScreen({
       </div>
 
       {showCurrencyDialog && (
-        <Sheet open={showCurrencyDialog} onOpenChange={setShowCurrencyDialog}>
-          <SheetContent id="currency-sheet">
-            <div className="flex items-center justify-between mb-2">
-              <SheetTitle>Select Currency</SheetTitle>
-              <SheetClose aria-label="Close" className="text-sm text-gray-500 hover:underline">
-                Close
-              </SheetClose>
-            </div>
-            <div className="space-y-2">
-              {availableCurrencies.map((currency) => (
-                <button
-                  key={currency.code}
-                  onClick={() => {
-                    updateFlowState({ currency })
-                    setShowCurrencyDialog(false)
-                  }}
-                  className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
-                >
-                  <img
-                    src={getCurrencyFlag(currency.code) || "/placeholder.svg"}
-                    alt={`${currency.code} flag`}
-                    className="w-8 h-6 rounded-sm object-cover"
-                    onError={(e) => {
-                      e.currentTarget.style.display = "none"
-                      e.currentTarget.nextElementSibling!.textContent = "🌍"
+        isDesktop ? (
+          <Dialog open={showCurrencyDialog} onOpenChange={setShowCurrencyDialog}>
+            <DialogContent className="sm:max-w-sm">
+              <DialogTitle>Select Currency</DialogTitle>
+              <div className="space-y-2 mt-2">
+                {availableCurrencies.map((currency) => (
+                  <button
+                    key={currency.code}
+                    onClick={() => {
+                      updateFlowState({ currency })
+                      setShowCurrencyDialog(false)
                     }}
-                  />
-                  <span className="hidden text-xl">🌍</span>
-                  <span className="font-medium">{currency.code}</span>
-                  <span className="text-sm text-gray-500">{currency.name}</span>
-                </button>
-              ))}
-            </div>
-          </SheetContent>
-        </Sheet>
+                    className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
+                  >
+                    <img
+                      src={getCurrencyFlag(currency.code) || "/placeholder.svg"}
+                      alt={`${currency.code} flag`}
+                      className="w-8 h-6 rounded-sm object-cover"
+                      onError={(e) => {
+                        e.currentTarget.style.display = "none"
+                        e.currentTarget.nextElementSibling!.textContent = "🌍"
+                      }}
+                    />
+                    <span className="hidden text-xl">🌍</span>
+                    <span className="font-medium">{currency.code}</span>
+                    <span className="text-sm text-gray-500">{currency.name}</span>
+                  </button>
+                ))}
+              </div>
+            </DialogContent>
+          </Dialog>
+        ) : (
+          <Sheet open={showCurrencyDialog} onOpenChange={setShowCurrencyDialog}>
+            <SheetContent id="currency-sheet">
+              <div className="flex items-center justify-between mb-2">
+                <SheetTitle>Select Currency</SheetTitle>
+                <SheetClose aria-label="Close" className="text-sm text-gray-500 hover:underline">
+                  Close
+                </SheetClose>
+              </div>
+              <div className="space-y-2">
+                {availableCurrencies.map((currency) => (
+                  <button
+                    key={currency.code}
+                    onClick={() => {
+                      updateFlowState({ currency })
+                      setShowCurrencyDialog(false)
+                    }}
+                    className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
+                  >
+                    <img
+                      src={getCurrencyFlag(currency.code) || "/placeholder.svg"}
+                      alt={`${currency.code} flag`}
+                      className="w-8 h-6 rounded-sm object-cover"
+                      onError={(e) => {
+                        e.currentTarget.style.display = "none"
+                        e.currentTarget.nextElementSibling!.textContent = "🌍"
+                      }}
+                    />
+                    <span className="hidden text-xl">🌍</span>
+                    <span className="font-medium">{currency.code}</span>
+                    <span className="text-sm text-gray-500">{currency.name}</span>
+                  </button>
+                ))}
+              </div>
+            </SheetContent>
+          </Sheet>
+        )
       )}
 
       {showTokenDialog && (
-        <Sheet open={showTokenDialog} onOpenChange={setShowTokenDialog}>
-          <SheetContent id="token-sheet">
-            <div className="flex items-center justify-between mb-2">
-              <SheetTitle>Select Token</SheetTitle>
-              <SheetClose aria-label="Close" className="text-sm text-gray-500 hover:underline">
-                Close
-              </SheetClose>
-            </div>
-            <div className="space-y-2">
-              {cryptoTokens.map((token) => (
-                <button
-                  key={token.id}
-                  onClick={() => {
-                    updateFlowState({ token })
-                    setShowTokenDialog(false)
-                  }}
-                  className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
-                >
-                  <img
-                    src={getTokenIcon(token.symbol) || "/placeholder.svg"}
-                    alt={`${token.symbol} icon`}
-                    className="w-8 h-8 rounded-full object-cover"
-                    onError={(e) => {
-                      e.currentTarget.style.display = "none"
-                      e.currentTarget.nextElementSibling!.textContent = "◯"
+        isDesktop ? (
+          <Dialog open={showTokenDialog} onOpenChange={setShowTokenDialog}>
+            <DialogContent className="sm:max-w-sm">
+              <DialogTitle>Select Token</DialogTitle>
+              <div className="space-y-2 mt-2">
+                {cryptoTokens.map((token) => (
+                  <button
+                    key={token.id}
+                    onClick={() => {
+                      updateFlowState({ token })
+                      setShowTokenDialog(false)
                     }}
-                  />
-                  <span className="hidden text-xl">◯</span>
-                  <span className="font-medium">{token.symbol}</span>
-                  <span className="text-sm text-gray-500">{token.name}</span>
-                </button>
-              ))}
-            </div>
-          </SheetContent>
-        </Sheet>
+                    className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
+                  >
+                    <img
+                      src={getTokenIcon(token.symbol) || "/placeholder.svg"}
+                      alt={`${token.symbol} icon`}
+                      className="w-8 h-8 rounded-full object-cover"
+                      onError={(e) => {
+                        e.currentTarget.style.display = "none"
+                        e.currentTarget.nextElementSibling!.textContent = "◯"
+                      }}
+                    />
+                    <span className="hidden text-xl">◯</span>
+                    <span className="font-medium">{token.symbol}</span>
+                    <span className="text-sm text-gray-500">{token.name}</span>
+                  </button>
+                ))}
+              </div>
+            </DialogContent>
+          </Dialog>
+        ) : (
+          <Sheet open={showTokenDialog} onOpenChange={setShowTokenDialog}>
+            <SheetContent id="token-sheet">
+              <div className="flex items-center justify-between mb-2">
+                <SheetTitle>Select Token</SheetTitle>
+                <SheetClose aria-label="Close" className="text-sm text-gray-500 hover:underline">
+                  Close
+                </SheetClose>
+              </div>
+              <div className="space-y-2">
+                {cryptoTokens.map((token) => (
+                  <button
+                    key={token.id}
+                    onClick={() => {
+                      updateFlowState({ token })
+                      setShowTokenDialog(false)
+                    }}
+                    className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
+                  >
+                    <img
+                      src={getTokenIcon(token.symbol) || "/placeholder.svg"}
+                      alt={`${token.symbol} icon`}
+                      className="w-8 h-8 rounded-full object-cover"
+                      onError={(e) => {
+                        e.currentTarget.style.display = "none"
+                        e.currentTarget.nextElementSibling!.textContent = "◯"
+                      }}
+                    />
+                    <span className="hidden text-xl">◯</span>
+                    <span className="font-medium">{token.symbol}</span>
+                    <span className="text-sm text-gray-500">{token.name}</span>
+                  </button>
+                ))}
+              </div>
+            </SheetContent>
+          </Sheet>
+        )
       )}
     </div>
   )

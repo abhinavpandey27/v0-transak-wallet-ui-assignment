@@ -71,7 +71,7 @@ export default function KYCSecurityScreen({ verificationDate = "12 Mar 2025, 11:
   }
 
   return (
-    <div className="max-w-[640px] w-full">
+    <div className="max-w-full sm:max-w-[640px] w-full">
       {/* KYC Verification Section */}
       <div className="mb-8">
         <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">KYC Verification</h2>
@@ -79,17 +79,23 @@ export default function KYCSecurityScreen({ verificationDate = "12 Mar 2025, 11:
           {kycSteps.map((step, index) => {
             const Icon = step.icon
             return (
-              <div key={step.id} className="flex items-center gap-2">
+              <div key={step.id} className="flex items-center gap-2 justify-between">
                 {/* Number circle */}
-                <div className="w-6 h-6 rounded-full flex items-center justify-center text-sm font-semibold flex-shrink-0 text-black bg-slate-100">
-                  {index + 1}
+                <div className="flex items-center gap-2">
+                  <div className="w-6 h-6 rounded-full flex items-center justify-center text-sm font-semibold flex-shrink-0 text-black bg-slate-100">
+                    {index + 1}
+                  </div>
+                  {/* Smaller icon */}
+                  <div className="w-8 h-8 rounded-full dark:bg-gray-700 flex items-center justify-center flex-shrink-0 bg-transparent">
+                    <Icon className="w-4 h-4 text-gray-600 dark:text-gray-300" />
+                  </div>
+                  {/* Title */}
+                  <span className="font-medium text-gray-900 dark:text-white">{step.title}</span>
                 </div>
-                {/* Smaller icon */}
-                <div className="w-8 h-8 rounded-full dark:bg-gray-700 flex items-center justify-center flex-shrink-0 bg-transparent">
-                  <Icon className="w-4 h-4 text-gray-600 dark:text-gray-300" />
-                </div>
-                {/* Simple title only */}
-                <span className="font-medium text-gray-900 dark:text-white">{step.title}</span>
+                {/* Status chip */}
+                <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${getStepStatusColor(step.status)}`}>
+                  {step.status === "completed" ? "Completed" : step.status === "pending" ? "Pending" : "Failed"}
+                </span>
               </div>
             )
           })}
@@ -125,7 +131,7 @@ export default function KYCSecurityScreen({ verificationDate = "12 Mar 2025, 11:
       {/* Authentication Section */}
       <div className="mb-8">
         <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Authentication</h2>
-        <div className="bg-white dark:bg-gray-800 shadow-m border border-gray-200 dark:border-gray-600 rounded-xl overflow-hidden">
+        <div className="bg-white dark:bg-gray-800 shadow-md border border-gray-200 dark:border-gray-600 rounded-xl overflow-hidden">
           <Card className="p-4 border-0 rounded-none cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors border-b border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">

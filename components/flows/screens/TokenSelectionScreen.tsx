@@ -1,7 +1,9 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { ChevronDown, X, AlertCircle, Loader2 } from "lucide-react"
+import { Sheet, SheetContent, SheetTitle, SheetClose } from "@/components/ui/sheet"
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog"
 import { CustomButton } from "@/components/ui/custom-button"
 import type { Token, Currency, BankAccount } from "../WithdrawalFlow"
 import BankDetailsCard from "@/components/shared/BankDetailsCard"
@@ -38,6 +40,7 @@ export default function TokenSelectionScreen({
   const [showBankAccountDialog, setShowBankAccountDialog] = useState(false)
   const [selectedBankIndex, setSelectedBankIndex] = useState(0)
   const [currentBankIndex, setCurrentBankIndex] = useState(0)
+  const [isDesktop, setIsDesktop] = useState(false)
 
   const mockBankAccounts = [
     {
@@ -76,6 +79,23 @@ export default function TokenSelectionScreen({
 
   const hasTokens = availableTokens.length > 0
   const hasCurrencies = availableCurrencies.length > 0
+  
+  const getTokenIconUrl = (symbol: string) =>
+    `https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/128/color/${symbol.toLowerCase()}.png`
+
+  useEffect(() => {
+    const mq = typeof window !== 'undefined' ? window.matchMedia('(min-width: 768px)') : null
+    const update = () => setIsDesktop(!!mq?.matches)
+    update()
+    if (mq) {
+      if (mq.addEventListener) mq.addEventListener('change', update)
+      else mq.addListener(update)
+      return () => {
+        if (mq.removeEventListener) mq.removeEventListener('change', update)
+        else mq.removeListener(update)
+      }
+    }
+  }, [])
 
   const handleNext = () => {
     if (!selectedToken || !selectedCurrency || !currentBankAccount) {
@@ -229,130 +249,219 @@ export default function TokenSelectionScreen({
         </div>
       )}
 
-      {/* Token Selection Dialog */}
+      {/* Token Selection: Dialog on desktop, Sheet on mobile */}
       {showTokenDialog && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 w-80 max-w-sm mx-4">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Select Token</h3>
-              <button
-                onClick={() => setShowTokenDialog(false)}
-                className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            {isLoading ? (
-              <div className="flex items-center justify-center py-8">
-                <Loader2 className="w-6 h-6 animate-spin text-gray-400" />
-                <span className="ml-2 text-sm text-gray-500">Loading tokens...</span>
+        isDesktop ? (
+          <Dialog open={showTokenDialog} onOpenChange={setShowTokenDialog}>
+            <DialogContent className="sm:max-w-sm">
+              <DialogTitle>Select Token</DialogTitle>
+              {isLoading ? (
+                <div className="flex items-center justify-center py-8">
+                  <Loader2 className="w-6 h-6 animate-spin text-gray-400" />
+                  <span className="ml-2 text-sm text-gray-500">Loading tokens...</span>
+                </div>
+              ) : availableTokens.length === 0 ? (
+                <div className="text-center py-8">
+                  <AlertCircle className="w-8 h-8 text-gray-400 mx-auto mb-2" />
+                  <p className="text-sm text-gray-500 dark:text-gray-400">No tokens available</p>
+                </div>
+              ) : (
+                <div className="space-y-2 max-h-64 overflow-y-auto mt-2">
+                  {availableTokens.map((token) => (
+                    <button
+                      key={token.id}
+                      className={`w-full flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-colors text-left ${
+                        selectedToken?.id === token.id
+                          ? "bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700"
+                          : "hover:bg-gray-50 dark:hover:bg-gray-700"
+                      }`}
+                      onClick={() => {
+                        onTokenSelect(token)
+                        setShowTokenDialog(false)
+                      }}
+                    >
+                      <img
+                        src={getTokenIconUrl(token.symbol)}
+                        alt={`${token.symbol} icon`}
+                        className="w-8 h-8 rounded-full object-cover"
+                        onError={(e) => {
+                          e.currentTarget.style.display = "none"
+                          const placeholder = document.createElement('div')
+                          placeholder.className = 'w-8 h-8 rounded-full bg-gray-300 dark:bg-gray-600 flex items-center justify-center text-xs font-medium'
+                          placeholder.textContent = token.symbol.slice(0,2)
+                          e.currentTarget.replaceWith(placeholder)
+                        }}
+                      />
+                      <div className="flex-1">
+                        <div className="font-medium text-gray-900 dark:text-white text-sm">{token.symbol}</div>
+                        <div className="text-sm text-gray-500 dark:text-gray-400">{token.name}</div>
+                        {token.balance !== undefined && (
+                          <div className="text-xs text-gray-400">Balance: {token.balance}</div>
+                        )}
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </DialogContent>
+          </Dialog>
+        ) : (
+          <Sheet open={showTokenDialog} onOpenChange={setShowTokenDialog}>
+            <SheetContent>
+              <div className="flex items-center justify-between mb-2">
+                <SheetTitle>Select Token</SheetTitle>
+                <SheetClose aria-label="Close" className="text-sm text-gray-500 hover:underline">Close</SheetClose>
               </div>
-            ) : availableTokens.length === 0 ? (
-              <div className="text-center py-8">
-                <AlertCircle className="w-8 h-8 text-gray-400 mx-auto mb-2" />
-                <p className="text-sm text-gray-500 dark:text-gray-400">No tokens available</p>
-              </div>
-            ) : (
-              <div className="space-y-2 max-h-64 overflow-y-auto">
-                {availableTokens.map((token) => (
-                  <button
-                    key={token.id}
-                    className={`w-full flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-colors text-left ${
-                      selectedToken?.id === token.id
-                        ? "bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700"
-                        : "hover:bg-gray-50 dark:hover:bg-gray-700"
-                    }`}
-                    onClick={() => {
-                      onTokenSelect(token)
-                      setShowTokenDialog(false)
-                    }}
-                  >
-                    <div className="w-8 h-8 rounded-full bg-gray-300 dark:bg-gray-600 flex items-center justify-center text-xs font-medium">
-                      {token.icon || token.symbol.slice(0, 2)}
-                    </div>
-                    <div className="flex-1">
-                      <div className="font-medium text-gray-900 dark:text-white text-sm">{token.symbol}</div>
-                      <div className="text-sm text-gray-500 dark:text-gray-400">{token.name}</div>
-                      {token.balance !== undefined && (
-                        <div className="text-xs text-gray-400">Balance: {token.balance}</div>
-                      )}
-                    </div>
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
+              {isLoading ? (
+                <div className="flex items-center justify-center py-8">
+                  <Loader2 className="w-6 h-6 animate-spin text-gray-400" />
+                  <span className="ml-2 text-sm text-gray-500">Loading tokens...</span>
+                </div>
+              ) : availableTokens.length === 0 ? (
+                <div className="text-center py-8">
+                  <AlertCircle className="w-8 h-8 text-gray-400 mx-auto mb-2" />
+                  <p className="text-sm text-gray-500 dark:text-gray-400">No tokens available</p>
+                </div>
+              ) : (
+                <div className="space-y-2 max-h-64 overflow-y-auto">
+                  {availableTokens.map((token) => (
+                    <button
+                      key={token.id}
+                      className={`w-full flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-colors text-left ${
+                        selectedToken?.id === token.id
+                          ? "bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700"
+                          : "hover:bg-gray-50 dark:hover:bg-gray-700"
+                      }`}
+                      onClick={() => {
+                        onTokenSelect(token)
+                        setShowTokenDialog(false)
+                      }}
+                    >
+                      <img
+                        src={getTokenIconUrl(token.symbol)}
+                        alt={`${token.symbol} icon`}
+                        className="w-8 h-8 rounded-full object-cover"
+                        onError={(e) => {
+                          e.currentTarget.style.display = "none"
+                          const placeholder = document.createElement('div')
+                          placeholder.className = 'w-8 h-8 rounded-full bg-gray-300 dark:bg-gray-600 flex items-center justify-center text-xs font-medium'
+                          placeholder.textContent = token.symbol.slice(0,2)
+                          e.currentTarget.replaceWith(placeholder)
+                        }}
+                      />
+                      <div className="flex-1">
+                        <div className="font-medium text-gray-900 dark:text-white text-sm">{token.symbol}</div>
+                        <div className="text-sm text-gray-500 dark:text-gray-400">{token.name}</div>
+                        {token.balance !== undefined && (
+                          <div className="text-xs text-gray-400">Balance: {token.balance}</div>
+                        )}
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </SheetContent>
+          </Sheet>
+        )
       )}
 
       {/* Currency Selection Dialog */}
       {showCurrencyDialog && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 w-80 max-w-sm mx-4">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Select Currency</h3>
-              <button
-                onClick={() => setShowCurrencyDialog(false)}
-                className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            {isLoading ? (
-              <div className="flex items-center justify-center py-8">
-                <Loader2 className="w-6 h-6 animate-spin text-gray-400" />
-                <span className="ml-2 text-sm text-gray-500">Loading currencies...</span>
+        isDesktop ? (
+          <Dialog open={showCurrencyDialog} onOpenChange={setShowCurrencyDialog}>
+            <DialogContent className="sm:max-w-sm">
+              <DialogTitle>Select Currency</DialogTitle>
+              {isLoading ? (
+                <div className="flex items-center justify-center py-8">
+                  <Loader2 className="w-6 h-6 animate-spin text-gray-400" />
+                  <span className="ml-2 text-sm text-gray-500">Loading currencies...</span>
+                </div>
+              ) : availableCurrencies.length === 0 ? (
+                <div className="text-center py-8">
+                  <AlertCircle className="w-8 h-8 text-gray-400 mx-auto mb-2" />
+                  <p className="text-sm text-gray-500 dark:text-gray-400">No currencies available</p>
+                </div>
+              ) : (
+                <div className="space-y-2 max-h-64 overflow-y-auto mt-2">
+                  {availableCurrencies.map((currency) => (
+                    <button
+                      key={currency.code}
+                      className={`w-full flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-colors text-left ${
+                        selectedCurrency?.code === currency.code
+                          ? "bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700"
+                          : "hover:bg-gray-50 dark:hover:bg-gray-700"
+                      }`}
+                      onClick={() => {
+                        onCurrencySelect(currency)
+                        setShowCurrencyDialog(false)
+                      }}
+                    >
+                      <span className="text-2xl">{currency.flag}</span>
+                      <div className="flex-1">
+                        <div className="font-medium text-gray-900 dark:text-white text-sm">{currency.code}</div>
+                        <div className="text-sm text-gray-500 dark:text-gray-400">{currency.name}</div>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </DialogContent>
+          </Dialog>
+        ) : (
+          <Sheet open={showCurrencyDialog} onOpenChange={setShowCurrencyDialog}>
+            <SheetContent>
+              <div className="flex items-center justify-between mb-2">
+                <SheetTitle>Select Currency</SheetTitle>
+                <SheetClose aria-label="Close" className="text-sm text-gray-500 hover:underline">Close</SheetClose>
               </div>
-            ) : availableCurrencies.length === 0 ? (
-              <div className="text-center py-8">
-                <AlertCircle className="w-8 h-8 text-gray-400 mx-auto mb-2" />
-                <p className="text-sm text-gray-500 dark:text-gray-400">No currencies available</p>
-              </div>
-            ) : (
-              <div className="space-y-2 max-h-64 overflow-y-auto">
-                {availableCurrencies.map((currency) => (
-                  <button
-                    key={currency.code}
-                    className={`w-full flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-colors text-left ${
-                      selectedCurrency?.code === currency.code
-                        ? "bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700"
-                        : "hover:bg-gray-50 dark:hover:bg-gray-700"
-                    }`}
-                    onClick={() => {
-                      onCurrencySelect(currency)
-                      setShowCurrencyDialog(false)
-                    }}
-                  >
-                    <span className="text-2xl">{currency.flag}</span>
-                    <div className="flex-1">
-                      <div className="font-medium text-gray-900 dark:text-white text-sm">{currency.code}</div>
-                      <div className="text-sm text-gray-500 dark:text-gray-400">{currency.name}</div>
-                    </div>
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
+              {isLoading ? (
+                <div className="flex items-center justify-center py-8">
+                  <Loader2 className="w-6 h-6 animate-spin text-gray-400" />
+                  <span className="ml-2 text-sm text-gray-500">Loading currencies...</span>
+                </div>
+              ) : availableCurrencies.length === 0 ? (
+                <div className="text-center py-8">
+                  <AlertCircle className="w-8 h-8 text-gray-400 mx-auto mb-2" />
+                  <p className="text-sm text-gray-500 dark:text-gray-400">No currencies available</p>
+                </div>
+              ) : (
+                <div className="space-y-2 max-h-64 overflow-y-auto">
+                  {availableCurrencies.map((currency) => (
+                    <button
+                      key={currency.code}
+                      className={`w-full flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-colors text-left ${
+                        selectedCurrency?.code === currency.code
+                          ? "bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700"
+                          : "hover:bg-gray-50 dark:hover:bg-gray-700"
+                      }`}
+                      onClick={() => {
+                        onCurrencySelect(currency)
+                        setShowCurrencyDialog(false)
+                      }}
+                    >
+                      <span className="text-2xl">{currency.flag}</span>
+                      <div className="flex-1">
+                        <div className="font-medium text-gray-900 dark:text-white text-sm">{currency.code}</div>
+                        <div className="text-sm text-gray-500 dark:text-gray-400">{currency.name}</div>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </SheetContent>
+          </Sheet>
+        )
       )}
 
       {/* Bank Account Selection Dialog */}
       {showBankAccountDialog && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 w-96 max-w-md mx-4">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Select Bank Account</h3>
-              <button
-                onClick={() => setShowBankAccountDialog(false)}
-                className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
-              >
-                <X className="w-5 h-5" />
-              </button>
+        <Sheet open={showBankAccountDialog} onOpenChange={setShowBankAccountDialog}>
+          <SheetContent>
+            <div className="flex items-center justify-between mb-2">
+              <SheetTitle>Select Bank Account</SheetTitle>
+              <SheetClose aria-label="Close" className="text-sm text-gray-500 hover:underline">Close</SheetClose>
             </div>
-
-            <div className="space-y-3 max-h-80 overflow-y-auto mb-6">
+            <div className="space-y-3 max-h-80 overflow-y-auto mb-4">
               {mockBankAccounts.map((account, index) => (
                 <button
                   key={account.id}
@@ -378,7 +487,6 @@ export default function TokenSelectionScreen({
                 </button>
               ))}
             </div>
-
             <div className="flex gap-3">
               <button
                 onClick={() => setShowBankAccountDialog(false)}
@@ -390,8 +498,8 @@ export default function TokenSelectionScreen({
                 Done
               </CustomButton>
             </div>
-          </div>
-        </div>
+          </SheetContent>
+        </Sheet>
       )}
     </div>
   )

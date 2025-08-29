@@ -7,6 +7,7 @@ import { useAuth } from "@/contexts/AuthContext"
 import { useTheme } from "next-themes"
 import { SettingsDialog } from "@/components/theme/SettingsDialog"
 import { Sheet, SheetContent, SheetTitle, SheetClose } from "@/components/ui/sheet"
+import { ThemeSettings } from "@/components/theme/ThemeSettings"
 
 import WalletScreen from "@/components/screens/WalletScreen"
 import DepositFlow from "@/components/flows/DepositFlow"
@@ -28,6 +29,7 @@ export default function WalletDashboard() {
   const [isResizing, setIsResizing] = useState(false)
   const [showSettingsDialog, setShowSettingsDialog] = useState(false)
   const [mobileNavOpen, setMobileNavOpen] = useState(false)
+  const [isDesktop, setIsDesktop] = useState(false)
 
   // Transaction limits state
   const [limitsActiveTab, setLimitsActiveTab] = useState("daily")
@@ -84,6 +86,21 @@ export default function WalletDashboard() {
     setMounted(true)
   }, [])
 
+  // Track viewport to decide dialog vs sheet for settings
+  useEffect(() => {
+    const mq = typeof window !== 'undefined' ? window.matchMedia('(min-width: 768px)') : null
+    const update = () => setIsDesktop(!!mq?.matches)
+    update()
+    if (mq) {
+      if (mq.addEventListener) mq.addEventListener('change', update)
+      else mq.addListener(update)
+      return () => {
+        if (mq.removeEventListener) mq.removeEventListener('change', update)
+        else mq.removeListener(update)
+      }
+    }
+  }, [])
+
   useEffect(() => {
     if (mounted) {
       console.log("[v0] Theme state:", { theme })
@@ -112,7 +129,7 @@ export default function WalletDashboard() {
 
   // Don't render until mounted to avoid hydration mismatch
   if (!mounted) {
-    return <div className="flex min-h-[100dvh] bg-gray-50">Loading...</div>
+    return <div className="flex h-[100dvh] bg-gray-50">Loading...</div>
   }
 
   if (currentScreen === "deposit") {
@@ -124,10 +141,10 @@ export default function WalletDashboard() {
   }
 
   return (
-    <div className="flex min-h-[100dvh] bg-gray-50 dark:bg-gray-900">
+    <div className="flex h-[100dvh] bg-gray-50 dark:bg-gray-900">
       {/* Sidebar */}
       <div
-        className="bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 md:flex hidden flex-col h-full relative"
+        className="bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 md:flex hidden flex-col h-full relative justify-between"
         style={{ width: `${sidebarWidth}px` }}
       >
         {/* Logo */}
@@ -212,7 +229,7 @@ export default function WalletDashboard() {
         </nav>
 
         {/* Footer */}
-        <div className="px-4 flex-shrink-0 pb-4">
+        <div className="px-4 flex-shrink-0 pb-4 mt-auto">
           <div className="flex flex-col gap-3">
             <div className="flex flex-col gap-2 text-xs text-gray-500 dark:text-gray-400">
               <div className="flex items-center justify-start gap-0.5">
@@ -247,8 +264,17 @@ export default function WalletDashboard() {
       {/* Right Pane */}
       <div className="flex-1 flex flex-col bg-white dark:bg-gray-800">
         {/* Mobile Top Bar */}
-        <div className="md:hidden sticky top-0 z-20 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+        <div className="md:hidden sticky top-0 z-20 bg-white dark:bg-gray-800">
           <div className="px-4 py-3 flex items-center justify-between">
+            <button
+              aria-label="Open settings"
+              aria-haspopup="dialog"
+              className="w-9 h-9 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center justify-center"
+              onClick={() => setShowSettingsDialog(true)}
+            >
+              <MoreHorizontal className="w-5 h-5 text-gray-500 dark:text-gray-400" />
+            </button>
+            <h1 className="text-base font-semibold text-gray-900 dark:text-white">{getScreenTitle()}</h1>
             <button
               aria-label="Open navigation"
               aria-haspopup="dialog"
@@ -259,20 +285,11 @@ export default function WalletDashboard() {
             >
               <Menu className="w-5 h-5 text-gray-700 dark:text-gray-300" />
             </button>
-            <h1 className="text-base font-semibold text-gray-900 dark:text-white">{getScreenTitle()}</h1>
-            <button
-              aria-label="Open settings"
-              aria-haspopup="dialog"
-              onClick={() => setShowSettingsDialog(true)}
-              className="w-9 h-9 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center justify-center"
-            >
-              <MoreHorizontal className="w-5 h-5 text-gray-500 dark:text-gray-400" />
-            </button>
           </div>
         </div>
 
         {/* Main Content */}
-        <div className="flex-1 p-8 flex justify-center overflow-y-auto pb-72 h-full pt-8 pl-0 pr-0">
+        <div className="flex-1 px-4 md:px-0 py-8 flex justify-center overflow-y-auto pb-safe h-full">
           {currentScreen === "wallet" && (
             <WalletScreen
               activeTab={activeTab}
@@ -297,8 +314,22 @@ export default function WalletDashboard() {
         </div>
       </div>
 
-      {/* Settings Dialog */}
-      <SettingsDialog open={showSettingsDialog} onOpenChange={setShowSettingsDialog} />
+      {/* Settings: render Dialog on desktop, Sheet on mobile */}
+      {isDesktop ? (
+        <SettingsDialog open={showSettingsDialog} onOpenChange={setShowSettingsDialog} />
+      ) : (
+        <Sheet open={showSettingsDialog} onOpenChange={setShowSettingsDialog}>
+          <SheetContent>
+            <div className="flex items-center justify-between mb-2">
+              <SheetTitle>Theme Settings</SheetTitle>
+              <SheetClose aria-label="Close" className="text-sm text-gray-500 hover:underline">Close</SheetClose>
+            </div>
+            <div className="pt-1">
+              <ThemeSettings />
+            </div>
+          </SheetContent>
+        </Sheet>
+      )}
 
       {/* Mobile Navigation Sheet */}
       <Sheet open={mobileNavOpen} onOpenChange={setMobileNavOpen}>
@@ -316,9 +347,9 @@ export default function WalletDashboard() {
                 setCurrentScreen("wallet")
                 setMobileNavOpen(false)
               }}
-              className="w-full text-left py-3 text-gray-900 dark:text-white"
+              className="w-full text-left py-3 text-gray-900 dark:text-white flex items-center gap-3"
             >
-              Your Wallet
+              <Home className="w-4 h-4" /> Your Wallet
             </button>
             <button
               type="button"
@@ -326,9 +357,9 @@ export default function WalletDashboard() {
                 setCurrentScreen("profile")
                 setMobileNavOpen(false)
               }}
-              className="w-full text-left py-3 text-gray-900 dark:text-white"
+              className="w-full text-left py-3 text-gray-900 dark:text-white flex items-center gap-3"
             >
-              Your Account
+              <User className="w-4 h-4" /> Your Account
             </button>
             <button
               type="button"
@@ -336,9 +367,9 @@ export default function WalletDashboard() {
                 setCurrentScreen("transactionLimits")
                 setMobileNavOpen(false)
               }}
-              className="w-full text-left py-3 text-gray-900 dark:text-white"
+              className="w-full text-left py-3 text-gray-900 dark:text-white flex items-center gap-3"
             >
-              Transaction Limits
+              <CreditCard className="w-4 h-4" /> Transaction Limits
             </button>
             <button
               type="button"
@@ -346,9 +377,9 @@ export default function WalletDashboard() {
                 setCurrentScreen("security")
                 setMobileNavOpen(false)
               }}
-              className="w-full text-left py-3 text-gray-900 dark:text-white"
+              className="w-full text-left py-3 text-gray-900 dark:text-white flex items-center gap-3"
             >
-              KYC and Security
+              <Shield className="w-4 h-4" /> KYC and Security
             </button>
             <button
               type="button"
@@ -356,9 +387,9 @@ export default function WalletDashboard() {
                 handleLogout()
                 setMobileNavOpen(false)
               }}
-              className="w-full text-left py-3 text-red-600 dark:text-red-400"
+              className="w-full text-left py-3 text-red-600 dark:text-red-400 flex items-center gap-3"
             >
-              Log Out
+              <LogOut className="w-4 h-4" /> Log Out
             </button>
           </nav>
         </SheetContent>

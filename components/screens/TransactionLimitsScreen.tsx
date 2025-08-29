@@ -18,6 +18,8 @@ interface TransactionLimitsScreenProps {
   availableCurrencies: Currency[]
 }
 
+import { Sheet, SheetContent, SheetTitle, SheetClose } from "@/components/ui/sheet"
+
 export default function TransactionLimitsScreen({
   limitsActiveTab,
   setLimitsActiveTab,
@@ -47,7 +49,7 @@ export default function TransactionLimitsScreen({
   }
 
   return (
-    <div className="max-w-[640px] w-full">
+    <div className="max-w-full sm:max-w-[640px] w-full">
       <div className="mb-8">
         {/* Tab Navigation - Full Width */}
         <div className="relative bg-gray-100 dark:bg-gray-700 p-1 flex rounded-full">
@@ -82,7 +84,7 @@ export default function TransactionLimitsScreen({
       <div className="mb-8">
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 text-left">Bank Transfer</h3>
         <div className="bg-gray-50 dark:bg-gray-700 rounded-xl p-6">
-          <div className="grid grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             <div className="text-left">
               <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300 mb-2">
                 <TrendingUp className="w-4 h-4" />
@@ -94,7 +96,7 @@ export default function TransactionLimitsScreen({
                 )}
               </div>
             </div>
-            <div className="text-left border-l border-gray-200 dark:border-gray-600 pl-6">
+            <div className="text-left sm:border-l border-gray-200 dark:border-gray-600 sm:pl-6">
               <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300 mb-2">
                 <TrendingDown className="w-4 h-4" />
                 Used
@@ -105,7 +107,7 @@ export default function TransactionLimitsScreen({
                 )}
               </div>
             </div>
-            <div className="text-left border-l border-gray-200 dark:border-gray-600 pl-6">
+            <div className="text-left sm:border-l border-gray-200 dark:border-gray-600 sm:pl-6">
               <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300 mb-2">
                 <DollarSign className="w-4 h-4" />
                 Remaining
@@ -124,7 +126,7 @@ export default function TransactionLimitsScreen({
       <div className="mb-8">
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 text-left">Credit and Debit Card</h3>
         <div className="bg-gray-50 dark:bg-gray-700 rounded-xl p-6">
-          <div className="grid grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             <div className="text-left">
               <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300 mb-2">
                 <TrendingUp className="w-4 h-4" />
@@ -136,7 +138,7 @@ export default function TransactionLimitsScreen({
                 )}
               </div>
             </div>
-            <div className="text-left border-l border-gray-200 dark:border-gray-600 pl-6">
+            <div className="text-left sm:border-l border-gray-200 dark:border-gray-600 sm:pl-6">
               <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300 mb-2">
                 <TrendingDown className="w-4 h-4" />
                 Used
@@ -147,7 +149,7 @@ export default function TransactionLimitsScreen({
                 )}
               </div>
             </div>
-            <div className="text-left border-l border-gray-200 dark:border-gray-600 pl-6">
+            <div className="text-left sm:border-l border-gray-200 dark:border-gray-600 sm:pl-6">
               <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300 mb-2">
                 <DollarSign className="w-4 h-4" />
                 Remaining
@@ -173,37 +175,34 @@ export default function TransactionLimitsScreen({
       </div>
 
       {showLimitsCurrencyDialog && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 w-96 max-w-[90vw]">
-            <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Select Currency</h3>
+        <Sheet open={showLimitsCurrencyDialog} onOpenChange={setShowLimitsCurrencyDialog}>
+          <SheetContent>
+            <div className="flex items-center justify-between mb-2">
+              <SheetTitle>Select Currency</SheetTitle>
+              <SheetClose aria-label="Close" className="text-sm text-gray-500 hover:underline">Close</SheetClose>
+            </div>
             <div className="space-y-2">
               {availableCurrencies.map((currency) => (
-                <div
+                <button
                   key={currency.code}
                   onClick={() => {
                     setLimitsCurrency(currency)
                     setShowLimitsCurrencyDialog(false)
                   }}
-                  className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+                  className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
                 >
                   <div className="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-600 flex items-center justify-center">
                     <span className="text-gray-600 dark:text-gray-300 font-semibold text-sm">{currency.symbol}</span>
                   </div>
-                  <div>
+                  <div className="text-left">
                     <div className="font-medium text-gray-900 dark:text-white">{currency.code}</div>
                     <div className="text-sm text-gray-600 dark:text-gray-400">{currency.name}</div>
                   </div>
-                </div>
+                </button>
               ))}
             </div>
-            <button
-              onClick={() => setShowLimitsCurrencyDialog(false)}
-              className="mt-4 w-full bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 py-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
-            >
-              Cancel
-            </button>
-          </div>
-        </div>
+          </SheetContent>
+        </Sheet>
       )}
     </div>
   )

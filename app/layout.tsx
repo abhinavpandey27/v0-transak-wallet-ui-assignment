@@ -58,9 +58,14 @@ const beVietnamPro = Be_Vietnam_Pro({
 })
 
 export const metadata: Metadata = {
-  title: "Crypto Wallet UI",
-  description: "A comprehensive crypto wallet interface with customizable themes",
-  generator: "v0.app",
+  title: "Transak Wallet UI",
+  description: "A comprehensive crypto wallet interface with customizable fonts",
+  icons: {
+    icon: "/favicon.svg",
+    shortcut: "/favicon.svg",
+    apple: "/favicon.svg",
+  },
+    generator: 'v0.app'
 }
 
 export default function RootLayout({

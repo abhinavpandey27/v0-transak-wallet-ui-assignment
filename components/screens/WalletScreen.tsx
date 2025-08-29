@@ -104,7 +104,7 @@ export default function WalletScreen({
     <div className="w-full">
       {/* Enhanced Balance Overview - Narrow, Centered */}
       <div className="flex justify-center">
-        <div className="max-w-[640px] w-full">
+        <div className="max-w-full sm:max-w-[640px] w-full">
           <Card className="mb-8 bg-white dark:bg-gray-800 border-0 shadow-none">
             <div className="bg-gray-50 dark:bg-gray-700 rounded-xl px-5 py-5">
               {/* Row 1: Your Total Balance on Left and Change Toggle on Right */}
@@ -132,10 +132,10 @@ export default function WalletScreen({
 
               {/* Row 2: Balance Value on Left and Change % on Right */}
               <div className="flex justify-between items-end">
-                <h2 className="text-gray-900 dark:text-white font-semibold text-4xl">$1435.20</h2>
+                <h2 className="text-gray-900 dark:text-white font-semibold text-[clamp(1.75rem,6vw,2.25rem)]">$1435.20</h2>
                 <div className="flex items-center">
                   <span
-                    className={`text-xl px-3 py-1.5 rounded-lg font-semibold ${
+                    className={`text-sm sm:text-base md:text-xl px-2.5 sm:px-3 py-1 rounded-lg font-semibold ${
                       changePct >= 0
                         ? "text-green-600 dark:text-green-400 bg-green-100 dark:bg-green-900/30"
                         : "text-red-600 dark:text-red-400 bg-red-100 dark:bg-red-900/30"
@@ -152,8 +152,8 @@ export default function WalletScreen({
       </div>
 
       {/* Balance Chart - Full Width */}
-      <Card className="p-6 mb-8 bg-white dark:bg-gray-800 mx-4">
-        <div className="h-80">
+      <Card className="p-6 mb-8 bg-white dark:bg-gray-800 mx-3 sm:mx-4">
+        <div className="h-56 sm:h-72 md:h-80">
           <Line
             data={{
               labels: currentData.labels,
@@ -187,6 +187,7 @@ export default function WalletScreen({
             options={{
               responsive: true,
               maintainAspectRatio: false,
+              interaction: { mode: 'index', intersect: false },
               plugins: {
                 legend: {
                   display: false,
@@ -255,13 +256,13 @@ export default function WalletScreen({
 
       {/* Action Buttons - Narrow, Centered */}
       <div className="flex justify-center">
-        <div className="max-w-[640px] w-full">
-          <div className="flex gap-4 mb-8">
-            <CustomButton variant="primary" size="lg" onClick={onNavigateToDeposit} className="flex-1">
+        <div className="max-w-full sm:max-w-[640px] w-full">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-8">
+            <CustomButton variant="primary" size="lg" onClick={onNavigateToDeposit} className="flex-1 w-full sm:w-auto">
               <Download className="w-5 h-5" />
               Deposit
             </CustomButton>
-            <CustomButton variant="primary" size="lg" onClick={onNavigateToWithdraw} className="flex-1">
+            <CustomButton variant="primary" size="lg" onClick={onNavigateToWithdraw} className="flex-1 w-full sm:w-auto">
               <Upload className="w-5 h-5" />
               Withdraw
             </CustomButton>
@@ -271,8 +272,8 @@ export default function WalletScreen({
 
       {/* Tabs and Filters - Narrow, Centered */}
       <div className="flex justify-center">
-        <div className="max-w-[640px] w-full">
-          <div className="flex items-center justify-between mb-6">
+        <div className="max-w-full sm:max-w-[640px] w-full">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-0 mb-6">
             <div className="relative bg-gray-100 dark:bg-gray-700 p-1 flex rounded-full">
               <CustomButton
                 variant="ghost"
@@ -291,7 +292,7 @@ export default function WalletScreen({
                 Crypto Wallet
               </CustomButton>
             </div>
-            <CustomButton variant="outline" size="sm" className="text-sm">
+            <CustomButton variant="outline" size="sm" className="text-sm self-start sm:self-auto">
               <Filter className="w-4 h-4" />
               Filters
             </CustomButton>
@@ -301,7 +302,7 @@ export default function WalletScreen({
 
       {/* Transactions List - Narrow, Centered */}
       <div className="flex justify-center">
-        <div className="max-w-[640px] w-full">
+        <div className="max-w-full sm:max-w-[640px] w-full">
           <div className="transition-opacity duration-200 ease-in-out">
             {(activeTab === "fiat" ? transactions : cryptoTransactions).map((transaction) => (
               <TransactionItem key={transaction.id} transaction={transaction} />

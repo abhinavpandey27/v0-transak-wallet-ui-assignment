@@ -70,8 +70,8 @@ export default function WithdrawalQRScreen({
   }
 
   return (
-    <div className="min-h-screen dark:bg-gray-900 flex flex-col bg-transparent">
-      <div className="flex-1 flex items-start justify-center p-4 py-10 mt-8 bg-transparent">
+    <div className="min-h-[100dvh] dark:bg-gray-900 flex flex-col bg-transparent pb-safe">
+      <div className="flex-1 flex items-start justify-center p-4 py-8 mt-4 bg-transparent">
         <div className="w-full max-w-md space-y-6">
           <div className="bg-gray-white dark:bg-gray-900 rounded-xl p-6 text-center space-y-4 px-0 py-0">
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">Send Your Crypto</h2>
@@ -85,7 +85,7 @@ export default function WithdrawalQRScreen({
             <div className="flex justify-center">
               <div className="p-4 rounded-xl shadow-sm bg-gray-50 dark:bg-gray-800">
                 {qrLoading && (
-                  <div className="w-80 h-80 bg-gray-200 dark:bg-gray-600 rounded-lg animate-pulse flex items-center justify-center">
+                  <div className="w-64 h-64 sm:w-80 sm:h-80 bg-gray-200 dark:bg-gray-600 rounded-lg animate-pulse flex items-center justify-center">
                     <div className="text-gray-400 dark:text-gray-500">
                       <svg className="w-12 h-12 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path
@@ -101,7 +101,7 @@ export default function WithdrawalQRScreen({
                 <img
                   src={`https://api.qrserver.com/v1/create-qr-code/?size=320x320&data=${encodeURIComponent(enhancedWalletAddress)}`}
                   alt="Wallet QR Code"
-                  className={`w-80 h-80 ${qrLoading ? "hidden" : "block"}`}
+                  className={`w-64 h-64 sm:w-80 sm:h-80 ${qrLoading ? "hidden" : "block"}`}
                   onLoad={handleQrLoad}
                 />
               </div>

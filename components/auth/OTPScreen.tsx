@@ -21,7 +21,7 @@ export default function OTPScreen() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
+    <div className="min-h-[100dvh] bg-gray-50 dark:bg-gray-900 flex flex-col">
       {/* Header */}
       <div className="px-6 py-4">
         <Button variant="ghost" size="sm" onClick={handleBack} className="p-2 hover:bg-muted">

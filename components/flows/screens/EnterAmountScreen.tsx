@@ -3,6 +3,7 @@
 import { useState, useEffect, useMemo, useCallback } from "react"
 import { CustomButton } from "@/components/ui/custom-button"
 import { X, ChevronDown } from "lucide-react"
+import { Sheet, SheetContent, SheetTitle, SheetClose } from "@/components/ui/sheet"
 import type { Currency, Token } from "@/types"
 
 interface EnterAmountScreenProps {
@@ -369,13 +370,13 @@ export default function EnterAmountScreen({
       </div>
 
       {showCurrencyDialog && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 w-full max-w-sm mx-4">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold">Select Currency</h3>
-              <button onClick={() => setShowCurrencyDialog(false)}>
-                <X className="w-5 h-5" />
-              </button>
+        <Sheet open={showCurrencyDialog} onOpenChange={setShowCurrencyDialog}>
+          <SheetContent>
+            <div className="flex items-center justify-between mb-2">
+              <SheetTitle>Select Currency</SheetTitle>
+              <SheetClose aria-label="Close" className="text-sm text-gray-500 hover:underline">
+                Close
+              </SheetClose>
             </div>
             <div className="space-y-2">
               {availableCurrencies.map((currency) => (
@@ -402,18 +403,18 @@ export default function EnterAmountScreen({
                 </button>
               ))}
             </div>
-          </div>
-        </div>
+          </SheetContent>
+        </Sheet>
       )}
 
       {showTokenDialog && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 w-full max-w-sm mx-4">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold">Select Token</h3>
-              <button onClick={() => setShowTokenDialog(false)}>
-                <X className="w-5 h-5" />
-              </button>
+        <Sheet open={showTokenDialog} onOpenChange={setShowTokenDialog}>
+          <SheetContent>
+            <div className="flex items-center justify-between mb-2">
+              <SheetTitle>Select Token</SheetTitle>
+              <SheetClose aria-label="Close" className="text-sm text-gray-500 hover:underline">
+                Close
+              </SheetClose>
             </div>
             <div className="space-y-2">
               {cryptoTokens.map((token) => (
@@ -440,8 +441,8 @@ export default function EnterAmountScreen({
                 </button>
               ))}
             </div>
-          </div>
-        </div>
+          </SheetContent>
+        </Sheet>
       )}
     </div>
   )

@@ -281,7 +281,7 @@ export default function WithdrawalFlow({ onBack, onComplete }: WithdrawalFlowPro
   }, [state.step])
 
   return (
-    <div className="min-h-screen dark:bg-gray-900 bg-transparent">
+    <div className="min-h-[100dvh] dark:bg-gray-900 bg-transparent">
       <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
         <div className="max-w-full mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
@@ -303,7 +303,7 @@ export default function WithdrawalFlow({ onBack, onComplete }: WithdrawalFlowPro
         </div>
       </div>
 
-      <div className="max-w-md mx-auto px-0 py-0">{renderCurrentScreen()}</div>
+      <div className="max-w-md mx-auto px-4 py-0 pb-safe">{renderCurrentScreen()}</div>
     </div>
   )
 }

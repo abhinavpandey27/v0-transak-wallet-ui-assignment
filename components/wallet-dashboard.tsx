@@ -2,10 +2,11 @@
 
 import { useState, useEffect } from "react"
 import type React from "react"
-import { Home, User, CreditCard, Shield, MoreHorizontal, LogOut } from "lucide-react"
+import { Home, User, CreditCard, Shield, MoreHorizontal, LogOut, Menu } from "lucide-react"
 import { useAuth } from "@/contexts/AuthContext"
 import { useTheme } from "next-themes"
 import { SettingsDialog } from "@/components/theme/SettingsDialog"
+import { Sheet, SheetContent, SheetTitle, SheetClose } from "@/components/ui/sheet"
 
 import WalletScreen from "@/components/screens/WalletScreen"
 import DepositFlow from "@/components/flows/DepositFlow"
@@ -26,6 +27,7 @@ export default function WalletDashboard() {
   const [sidebarWidth, setSidebarWidth] = useState(280)
   const [isResizing, setIsResizing] = useState(false)
   const [showSettingsDialog, setShowSettingsDialog] = useState(false)
+  const [mobileNavOpen, setMobileNavOpen] = useState(false)
 
   // Transaction limits state
   const [limitsActiveTab, setLimitsActiveTab] = useState("daily")
@@ -110,7 +112,7 @@ export default function WalletDashboard() {
 
   // Don't render until mounted to avoid hydration mismatch
   if (!mounted) {
-    return <div className="flex h-screen bg-gray-50">Loading...</div>
+    return <div className="flex min-h-[100dvh] bg-gray-50">Loading...</div>
   }
 
   if (currentScreen === "deposit") {
@@ -122,10 +124,10 @@ export default function WalletDashboard() {
   }
 
   return (
-    <div className="flex h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="flex min-h-[100dvh] bg-gray-50 dark:bg-gray-900">
       {/* Sidebar */}
       <div
-        className="bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 flex flex-col h-full relative"
+        className="bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 md:flex hidden flex-col h-full relative"
         style={{ width: `${sidebarWidth}px` }}
       >
         {/* Logo */}
@@ -244,7 +246,26 @@ export default function WalletDashboard() {
 
       {/* Right Pane */}
       <div className="flex-1 flex flex-col bg-white dark:bg-gray-800">
-        {/* Page Header Section */}
+        {/* Mobile Top Bar */}
+        <div className="md:hidden sticky top-0 z-20 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+          <div className="px-4 py-3 flex items-center justify-between">
+            <button
+              aria-label="Open navigation"
+              className="w-9 h-9 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center justify-center"
+              onClick={() => setMobileNavOpen(true)}
+            >
+              <Menu className="w-5 h-5 text-gray-700 dark:text-gray-300" />
+            </button>
+            <h1 className="text-base font-semibold text-gray-900 dark:text-white">{getScreenTitle()}</h1>
+            <button
+              aria-label="Open settings"
+              onClick={() => setShowSettingsDialog(true)}
+              className="w-9 h-9 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center justify-center"
+            >
+              <MoreHorizontal className="w-5 h-5 text-gray-500 dark:text-gray-400" />
+            </button>
+          </div>
+        </div>
 
         {/* Main Content */}
         <div className="flex-1 p-8 flex justify-center overflow-y-auto pb-72 h-full pt-8 pl-0 pr-0">
@@ -274,6 +295,70 @@ export default function WalletDashboard() {
 
       {/* Settings Dialog */}
       <SettingsDialog open={showSettingsDialog} onOpenChange={setShowSettingsDialog} />
+
+      {/* Mobile Navigation Sheet */}
+      <Sheet open={mobileNavOpen} onOpenChange={setMobileNavOpen}>
+        <SheetContent>
+          <div className="flex items-center justify-between mb-2">
+            <SheetTitle>Navigation</SheetTitle>
+            <SheetClose aria-label="Close navigation" className="text-sm text-gray-500 hover:underline">
+              Close
+            </SheetClose>
+          </div>
+          <div className="mt-2 divide-y divide-gray-200 dark:divide-gray-700">
+            <button
+              type="button"
+              onClick={() => {
+                setCurrentScreen("wallet")
+                setMobileNavOpen(false)
+              }}
+              className="w-full text-left py-3 text-gray-900 dark:text-white"
+            >
+              Your Wallet
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setCurrentScreen("profile")
+                setMobileNavOpen(false)
+              }}
+              className="w-full text-left py-3 text-gray-900 dark:text-white"
+            >
+              Your Account
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setCurrentScreen("transactionLimits")
+                setMobileNavOpen(false)
+              }}
+              className="w-full text-left py-3 text-gray-900 dark:text-white"
+            >
+              Transaction Limits
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setCurrentScreen("security")
+                setMobileNavOpen(false)
+              }}
+              className="w-full text-left py-3 text-gray-900 dark:text-white"
+            >
+              KYC and Security
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                handleLogout()
+                setMobileNavOpen(false)
+              }}
+              className="w-full text-left py-3 text-red-600 dark:text-red-400"
+            >
+              Log Out
+            </button>
+          </div>
+        </SheetContent>
+      </Sheet>
     </div>
   )
 }

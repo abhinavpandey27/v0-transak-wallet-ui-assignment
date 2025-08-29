@@ -308,7 +308,7 @@ export default function DepositFlow({ onComplete }: { onComplete: () => void }) 
   }, [flowState, quote, bankDetails, verification, updateFlowState, handleError])
 
   return (
-    <div className="min-h-screen dark:bg-gray-900 bg-transparent">
+    <div className="min-h-[100dvh] dark:bg-gray-900 bg-transparent pb-safe">
       {/* Header */}
       <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
         <div className="max-w-full mx-auto px-4 py-4 flex items-center justify-between">

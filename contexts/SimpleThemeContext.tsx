@@ -49,7 +49,7 @@ export function SimpleThemeProvider({ children }: { children: React.ReactNode })
 
   // Prevent hydration mismatch
   if (!mounted) {
-    return <div className="flex h-screen bg-gray-50">Loading...</div>
+    return <div className="flex min-h-[100dvh] bg-gray-50">Loading...</div>
   }
 
   return (

@@ -36,7 +36,7 @@ export default function WithdrawalBankDetailsScreen({
   onBack,
 }: WithdrawalBankDetailsScreenProps) {
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900 flex flex-col">
+    <div className="min-h-[100dvh] bg-white dark:bg-gray-900 flex flex-col">
       {/* Header */}
       
 

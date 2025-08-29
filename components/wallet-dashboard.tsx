@@ -145,9 +145,11 @@ export default function WalletDashboard() {
         {/* Navigation */}
         <nav className="flex-1 p-4 overflow-y-auto px-5">
           <div className="space-y-2">
-            <div
+            <button
+              type="button"
               onClick={() => setCurrentScreen("wallet")}
-              className={`flex items-center gap-3 rounded-lg py-3 px-4 cursor-pointer ${
+              aria-current={currentScreen === "wallet" ? "page" : undefined}
+              className={`flex w-full text-left items-center gap-3 rounded-lg py-3 px-4 ${
                 currentScreen === "wallet"
                   ? "bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white font-semibold"
                   : "text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
@@ -155,10 +157,12 @@ export default function WalletDashboard() {
             >
               <Home className="w-5 h-5" />
               <span>Your Wallet</span>
-            </div>
-            <div
+            </button>
+            <button
+              type="button"
               onClick={() => setCurrentScreen("profile")}
-              className={`flex items-center gap-3 py-3 px-4 rounded-lg cursor-pointer ${
+              aria-current={currentScreen === "profile" ? "page" : undefined}
+              className={`flex w-full text-left items-center gap-3 py-3 px-4 rounded-lg ${
                 currentScreen === "profile"
                   ? "bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white font-semibold"
                   : "text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
@@ -166,10 +170,12 @@ export default function WalletDashboard() {
             >
               <User className="w-5 h-5" />
               <span>Your Profile</span>
-            </div>
-            <div
+            </button>
+            <button
+              type="button"
               onClick={() => setCurrentScreen("transactionLimits")}
-              className={`flex items-center gap-3 py-3 px-4 rounded-lg cursor-pointer ${
+              aria-current={currentScreen === "transactionLimits" ? "page" : undefined}
+              className={`flex w-full text-left items-center gap-3 py-3 px-4 rounded-lg ${
                 currentScreen === "transactionLimits"
                   ? "bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white font-semibold"
                   : "text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
@@ -177,10 +183,12 @@ export default function WalletDashboard() {
             >
               <CreditCard className="w-5 h-5" />
               <span>Transaction Limits</span>
-            </div>
-            <div
+            </button>
+            <button
+              type="button"
               onClick={() => setCurrentScreen("security")}
-              className={`flex items-center gap-3 py-3 px-4 rounded-lg cursor-pointer ${
+              aria-current={currentScreen === "security" ? "page" : undefined}
+              className={`flex w-full text-left items-center gap-3 py-3 px-4 rounded-lg ${
                 currentScreen === "security"
                   ? "bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white font-semibold"
                   : "text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
@@ -188,15 +196,16 @@ export default function WalletDashboard() {
             >
               <Shield className="w-5 h-5" />
               <span>KYC and Security</span>
-            </div>
+            </button>
 
-            <div
+            <button
+              type="button"
               onClick={handleLogout}
-              className="flex items-center gap-3 py-3 px-4 rounded-lg cursor-pointer text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 mt-4 border-t border-gray-200 dark:border-gray-700 pt-4"
+              className="flex w-full text-left items-center gap-3 py-3 px-4 rounded-lg text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 mt-4 border-t border-gray-200 dark:border-gray-700 pt-4"
             >
               <LogOut className="w-5 h-5" />
               <span>Log Out</span>
-            </div>
+            </button>
           </div>
         </nav>
 

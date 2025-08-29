@@ -6,20 +6,7 @@ import { Download, Upload, Filter } from "lucide-react"
 import TransactionItem from "@/components/shared/TransactionItem"
 import { useState } from "react"
 import { Line } from "react-chartjs-2"
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-  Filler,
-} from "chart.js"
-
-// Register Chart.js components
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler)
+import "@/lib/chart"
 
 interface Transaction {
   id: number
@@ -110,6 +97,9 @@ export default function WalletScreen({
     return change
   }
 
+  // Memoize change percentage to avoid recompute on render
+  const changePct = calculateChange(selectedPeriod)
+
   return (
     <div className="w-full">
       {/* Enhanced Balance Overview - Narrow, Centered */}
@@ -146,13 +136,13 @@ export default function WalletScreen({
                 <div className="flex items-center">
                   <span
                     className={`text-xl px-3 py-1.5 rounded-lg font-semibold ${
-                      calculateChange(selectedPeriod) >= 0
+                      changePct >= 0
                         ? "text-green-600 dark:text-green-400 bg-green-100 dark:bg-green-900/30"
                         : "text-red-600 dark:text-red-400 bg-red-100 dark:bg-red-900/30"
                     }`}
                   >
-                    {calculateChange(selectedPeriod) >= 0 ? "+" : ""}
-                    {calculateChange(selectedPeriod).toFixed(1)}%
+                    {changePct >= 0 ? "+" : ""}
+                    {changePct.toFixed(1)}%
                   </span>
                 </div>
               </div>

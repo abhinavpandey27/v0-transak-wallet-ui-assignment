@@ -3,7 +3,8 @@
 
 @layer base {
   html {
-    font-family: var(--font-instrument-sans);
+    /* Use dynamic primary font to reflect ThemeSettings changes */
+    font-family: var(--font-primary, var(--font-instrument-sans));
     --font-sans: var(--font-instrument-sans);
     --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   }

@@ -60,9 +60,9 @@ export function ThemeSettings() {
   return (
     <div className="space-y-8">
       {/* Theme Mode */}
-      <section className="space-y-3">
+      <section className="space-y-3 gap-1">
         <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Theme Mode</label>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3" role="radiogroup" aria-label="Theme Mode">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-2" role="radiogroup" aria-label="Theme Mode">
           {themeOptions.map((option) => {
             const selected = (theme || 'system') === option.value
             return (
@@ -84,7 +84,7 @@ export function ThemeSettings() {
                 <div className="flex-shrink-0">{option.icon}</div>
                 <div className="flex-1 min-w-0">
                   <div className="font-medium truncate">{option.label}</div>
-                  <p className="text-xs text-gray-600 dark:text-gray-400 truncate">{option.description}</p>
+                  
                 </div>
               </Card>
             )
@@ -97,7 +97,7 @@ export function ThemeSettings() {
       {/* Typography */}
       <section className="space-y-3">
         <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Typography</label>
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-2">
           {TOP_GOOGLE_FONTS.map((font) => (
             <Card
               key={font.variable}
@@ -109,9 +109,7 @@ export function ThemeSettings() {
               onClick={() => changeFont(font.variable)}
             >
               <div className="font-medium text-sm truncate">{font.name}</div>
-              <div className="text-[11px] text-gray-600 dark:text-gray-400 mt-1 truncate">
-                {font.weights.join(', ')} weights
-              </div>
+              
             </Card>
           ))}
         </div>

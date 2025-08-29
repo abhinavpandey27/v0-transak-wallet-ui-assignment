@@ -15,12 +15,14 @@ import { ThemeProvider } from "@/components/theme-provider"
 
 const instrumentSans = Instrument_Sans({
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
   display: "swap",
   variable: "--font-instrument-sans",
 })
 
 const inter = Inter({
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
   display: "swap",
   variable: "--font-inter",
 })
@@ -34,18 +36,21 @@ const ibmPlexSans = IBM_Plex_Sans({
 
 const manrope = Manrope({
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
   display: "swap",
   variable: "--font-manrope",
 })
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
   display: "swap",
   variable: "--font-plus-jakarta-sans",
 })
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
   display: "swap",
   variable: "--font-space-grotesk",
 })

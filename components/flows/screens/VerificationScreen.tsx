@@ -42,12 +42,12 @@ export default function VerificationScreen({ flowState, onNext, verificationHook
   return (
     <div className="py-8 space-y-8">
       {/* Loading/Status State */}
-      <div className="text-center">
+      <div className="text-center border-gray-100 border dark:border-gray-700 rounded-xl py-6 bg-gray-50 dark:bg-gray-800">
         {!isVerificationFailed && !isVerificationSuccess && (
           <>
             {/* Spinner */}
             <div className="w-16 h-16 mx-auto mb-6">
-              <div className="w-16 h-16 border-4 border-gray-200 dark:border-gray-700 border-t-blue-500 rounded-full animate-spin"></div>
+              <div className="w-16 h-16 border-4 border-gray-200 dark:border-gray-400 border-t-blue-500 dark:border-t-blue-400 rounded-full animate-spin"></div>
             </div>
 
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">

@@ -53,7 +53,7 @@ export default function BankDetailsScreen({ flowState, onNext, canProceed, isLoa
           <span className="text-white text-xs font-bold">i</span>
         </div>
         <p className="text-sm text-gray-600 dark:text-gray-400">
-          This is a test environment where we are simulating the test environment
+          This is a demo environment. All transactions are simulated for testing purposes only.
         </p>
       </div>
     </div>

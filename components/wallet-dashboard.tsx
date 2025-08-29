@@ -169,7 +169,7 @@ export default function WalletDashboard() {
               }`}
             >
               <User className="w-5 h-5" />
-              <span>Your Profile</span>
+              <span>Your Account</span>
             </button>
             <button
               type="button"

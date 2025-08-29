@@ -20,7 +20,7 @@ export default function PaymentVerifiedScreen({ flowState, onComplete, verificat
   return (
     <div className="py-8 space-y-8">
       {/* Success State */}
-      <div className="text-center border-gray-200 border rounded-xl py-6 bg-gray-50">
+      <div className="text-center border-gray-100 border dark:border-gray-700 rounded-xl py-6 bg-gray-50 dark: bg-gray-800">
         {/* Green Check */}
         <div className="w-16 h-16 mx-auto mb-6">
           <CheckCircle className="w-16 h-16 text-green-500" />

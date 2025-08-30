@@ -71,6 +71,10 @@ export class WithdrawalApiError extends Error {
 }
 
 // Simulated API endpoints with realistic delays and error scenarios
+// Demo mode: deterministic status progression for predictable demos
+const DEMO_DETERMINISTIC = true
+const statusStartTimes = new Map<string, number>()
+
 export const withdrawalApi = {
   async getQuote(request: WithdrawalQuoteRequest): Promise<WithdrawalQuoteResponse> {
     // Simulate network delay
@@ -139,49 +143,63 @@ export const withdrawalApi = {
 
   async checkWithdrawalStatus(request: WithdrawalStatusRequest): Promise<WithdrawalStatusResponse> {
     // Simulate network delay
-    await new Promise((resolve) => setTimeout(resolve, 800 + Math.random() * 800))
+    await new Promise((resolve) => setTimeout(resolve, 300))
 
-    if (Math.random() < 0.0001) {
-      throw new WithdrawalApiError("Status check service unavailable", "STATUS_SERVICE_ERROR", 503)
+    if (!DEMO_DETERMINISTIC) {
+      // Fallback to randomized behavior if needed
+      const random = Math.random()
+      if (random < 0.3) {
+        return { status: "pending", transactionId: request.transactionId }
+      } else if (random < 0.6) {
+        return { status: "received", transactionId: request.transactionId, receivedTokenAmount: 0.1 }
+      } else if (random < 0.9) {
+        return { status: "processing", transactionId: request.transactionId, receivedTokenAmount: 0.1 }
+      } else {
+        return {
+          status: "completed",
+          transactionId: request.transactionId,
+          receivedTokenAmount: 0.1,
+          fiatAmount: 456,
+          completedAt: new Date().toISOString(),
+        }
+      }
     }
 
-    // Simulate withdrawal process stages
-    const random = Math.random()
+    // Deterministic progression for demos
+    const now = Date.now()
+    const start = statusStartTimes.get(request.transactionId) ?? now
+    if (!statusStartTimes.has(request.transactionId)) statusStartTimes.set(request.transactionId, start)
+    const elapsedSec = Math.max(0, Math.floor((now - start) / 1000))
 
-    if (random < 0.3) {
-      return {
-        status: "pending",
-        transactionId: request.transactionId,
-        estimatedCompletionTime: new Date(Date.now() + 5 * 60 * 1000).toISOString(),
-      }
-    } else if (random < 0.6) {
+    const remainingToComplete = Math.max(0, 12 - elapsedSec)
+    const eta = new Date(now + remainingToComplete * 1000).toISOString()
+
+    if (elapsedSec < 4) {
+      return { status: "pending", transactionId: request.transactionId, estimatedCompletionTime: eta }
+    }
+    if (elapsedSec < 8) {
       return {
         status: "received",
         transactionId: request.transactionId,
-        receivedTokenAmount: 0.1, // Mock received amount
-        estimatedCompletionTime: new Date(Date.now() + 3 * 60 * 1000).toISOString(),
+        receivedTokenAmount: 0.1,
+        estimatedCompletionTime: eta,
       }
-    } else if (random < 0.85) {
+    }
+    if (elapsedSec < 12) {
       return {
         status: "processing",
         transactionId: request.transactionId,
         receivedTokenAmount: 0.1,
-        estimatedCompletionTime: new Date(Date.now() + 2 * 60 * 1000).toISOString(),
+        estimatedCompletionTime: eta,
       }
-    } else if (random < 0.95) {
-      return {
-        status: "completed",
-        transactionId: request.transactionId,
-        receivedTokenAmount: 0.1,
-        fiatAmount: 456, // Mock fiat amount
-        completedAt: new Date().toISOString(),
-      }
-    } else {
-      return {
-        status: "failed",
-        transactionId: request.transactionId,
-        failureReason: "Transaction timeout - tokens not received within expected timeframe",
-      }
+    }
+
+    return {
+      status: "completed",
+      transactionId: request.transactionId,
+      receivedTokenAmount: 0.1,
+      fiatAmount: 456,
+      completedAt: new Date().toISOString(),
     }
   },
 

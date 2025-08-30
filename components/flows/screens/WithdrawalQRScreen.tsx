@@ -25,11 +25,10 @@ export default function WithdrawalQRScreen({
   onComplete,
   onBack,
 }: WithdrawalQRScreenProps) {
-  const [timeLeft, setTimeLeft] = useState(260) // 4m 20s in seconds
+  const [timeLeft, setTimeLeft] = useState(12) // 12 seconds demo countdown
   const [copied, setCopied] = useState(false)
   const [qrLoading, setQrLoading] = useState(true)
-
-  const enhancedWalletAddress = walletAddress || "0x742d35Cc6634C0532925a3b8D4C2C4e4C4e4C4e4C4e4C4e4C4e4C4e4C4e4C4e4"
+  const hasAddress = Boolean(walletAddress)
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -55,9 +54,15 @@ export default function WithdrawalQRScreen({
   const totalTime = 260
   const progress = ((totalTime - timeLeft) / totalTime) * 100
 
+  useEffect(() => {
+    // When a new wallet address arrives, show skeleton until the QR image loads
+    if (hasAddress) setQrLoading(true)
+  }, [hasAddress])
+
   const copyToClipboard = async () => {
     try {
-      await navigator.clipboard.writeText(enhancedWalletAddress)
+      if (!hasAddress) return
+      await navigator.clipboard.writeText(walletAddress)
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
     } catch (err) {
@@ -84,7 +89,7 @@ export default function WithdrawalQRScreen({
 
             <div className="flex justify-center">
               <div className="p-4 rounded-xl shadow-sm bg-gray-50 dark:bg-gray-800">
-                {qrLoading && (
+                {(!hasAddress || qrLoading) && (
                   <div className="w-64 h-64 sm:w-80 sm:h-80 bg-gray-200 dark:bg-gray-600 rounded-lg animate-pulse flex items-center justify-center">
                     <div className="text-gray-400 dark:text-gray-500">
                       <svg className="w-12 h-12 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -98,23 +103,28 @@ export default function WithdrawalQRScreen({
                     </div>
                   </div>
                 )}
-                <img
-                  src={`https://api.qrserver.com/v1/create-qr-code/?size=320x320&data=${encodeURIComponent(enhancedWalletAddress)}`}
-                  alt="Wallet QR Code"
-                  className={`w-64 h-64 sm:w-80 sm:h-80 ${qrLoading ? "hidden" : "block"}`}
-                  onLoad={handleQrLoad}
-                />
+                {hasAddress && (
+                  <img
+                    src={`https://api.qrserver.com/v1/create-qr-code/?size=320x320&data=${encodeURIComponent(walletAddress)}`}
+                    alt="Wallet QR Code"
+                    className={`w-64 h-64 sm:w-80 sm:h-80 ${qrLoading ? "hidden" : "block"}`}
+                    onLoad={handleQrLoad}
+                  />
+                )}
               </div>
             </div>
 
             <div className="flex items-center justify-between dark:bg-gray-700 rounded-lg p-3 bg-gray-50">
-              <span className="text-sm font-mono text-gray-700 dark:text-gray-300 truncate mr-2">
-                {enhancedWalletAddress}
+              <span className="text-sm font-mono text-gray-700 dark:text-gray-300 truncate mr-2 min-h-[1.25rem]">
+                {hasAddress ? walletAddress : "Generating address…"}
               </span>
               <button
                 onClick={copyToClipboard}
                 aria-label="Copy wallet address"
-                className="ml-2 p-2 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-lg transition-colors flex-shrink-0"
+                disabled={!hasAddress}
+                className={`ml-2 p-2 rounded-lg transition-colors flex-shrink-0 ${
+                  hasAddress ? "hover:bg-gray-100 dark:hover:bg-gray-600" : "opacity-50 cursor-not-allowed"
+                }`}
               >
                 {copied ? (
                   <svg className="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" role="img" aria-label="Copied">

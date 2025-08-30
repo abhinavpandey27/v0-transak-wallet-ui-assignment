@@ -104,7 +104,7 @@ export function useWithdrawalStatus() {
   }, [])
 
   const startPolling = useCallback(
-    (request: WithdrawalStatusRequest, intervalMs = 5000) => {
+    (request: WithdrawalStatusRequest, intervalMs = 2000) => {
       // Clear existing interval
       if (intervalRef.current) {
         clearInterval(intervalRef.current)

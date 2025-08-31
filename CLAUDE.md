@@ -23,7 +23,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ### Project Structure
 
-```
+\`\`\`
 app/                    # Next.js App Router pages
 ├── layout.tsx         # Root layout with font configuration
 ├── page.tsx           # Home page (renders AuthFlow)
@@ -47,7 +47,7 @@ data/                  # Mock data and configuration
 
 types/                 # TypeScript type definitions
 lib/                   # Utilities and helpers
-```
+\`\`\`
 
 ### Key Architectural Patterns
 

@@ -1,18 +1,18 @@
-# Virtual Account Demo Video
+# Transak's Virtual Account UI/UX Upgrade and FE Implementation using AI-powered tools
 
 ## TL;DR
-- **What:** Improved UX of **Transak’s white-labeled virtual wallet** (virtual account APIs).  
+- **What:** Improved UX of **Transak’s white-labeled virtual wallet** 
 - **Why it matters:** A **fully responsive, thoughtfully designed wallet experience** that can be tweaked and customized for any partner integration.  
-- **How:** Iterated with AI-assisted tools for structure, design, and code cleanup.  
+- **How:** Built with AI-powered tools for structure, design, and code cleanup.  
 - **Links:**  
-  - [Staging URL](#)  
+  - [Staging URL](https://transak-abhinav.vercel.app/)  
   - Test credentials: `email: testing@gmail.com` | `OTP: 123456`  
 
 ---
 
 ## 1. Problem Context & Scope
 - **Source:** Transak provided a staging URL with a working wallet flow.  
-- **Task:** Evaluate the flow, propose **UI/UX improvements**, and implement verified changes using **AI-based tools**.  
+- **Task:** Evaluate the flow, propose **UI/UX improvements**, and implement the updated UX using **AI-based tools**.  
 - **Constraints:**  
   - Must rely heavily on AI-powered tools (design + implementation).  
   - Keep solution modular and reusable in a white-label context.  
@@ -99,8 +99,8 @@
 ---
 
 ## 6. AI Workflow
-- Used **ChatGPT** for framing, audits, and UX copy improvements.  
-- Used **v0** for component generation & layout structure.  
+- Used **ChatGPT** for porject detailing out, framing, audits, and UX copy improvements.  
+- Used **v0** for layout structuring and component generation.
 - Used **Cursor** + **Codex** for code cleanup, refactors, and consistency checks.  
 - All AI outputs were human-reviewed and tested before final commit.  
 

@@ -299,7 +299,7 @@ export default function WithdrawalFlow({ onBack, onComplete }: WithdrawalFlowPro
 
         {/* Progress bar */}
         <div className="w-full bg-gray-200 dark:bg-gray-700 h-1">
-          <div className="bg-blue-500 h-1 transition-all duration-500 ease-out" style={{ width: `${progress}%` }} />
+          <div className="h-1 transition-all duration-500 ease-out" style={{ width: `${progress}%`, background: 'var(--brand)' }} />
         </div>
       </div>
 

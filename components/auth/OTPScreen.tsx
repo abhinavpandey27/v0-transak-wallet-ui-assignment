@@ -35,7 +35,7 @@ export default function OTPScreen() {
           {/* Email Icon */}
           <div className="flex justify-center">
             <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center">
-              <Mail className="w-8 h-8 text-blue-600 dark:text-blue-400" />
+              <Mail className="w-8 h-8" style={{ color: 'var(--brand)' }} />
             </div>
           </div>
 

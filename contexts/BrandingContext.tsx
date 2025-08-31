@@ -135,6 +135,11 @@ function applyBrandVariables(hex: string) {
   root.style.setProperty("--brand-hover", rgbToHex(hover))
   root.style.setProperty("--brand-active", rgbToHex(active))
   root.style.setProperty("--brand-ring", ring)
+  // Soft background tints for brand surfaces
+  const soft = adjustAlpha(bgRgb, 0.12)
+  const softStrong = adjustAlpha(bgRgb, 0.2)
+  root.style.setProperty("--brand-soft", soft)
+  root.style.setProperty("--brand-soft-strong", softStrong)
 }
 
 function hexToRgb(hex: string) {

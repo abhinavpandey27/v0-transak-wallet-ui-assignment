@@ -56,7 +56,7 @@ export default function ProfileScreen({ profileData, setProfileData }: ProfileSc
             onClick={() => setShowAvatarDialog(true)}
           >
             <div className="text-white text-4xl">{profileData.avatar.type}</div>
-            <div className="absolute -bottom-0.5 -right-0.5 w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center">
+            <div className="absolute -bottom-0.5 -right-0.5 w-6 h-6 bg-[var(--brand)] rounded-full flex items-center justify-center">
               <span className="text-white text-sm font-bold">+</span>
             </div>
           </div>
@@ -213,7 +213,7 @@ export default function ProfileScreen({ profileData, setProfileData }: ProfileSc
                   key={index}
                   className={`w-16 h-16 bg-gradient-to-br ${option.color} rounded-full flex items-center justify-center cursor-pointer hover:scale-105 transition-transform ${
                     profileData.avatar.type === option.emoji
-                      ? "ring-2 ring-blue-500 ring-offset-2 dark:ring-offset-gray-800"
+                      ? "ring-2 ring-[var(--brand)] ring-offset-2 dark:ring-offset-gray-800"
                       : ""
                   }`}
                   onClick={() =>

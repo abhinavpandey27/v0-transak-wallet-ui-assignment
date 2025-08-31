@@ -105,7 +105,7 @@ function CurrencyPicker({
                   key={currency.code}
                   className={`w-full flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-colors text-left ${
                     value.code === currency.code
-                      ? "bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700"
+                      ? "border border-[var(--brand)] bg-[color-mix(in_oklab,var(--brand)_8%,white)] dark:bg-[var(--brand-soft)]"
                       : "hover:bg-gray-50 dark:hover:bg-gray-700"
                   }`}
                   onClick={() => {

@@ -168,7 +168,7 @@ export default function TransactionLimitsScreen({
         Want to see limits in a currency other than {limitsCurrency.name} ({limitsCurrency.symbol})?{" "}
         <button
           onClick={() => setShowLimitsCurrencyDialog(true)}
-          className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 underline font-medium"
+          className="text-[var(--brand)] hover:opacity-90 underline font-medium"
         >
           Change Currency
         </button>

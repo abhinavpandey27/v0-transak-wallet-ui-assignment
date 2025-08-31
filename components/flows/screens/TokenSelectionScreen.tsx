@@ -240,7 +240,7 @@ export default function TokenSelectionScreen({
               Want to withdraw to another bank account?{" "}
               <button
                 onClick={handleChangeBankAccount}
-                className="text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300 font-bold underline transition-colors"
+                className="font-bold underline transition-colors text-[var(--brand)] hover:opacity-90"
               >
                 Change Bank Account
               </button>
@@ -272,7 +272,7 @@ export default function TokenSelectionScreen({
                       key={token.id}
                       className={`w-full flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-colors text-left ${
                         selectedToken?.id === token.id
-                          ? "bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700"
+                          ? "border border-[var(--brand)] bg-[color-mix(in_oklab,var(--brand)_8%,white)] dark:bg-[var(--brand-soft)]"
                           : "hover:bg-gray-50 dark:hover:bg-gray-700"
                       }`}
                       onClick={() => {
@@ -329,7 +329,7 @@ export default function TokenSelectionScreen({
                       key={token.id}
                       className={`w-full flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-colors text-left ${
                         selectedToken?.id === token.id
-                          ? "bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700"
+                          ? "border border-[var(--brand)] bg-[color-mix(in_oklab,var(--brand)_8%,white)] dark:bg-[var(--brand-soft)]"
                           : "hover:bg-gray-50 dark:hover:bg-gray-700"
                       }`}
                       onClick={() => {
@@ -388,7 +388,7 @@ export default function TokenSelectionScreen({
                       key={currency.code}
                       className={`w-full flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-colors text-left ${
                         selectedCurrency?.code === currency.code
-                          ? "bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700"
+                          ? "border border-[var(--brand)] bg-[color-mix(in_oklab,var(--brand)_8%,white)] dark:bg-[var(--brand-soft)]"
                           : "hover:bg-gray-50 dark:hover:bg-gray-700"
                       }`}
                       onClick={() => {
@@ -431,7 +431,7 @@ export default function TokenSelectionScreen({
                       key={currency.code}
                       className={`w-full flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-colors text-left ${
                         selectedCurrency?.code === currency.code
-                          ? "bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700"
+                          ? "border border-[var(--brand)] bg-[color-mix(in_oklab,var(--brand)_8%,white)] dark:bg-[var(--brand-soft)]"
                           : "hover:bg-gray-50 dark:hover:bg-gray-700"
                       }`}
                       onClick={() => {
@@ -467,7 +467,7 @@ export default function TokenSelectionScreen({
                   key={account.id}
                   className={`w-full p-4 rounded-lg border-2 transition-colors text-left ${
                     selectedBankIndex === index
-                      ? "border-blue-500 bg-blue-50 dark:bg-blue-900/30"
+                      ? "border-[var(--brand)] bg-[color-mix(in_oklab,var(--brand)_8%,white)] dark:bg-[var(--brand-soft)]"
                       : "border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500"
                   }`}
                   onClick={() => setSelectedBankIndex(index)}

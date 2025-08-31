@@ -28,7 +28,7 @@ export default function CurrencySelector({
     <>
       <div className={`flex items-center gap-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500 cursor-pointer transition-colors py-1 px-1 rounded-full ${className}`}>
         <img src={selectedCurrency.flag} alt={selectedCurrency.name} className="w-6 h-6 rounded-full" />
-        <span className="text-blue-600 dark:text-blue-400 font-semibold text-sm">
+        <span className="font-semibold text-sm text-[var(--brand)]">
           {selectedCurrency.symbol}
         </span>
         <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{selectedCurrency.code}</span>
@@ -53,7 +53,7 @@ export default function CurrencySelector({
                   key={currency.code}
                   className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-colors ${
                     selectedCurrency.code === currency.code
-                      ? "bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700"
+                      ? "border border-[var(--brand)] bg-[color-mix(in_oklab,var(--brand)_8%,white)] dark:bg-[var(--brand-soft)]"
                       : "hover:bg-gray-50 dark:hover:bg-gray-700"
                   }`}
                   onClick={() => {

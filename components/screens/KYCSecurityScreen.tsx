@@ -173,7 +173,7 @@ export default function KYCSecurityScreen({ verificationDate = "12 Mar 2025, 11:
               <button
                 onClick={() => setAuthenticatorEnabled(!authenticatorEnabled)}
                 className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                  authenticatorEnabled ? "bg-blue-600" : "bg-gray-200 dark:bg-gray-600"
+                  authenticatorEnabled ? "bg-[var(--brand)]" : "bg-gray-200 dark:bg-gray-600"
                 }`}
               >
                 <span
@@ -192,11 +192,7 @@ export default function KYCSecurityScreen({ verificationDate = "12 Mar 2025, 11:
                 <span className="font-medium text-gray-900 dark:text-white">Account Recovery</span>
               </div>
               <div className="flex items-center gap-2">
-                <CustomButton
-                  variant="ghost"
-                  size="sm"
-                  className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300"
-                >
+                <CustomButton variant="ghost" size="sm" className="text-[var(--brand)] hover:opacity-90">
                   Generate Codes
                 </CustomButton>
                 <ChevronRight className="w-4 h-4 text-gray-400 dark:text-gray-500" />

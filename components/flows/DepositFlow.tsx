@@ -329,8 +329,8 @@ export default function DepositFlow({ onComplete }: { onComplete: () => void }) 
         {/* Progress bar */}
         <div className="w-full bg-gray-200 dark:bg-gray-700 h-1">
           <div
-            className="bg-blue-500 h-1 transition-all duration-500 ease-out"
-            style={{ width: `${flowState.progress}%` }}
+            className="h-1 transition-all duration-500 ease-out"
+            style={{ width: `${flowState.progress}%`, background: 'var(--brand)' }}
           />
         </div>
       </div>

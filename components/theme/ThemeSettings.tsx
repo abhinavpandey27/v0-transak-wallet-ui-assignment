@@ -86,7 +86,7 @@ export function ThemeSettings({ compact = false }: ThemeSettingsProps) {
                   }}
                   className={`p-2 cursor-pointer transition-all flex flex-col items-center gap-1 ${
                     selected
-                      ? "ring-2 ring-blue-500 bg-blue-50 dark:bg-blue-950"
+                      ? "ring-2 ring-[var(--brand)] bg-[color-mix(in_oklab,var(--brand)_8%,white)] dark:bg-[var(--brand-soft)]"
                       : "hover:bg-gray-50 dark:hover:bg-gray-800"
                   }`}
                 >
@@ -189,7 +189,7 @@ export function ThemeSettings({ compact = false }: ThemeSettingsProps) {
                 key={font.variable}
                 className={`p-2 cursor-pointer transition-all text-center ${
                   selectedFont === font.variable
-                    ? "ring-2 ring-blue-500 bg-blue-50 dark:bg-blue-950"
+                    ? "ring-2 ring-[var(--brand)] bg-[color-mix(in_oklab,var(--brand)_8%,white)] dark:bg-[var(--brand-soft)]"
                     : "hover:bg-gray-50 dark:hover:bg-gray-800"
                 }`}
                 onClick={() => changeFont(font.variable)}
@@ -205,7 +205,7 @@ export function ThemeSettings({ compact = false }: ThemeSettingsProps) {
                   key={font.variable}
                   className={`p-2 cursor-pointer transition-all text-center ${
                     selectedFont === font.variable
-                      ? "ring-2 ring-blue-500 bg-blue-50 dark:bg-blue-950"
+                      ? "ring-2 ring-[var(--brand)] bg-[color-mix(in_oklab,var(--brand)_8%,white)] dark:bg-[var(--brand-soft)]"
                       : "hover:bg-gray-50 dark:hover:bg-gray-800"
                   }`}
                   onClick={() => changeFont(font.variable)}
@@ -240,7 +240,7 @@ export function ThemeSettings({ compact = false }: ThemeSettingsProps) {
                 }}
                 className={`p-3 cursor-pointer transition-all flex items-center gap-3 ${
                   selected
-                    ? "ring-2 ring-blue-500 bg-blue-50 dark:bg-blue-950"
+                    ? "ring-2 ring-[var(--brand)] bg-[color-mix(in_oklab,var(--brand)_8%,white)] dark:bg-[var(--brand-soft)]"
                     : "hover:bg-gray-50 dark:hover:bg-gray-800"
                 }`}
               >
@@ -346,11 +346,11 @@ export function ThemeSettings({ compact = false }: ThemeSettingsProps) {
         <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Typography</label>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-2">
           {TOP_GOOGLE_FONTS.map((font) => (
-            <Card
-              key={font.variable}
-              className={`p-3 cursor-pointer transition-all text-center ${
+              <Card
+                key={font.variable}
+                className={`p-3 cursor-pointer transition-all text-center ${
                 selectedFont === font.variable
-                  ? "ring-2 ring-blue-500 bg-blue-50 dark:bg-blue-950"
+                  ? "ring-2 ring-[var(--brand)] bg-[color-mix(in_oklab,var(--brand)_8%,white)] dark:bg-[var(--brand-soft)]"
                   : "hover:bg-gray-50 dark:hover:bg-gray-800"
               }`}
               onClick={() => changeFont(font.variable)}

@@ -105,7 +105,7 @@ function CurrencyPicker({
                   key={currency.code}
                   className={`w-full flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-colors text-left ${
                     value.code === currency.code
-                      ? "bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700"
+                      ? "border border-[var(--brand)] bg-[color-mix(in_oklab,var(--brand)_8%,white)] dark:bg-[var(--brand-soft)]"
                       : "hover:bg-gray-50 dark:hover:bg-gray-700"
                   }`}
                   onClick={() => {
@@ -464,7 +464,7 @@ export default function DepositScreen({
                   }}
                   className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-colors ${
                     selectedToken?.symbol === token.symbol
-                      ? "bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700"
+                      ? "border border-[var(--brand)] bg-[color-mix(in_oklab,var(--brand)_8%,white)] dark:bg-[var(--brand-soft)]"
                       : "hover:bg-gray-50 dark:hover:bg-gray-700"
                   }`}
                 >
@@ -474,7 +474,7 @@ export default function DepositScreen({
                     <div className="text-sm text-gray-500 dark:text-gray-400">{token.symbol}</div>
                   </div>
                   {selectedToken?.symbol === token.symbol && (
-                    <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center">
+                    <div className="w-5 h-5 rounded-full flex items-center justify-center" style={{ background: 'var(--brand)' }}>
                       <div className="w-2 h-2 bg-white rounded-full"></div>
                     </div>
                   )}

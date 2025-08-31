@@ -23,13 +23,14 @@ export default function BankAccountCard({ account, isSelected, onSelect }: BankA
         onClick={() => onSelect(account)}
         className={`p-4 rounded-xl border-2 cursor-pointer transition-colors ${
           isSelected
-            ? "border-blue-500 bg-blue-50 dark:bg-blue-900/30"
+            ? "border-[var(--brand)] bg-[color-mix(in_oklab,var(--brand)_8%,white)] dark:bg-[var(--brand-soft)]"
             : "border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500"
         }`}
       >
         <div className="flex items-start gap-3">
-          <div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-100 dark:bg-blue-900 rounded-xl flex items-center justify-center">
-            <CreditCard className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center"
+               style={{ background: 'color-mix(in_oklab, var(--brand) 15%, white)' }}>
+            <CreditCard className="w-6 h-6" style={{ color: 'var(--brand)' }} />
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center justify-between mb-2 gap-2 flex-wrap">

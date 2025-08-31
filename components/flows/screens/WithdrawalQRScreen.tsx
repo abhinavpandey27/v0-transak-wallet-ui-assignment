@@ -81,7 +81,7 @@ export default function WithdrawalQRScreen({
           <div className="bg-gray-white dark:bg-gray-900 rounded-xl p-6 text-center space-y-4 px-0 py-0">
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">Send Your Crypto</h2>
             <p className="text-gray-700 dark:text-gray-300">
-              Transfer <span className="font-semibold text-blue-600">{selectedToken.symbol}</span> to the wallet address
+              Transfer <span className="font-semibold" style={{ color: 'var(--brand)' }}>{selectedToken.symbol}</span> to the wallet address
               below. Once confirmed, you'll receive{" "}
               <span className="font-semibold text-green-600">{selectedCurrency.code}</span> directly in your selected
               bank account.

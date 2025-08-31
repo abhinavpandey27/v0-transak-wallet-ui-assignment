@@ -4,7 +4,8 @@ import { Card } from "@/components/ui/card"
 import { CustomButton } from "@/components/ui/custom-button"
 import { Download, Upload, Filter } from "lucide-react"
 import TransactionItem from "@/components/shared/TransactionItem"
-import { useState } from "react"
+import { useEffect, useMemo, useState } from "react"
+import { useBranding } from "@/contexts/BrandingContext"
 import { Line } from "react-chartjs-2"
 import "@/lib/chart"
 
@@ -101,6 +102,21 @@ export default function WalletScreen({
   // Memoize change percentage to avoid recompute on render
   const changePct = calculateChange(selectedPeriod)
 
+  // Resolve brand color from CSS variables for Chart.js
+  const { brandHex } = useBranding()
+  const [brandRgb, setBrandRgb] = useState<{r:number;g:number;b:number}>({ r: 37, g: 99, b: 235 })
+  useEffect(() => {
+    const root = getComputedStyle(document.documentElement)
+    const hex = root.getPropertyValue("--brand").trim() || brandHex
+    const m = /^#?([0-9a-fA-F]{6})$/.exec(hex)
+    if (m) {
+      const h = m[1]
+      setBrandRgb({ r: parseInt(h.slice(0,2),16), g: parseInt(h.slice(2,4),16), b: parseInt(h.slice(4,6),16) })
+    }
+  }, [brandHex])
+
+  const borderColor = useMemo(() => `rgb(${brandRgb.r}, ${brandRgb.g}, ${brandRgb.b})`, [brandRgb])
+
   return (
     <div className="w-full">
       {/* Enhanced Balance Overview - Narrow, Centered */}
@@ -116,7 +132,7 @@ export default function WalletScreen({
                   <select
                     value={selectedPeriod}
                     onChange={(e) => setSelectedPeriod(e.target.value)}
-                    className="text-sm font-medium text-blue-600 dark:text-blue-400 bg-transparent border-none outline-none cursor-pointer hover:text-blue-700 dark:hover:text-blue-300"
+                    className="text-sm font-medium text-[var(--brand)] bg-transparent border-none outline-none cursor-pointer hover:opacity-90"
                   >
                     {timePeriods.map((period) => (
                       <option
@@ -162,21 +178,21 @@ export default function WalletScreen({
                 {
                   label: "Balance",
                   data: currentData.data,
-                  borderColor: "rgb(59, 130, 246)",
+                  borderColor: borderColor,
                   backgroundColor: (context: any) => {
                     const chart = context.chart
                     const { ctx, chartArea } = chart
                     if (!chartArea) return null
 
                     const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom)
-                    gradient.addColorStop(0, "rgba(59, 130, 246, 0.3)")
-                    gradient.addColorStop(0.5, "rgba(59, 130, 246, 0.15)")
-                    gradient.addColorStop(1, "rgba(59, 130, 246, 0.0)")
+                    gradient.addColorStop(0, `rgba(${brandRgb.r}, ${brandRgb.g}, ${brandRgb.b}, 0.3)`) 
+                    gradient.addColorStop(0.5, `rgba(${brandRgb.r}, ${brandRgb.g}, ${brandRgb.b}, 0.15)`) 
+                    gradient.addColorStop(1, `rgba(${brandRgb.r}, ${brandRgb.g}, ${brandRgb.b}, 0.0)`) 
                     return gradient
                   },
                   fill: true,
                   tension: 0.4,
-                  pointBackgroundColor: "rgb(59, 130, 246)",
+                  pointBackgroundColor: borderColor,
                   pointBorderColor: "#ffffff",
                   pointBorderWidth: 2,
                   pointRadius: 4,
@@ -201,7 +217,7 @@ export default function WalletScreen({
                   backgroundColor: "rgba(17, 24, 39, 0.95)",
                   titleColor: "#ffffff",
                   bodyColor: "#ffffff",
-                  borderColor: "rgba(59, 130, 246, 0.6)",
+                  borderColor: `rgba(${brandRgb.r}, ${brandRgb.g}, ${brandRgb.b}, 0.6)`,
                   borderWidth: 2,
                   cornerRadius: 8,
                   displayColors: false,
@@ -244,7 +260,7 @@ export default function WalletScreen({
               },
               elements: {
                 point: {
-                  hoverBackgroundColor: "rgb(59, 130, 246)",
+                  hoverBackgroundColor: borderColor,
                 },
               },
               layout: {

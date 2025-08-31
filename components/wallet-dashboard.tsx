@@ -255,8 +255,8 @@ export default function WalletDashboard() {
         {/* Theme Toggle */}
 
         <div
-          className={`absolute top-0 right-0 w-1 h-full cursor-col-resize hover:bg-blue-500 transition-colors ${
-            isResizing ? "bg-blue-500" : "bg-transparent hover:bg-gray-300 dark:hover:bg-gray-600"
+          className={`absolute top-0 right-0 w-1 h-full cursor-col-resize transition-colors ${
+            isResizing ? "bg-[var(--brand)]" : "bg-transparent hover:bg-[var(--brand-soft-strong)] dark:hover:bg-[var(--brand-soft)]"
           }`}
           onMouseDown={handleMouseDown}
         />

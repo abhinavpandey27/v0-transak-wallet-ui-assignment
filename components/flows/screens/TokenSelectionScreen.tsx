@@ -135,7 +135,7 @@ export default function TokenSelectionScreen({
             <button
               onClick={() => setShowTokenDialog(true)}
               disabled={isLoading || !hasTokens}
-              className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-full text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+              className="bg-[var(--brand)] hover:bg-[var(--brand-hover)] text-[var(--brand-foreground)] px-3 py-2 rounded-full text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 focus-visible:ring-2 focus-visible:ring-[var(--brand-ring)]"
             >
               <ChevronDown className="w-4 h-4" />
               {isLoading && <Loader2 className="w-4 h-4 animate-spin" />}
@@ -172,7 +172,7 @@ export default function TokenSelectionScreen({
               <button
                 onClick={() => setShowCurrencyDialog(true)}
                 disabled={isLoading || !hasCurrencies}
-                className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-full text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                className="bg-[var(--brand)] hover:bg-[var(--brand-hover)] text-[var(--brand-foreground)] px-3 py-2 rounded-full text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 focus-visible:ring-2 focus-visible:ring-[var(--brand-ring)]"
               >
                 <ChevronDown className="w-4 h-4" />
                 {isLoading && <Loader2 className="w-4 h-4 animate-spin" />}

@@ -18,14 +18,14 @@ export const CustomButton = React.forwardRef<HTMLButtonElement, CustomButtonProp
       {
         variants: {
           variant: {
-            default: "bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-white shadow-sm dark:bg-blue-600 dark:hover:bg-blue-700 dark:active:bg-blue-800",
+            default: "bg-[var(--brand)] hover:bg-[var(--brand-hover)] active:bg-[var(--brand-active)] text-[var(--brand-foreground)] shadow-sm focus-visible:ring-[var(--brand-ring)]",
             destructive: "bg-red-500 hover:bg-red-600 active:bg-red-700 text-white shadow-sm dark:bg-red-600 dark:hover:bg-red-700 dark:active:bg-red-800",
             outline: "bg-transparent border border-gray-200 text-gray-700 hover:bg-gray-50 active:bg-gray-100 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700 dark:active:bg-gray-600",
             secondary: "bg-gray-100 hover:bg-gray-200 active:bg-gray-300 text-gray-900 dark:bg-gray-700 dark:hover:bg-gray-600 dark:active:bg-gray-500 dark:text-white",
             ghost: "hover:bg-gray-100 active:bg-gray-200 text-gray-600 hover:text-gray-900 dark:hover:bg-gray-700 dark:active:bg-gray-600 dark:text-gray-400 dark:hover:text-gray-200",
-            link: "text-blue-600 underline-offset-4 hover:underline dark:text-blue-400",
-            primary: "bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white shadow-sm dark:bg-blue-500 dark:hover:bg-blue-600 dark:active:bg-blue-700",
-            brand: "bg-gray-900 hover:bg-gray-800 active:bg-gray-700 text-white shadow-sm dark:bg-gray-100 dark:hover:bg-gray-200 dark:active:bg-gray-300 dark:text-gray-900",
+            link: "text-[var(--brand)] underline-offset-4 hover:underline",
+            primary: "bg-[var(--brand)] hover:bg-[var(--brand-hover)] active:bg-[var(--brand-active)] text-[var(--brand-foreground)] shadow-sm focus-visible:ring-[var(--brand-ring)]",
+            brand: "bg-[var(--brand)] hover:bg-[var(--brand-hover)] active:bg-[var(--brand-active)] text-[var(--brand-foreground)] shadow-sm focus-visible:ring-[var(--brand-ring)]",
           },
           size: {
             default: "h-10 px-4 py-2",

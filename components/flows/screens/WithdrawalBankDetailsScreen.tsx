@@ -108,13 +108,13 @@ export default function WithdrawalBankDetailsScreen({
           </div>
 
           {/* Next Button */}
-          <Button onClick={onNext} className="w-full bg-blue-500 hover:bg-blue-600 text-white">
+          <Button onClick={onNext} className="w-full bg-[var(--brand)] hover:bg-[var(--brand-hover)] text-[var(--brand-foreground)] focus-visible:ring-[var(--brand-ring)]">
             Next
           </Button>
 
           {/* Change Bank Account Link */}
           <div className="text-center">
-            <button onClick={onChangeBankAccount} className="text-sm text-blue-500 hover:text-blue-600 underline">
+            <button onClick={onChangeBankAccount} className="text-sm text-[var(--brand)] hover:opacity-90 underline">
               Want to withdraw in another account? Change Bank Account
             </button>
           </div>

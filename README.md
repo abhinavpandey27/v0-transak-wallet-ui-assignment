@@ -96,6 +96,12 @@
   - Modular deposit/withdraw flows (stepper pattern)  
 - **Performance:** reduced DOM complexity, optimized state handling.  
 
+### Brand Customization (Preview Only)
+- Upload or select a preset SVG logo in Theme Settings (Settings • Theme Settings).
+- Choose a brand color; the app derives accessible foreground automatically (WCAG AA) and applies it to primary tokens.
+- Presets are bundled assets; uploads are limited to SVG only and <= 0.5MB.
+- Settings persist in localStorage for preview; not persisted server-side.
+
 ---
 
 ## 6. AI Workflow

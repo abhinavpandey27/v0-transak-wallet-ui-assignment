@@ -2,6 +2,7 @@
 
 import type React from "react"
 import { CustomButton } from "@/components/ui/custom-button"
+import BrandLogo from "@/components/brand/BrandLogo"
 import { useState } from "react"
 import { useAuth } from "@/contexts/AuthContext"
 import { Input } from "@/components/ui/input"
@@ -24,7 +25,7 @@ export default function LoginScreen() {
         <div className="w-full max-w-sm space-y-8">
           {/* Logo */}
           <div className="flex justify-center h-12">
-            <img src="/transak-logo.svg" alt="Transak" className="w-24 h-24" />
+            <BrandLogo className="w-24 h-24" width={96} height={96} />
           </div>
 
           {/* Welcome Text */}
@@ -41,7 +42,7 @@ export default function LoginScreen() {
                 placeholder="Enter your Email"
                 value={emailInput}
                 onChange={(e) => setEmailInput(e.target.value)}
-                className="h-12 border-2 border-gray-200 dark:border-gray-700 focus:border-blue-500 focus:ring-blue-500 dark:focus:border-blue-400 dark:focus:ring-blue-400"
+                className="h-12 border-2 border-gray-200 dark:border-gray-700"
                 disabled={isLoading}
               />
               {error && <p className="text-sm text-red-500">{error}</p>}

@@ -6,6 +6,7 @@ import { Home, User, CreditCard, Shield, MoreHorizontal, LogOut, Menu } from "lu
 import { useAuth } from "@/contexts/AuthContext"
 import { useTheme } from "next-themes"
 import { SettingsDialog } from "@/components/theme/SettingsDialog"
+import BrandLogo from "@/components/brand/BrandLogo"
 import { Sheet, SheetContent, SheetTitle, SheetClose } from "@/components/ui/sheet"
 import { ThemeSettings } from "@/components/theme/ThemeSettings"
 
@@ -150,7 +151,7 @@ export default function WalletDashboard() {
         {/* Logo */}
         <div className="p-6 border-gray-200 dark:border-gray-700 flex-shrink-0 border-b-0">
           <div className="flex items-center gap-2">
-            <img src="/transak-logo.svg" alt="Transak" className="w-content h-10" />
+            <BrandLogo className="w-content h-10" height={40} />
 
             <button
               onClick={() => setShowSettingsDialog(true)}

@@ -23,6 +23,12 @@
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
+  /* Brand tokens (overridden at runtime by BrandingProvider) */
+  --brand: #2563eb;
+  --brand-foreground: #ffffff;
+  --brand-hover: #1e4fd6;
+  --brand-active: #1a43b8;
+  --brand-ring: rgba(37,99,235,0.4);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -72,6 +78,12 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(0.269 0 0);
   --sidebar-ring: oklch(0.439 0 0);
+  /* Brand tokens in dark default to same; provider overrides at runtime */
+  --brand: #2563eb;
+  --brand-foreground: #ffffff;
+  --brand-hover: #1e4fd6;
+  --brand-active: #1a43b8;
+  --brand-ring: rgba(37,99,235,0.4);
 }
 
 @theme inline {

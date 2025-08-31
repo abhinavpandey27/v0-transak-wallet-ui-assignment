@@ -16,8 +16,8 @@ export function SettingsDialog({ open, onOpenChange }: SettingsDialogProps) {
         {/* Header */}
         <div className="sticky top-0 z-10 flex items-center justify-between py-4 border-b border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-900/80 backdrop-blur px-0 pb-4 pt-0">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg bg-blue-100 dark:bg-blue-900 flex items-center justify-center">
-              <Settings className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+            <div className="w-9 h-9 rounded-lg bg-[color-mix(in_oklab,var(--brand)_20%,white)] dark:bg-[color-mix(in_oklab,var(--brand)_20%,black)] flex items-center justify-center">
+              <Settings className="w-5 h-5" style={{ color: "var(--brand)" }} />
             </div>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Theme Settings</h2>
           </div>

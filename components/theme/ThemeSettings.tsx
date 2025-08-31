@@ -7,7 +7,11 @@ import { Sun, Moon, Monitor } from "lucide-react"
 import { TOP_GOOGLE_FONTS } from "@/data/fonts"
 import { useTheme } from "next-themes"
 
-export function ThemeSettings() {
+interface ThemeSettingsProps {
+  compact?: boolean
+}
+
+export function ThemeSettings({ compact = false }: ThemeSettingsProps) {
   const { theme, setTheme, resolvedTheme } = useTheme()
   const [selectedFont, setSelectedFont] = useState('--font-instrument-sans')
   const [mounted, setMounted] = useState(false)
@@ -56,6 +60,81 @@ export function ThemeSettings() {
       preview: "bg-gray-900 text-white border-gray-700",
     },
   ]
+
+  if (compact) {
+    return (
+      <div className="space-y-4">
+        {/* Compact Theme Mode */}
+        <section className="space-y-2">
+          <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Theme</label>
+          <div className="grid grid-cols-3 gap-2" role="radiogroup" aria-label="Theme Mode">
+            {themeOptions.map((option) => {
+              const selected = (theme || 'system') === option.value
+              return (
+                <Card
+                  key={option.value}
+                  role="radio"
+                  aria-checked={selected}
+                  tabIndex={0}
+                  onClick={() => setTheme(option.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') setTheme(option.value)
+                  }}
+                  className={`p-2 cursor-pointer transition-all flex flex-col items-center gap-1 ${
+                    selected
+                      ? "ring-2 ring-blue-500 bg-blue-50 dark:bg-blue-950"
+                      : "hover:bg-gray-50 dark:hover:bg-gray-800"
+                  }`}
+                >
+                  <div className="flex-shrink-0">{option.icon}</div>
+                  <div className="text-xs font-medium">{option.label.replace(' Mode', '')}</div>
+                </Card>
+              )
+            })}
+          </div>
+        </section>
+
+        <hr className="border-gray-200 dark:border-gray-700" />
+
+        {/* Compact Typography */}
+        <section className="space-y-2">
+          <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Font</label>
+          <div className="grid grid-cols-3 gap-2">
+            {TOP_GOOGLE_FONTS.slice(0, 6).map((font) => (
+              <Card
+                key={font.variable}
+                className={`p-2 cursor-pointer transition-all text-center ${
+                  selectedFont === font.variable
+                    ? "ring-2 ring-blue-500 bg-blue-50 dark:bg-blue-950"
+                    : "hover:bg-gray-50 dark:hover:bg-gray-800"
+                }`}
+                onClick={() => changeFont(font.variable)}
+              >
+                <div className="font-medium text-xs truncate">{font.name.replace(/\s+/g, ' ').split(' ')[0]}</div>
+              </Card>
+            ))}
+          </div>
+          {TOP_GOOGLE_FONTS.length > 6 && (
+            <div className="grid grid-cols-3 gap-2 mt-2">
+              {TOP_GOOGLE_FONTS.slice(6).map((font) => (
+                <Card
+                  key={font.variable}
+                  className={`p-2 cursor-pointer transition-all text-center ${
+                    selectedFont === font.variable
+                      ? "ring-2 ring-blue-500 bg-blue-50 dark:bg-blue-950"
+                      : "hover:bg-gray-50 dark:hover:bg-gray-800"
+                  }`}
+                  onClick={() => changeFont(font.variable)}
+                >
+                  <div className="font-medium text-xs truncate">{font.name.replace(/\s+/g, ' ').split(' ')[0]}</div>
+                </Card>
+              ))}
+            </div>
+          )}
+        </section>
+      </div>
+    )
+  }
 
   return (
     <div className="space-y-8">

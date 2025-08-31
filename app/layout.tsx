@@ -12,6 +12,7 @@ import {
 import "./globals.css"
 import { AuthProvider } from "@/contexts/AuthContext"
 import { ThemeProvider } from "@/components/theme-provider"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const instrumentSans = Instrument_Sans({
   subsets: ["latin"],
@@ -93,6 +94,7 @@ export default function RootLayout({
       <body>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem storageKey="theme">
           <AuthProvider>{children}</AuthProvider>
+          <SpeedInsights />
         </ThemeProvider>
       </body>
     </html>

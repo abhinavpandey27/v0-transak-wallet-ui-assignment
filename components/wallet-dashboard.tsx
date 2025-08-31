@@ -325,7 +325,7 @@ export default function WalletDashboard() {
               <SheetClose aria-label="Close" className="text-sm text-gray-500 hover:underline">Close</SheetClose>
             </div>
             <div className="pt-1">
-              <ThemeSettings />
+              <ThemeSettings compact={true} />
             </div>
           </SheetContent>
         </Sheet>

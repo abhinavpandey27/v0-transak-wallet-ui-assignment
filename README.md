@@ -113,7 +113,7 @@
 ---
 
 ## 7. How to Run Locally
-```bash
+\`\`\`bash
 # Clone the repo
 git clone <repo-url>
 cd <repo-folder>

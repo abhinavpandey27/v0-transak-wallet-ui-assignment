@@ -20,4 +20,3 @@ export default function BrandLogo({ className, width = 96, height = 32, alt }: B
   }
   return <img src={logo.value} alt={finalAlt} width={width} height={height} className={className} />
 }
-

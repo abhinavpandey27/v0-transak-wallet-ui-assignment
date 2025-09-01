@@ -119,7 +119,7 @@ git clone <repo-url>
 cd <repo-folder>
 
 # Install dependencies
-pnpm install
+npm install
 
 # Start dev server
-pnpm dev
+npm dev

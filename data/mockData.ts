@@ -1,4 +1,4 @@
-import type { Currency, Token, Transaction, BankAccount, ProfileData, AvatarOption } from "@/types"
+import type { Currency, Token, Transaction, BankAccount, ProfileData, AvatarOption, CryptoHolding } from "@/types"
 
 export const availableCurrencies: Currency[] = [
   { code: "EUR", symbol: "€", name: "Euro" },
@@ -170,6 +170,42 @@ export const cryptoTransactions: Transaction[] = [
     status: "completed",
     transactionType: "withdraw",
     description: "Swapped for ETH",
+  },
+]
+
+// Holdings for Crypto Wallet tab (EUR-only for now)
+export const cryptoHoldings: CryptoHolding[] = [
+  {
+    symbol: "ETH",
+    name: "Ethereum",
+    network: "ethereum",
+    priceEur: 3814.85,
+    changePct24h: 0.66,
+    quantity: 0.0823,
+  },
+  {
+    symbol: "BNB",
+    name: "BNB",
+    network: "binance-smart-chain",
+    priceEur: 728.7,
+    changePct24h: 2.15,
+    quantity: 0.1666,
+  },
+  {
+    symbol: "MATIC",
+    name: "Polygon",
+    network: "polygon",
+    priceEur: 0.52,
+    changePct24h: 0.66,
+    quantity: 23825,
+  },
+  {
+    symbol: "BTC",
+    name: "Bitcoin",
+    network: "bitcoin",
+    priceEur: 59000,
+    changePct24h: -0.24,
+    quantity: 0.01224824,
   },
 ]
 

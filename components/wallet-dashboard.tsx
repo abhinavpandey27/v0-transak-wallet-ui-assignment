@@ -17,7 +17,7 @@ import ProfileScreen from "@/components/screens/ProfileScreen"
 import TransactionLimitsScreen from "@/components/screens/TransactionLimitsScreen"
 import KYCSecurityScreen from "@/components/screens/KYCSecurityScreen"
 
-import { availableCurrencies, transactions, cryptoTransactions, initialProfileData } from "@/data/mockData"
+import { availableCurrencies, transactions, cryptoTransactions, cryptoHoldings, initialProfileData } from "@/data/mockData"
 import type { Currency, ProfileData } from "@/types"
 
 export default function WalletDashboard() {
@@ -297,6 +297,7 @@ export default function WalletDashboard() {
               setActiveTab={setActiveTab}
               transactions={transactions}
               cryptoTransactions={cryptoTransactions}
+              cryptoHoldings={cryptoHoldings}
               onNavigateToDeposit={() => setCurrentScreen("deposit")}
               onNavigateToWithdraw={() => setCurrentScreen("withdraw")}
             />

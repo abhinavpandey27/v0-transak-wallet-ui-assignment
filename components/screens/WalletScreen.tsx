@@ -4,6 +4,7 @@ import { Card } from "@/components/ui/card"
 import { CustomButton } from "@/components/ui/custom-button"
 import { Download, Upload, Filter } from "lucide-react"
 import TransactionItem from "@/components/shared/TransactionItem"
+import CryptoHoldingsList from "@/components/holdings/CryptoHoldingsList"
 import { useEffect, useMemo, useState } from "react"
 import { useBranding } from "@/contexts/BrandingContext"
 import { Line } from "react-chartjs-2"
@@ -21,12 +22,14 @@ interface Transaction {
   status: string
   transactionType: string
 }
+import type { CryptoHolding } from "@/types"
 
 interface WalletScreenProps {
   activeTab: string
   setActiveTab: (tab: string) => void
   transactions: Transaction[]
   cryptoTransactions: Transaction[]
+  cryptoHoldings?: CryptoHolding[]
   onNavigateToDeposit: () => void
   onNavigateToWithdraw: () => void
 }
@@ -36,6 +39,7 @@ export default function WalletScreen({
   setActiveTab,
   transactions,
   cryptoTransactions,
+  cryptoHoldings,
   onNavigateToDeposit,
   onNavigateToWithdraw,
 }: WalletScreenProps) {
@@ -341,9 +345,11 @@ export default function WalletScreen({
       <div className="flex justify-center">
         <div className="max-w-full sm:max-w-[640px] w-full">
           <div className="transition-opacity duration-200 ease-in-out">
-            {(activeTab === "fiat" ? transactions : cryptoTransactions).map((transaction) => (
-              <TransactionItem key={transaction.id} transaction={transaction} />
-            ))}
+            {activeTab === "fiat" ? (
+              transactions.map((transaction) => <TransactionItem key={transaction.id} transaction={transaction} />)
+            ) : (
+              <CryptoHoldingsList holdings={cryptoHoldings || []} />
+            )}
           </div>
         </div>
       </div>

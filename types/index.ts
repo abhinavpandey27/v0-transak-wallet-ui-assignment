@@ -59,3 +59,14 @@ export interface AvatarOption {
   emoji: string
   color: string
 }
+
+// Crypto holdings shown in the Crypto Wallet tab
+export interface CryptoHolding {
+  symbol: string // e.g., ETH
+  name: string // e.g., Ethereum
+  network: string // e.g., ethereum, polygon
+  iconUrl?: string // optional explicit icon; symbol-based fallback used otherwise
+  priceEur: number // current price in EUR
+  changePct24h: number // 24h change in percent; positive/negative
+  quantity: number // user balance quantity
+}

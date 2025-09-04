@@ -2,7 +2,7 @@
 
 import { Card } from "@/components/ui/card"
 import { CustomButton } from "@/components/ui/custom-button"
-import { Download, Upload, Filter } from "lucide-react"
+import { Download, Upload, Filter, Eye, EyeOff } from "lucide-react"
 import TransactionItem from "@/components/shared/TransactionItem"
 import CryptoHoldingsList from "@/components/holdings/CryptoHoldingsList"
 import { useEffect, useMemo, useState } from "react"
@@ -46,6 +46,7 @@ export default function WalletScreen({
   // Time period state
   const [selectedPeriod, setSelectedPeriod] = useState("6M")
   const [showFilterHint, setShowFilterHint] = useState(false)
+  const [isHidden, setIsHidden] = useState(false)
 
   // Time period options
   const timePeriods = ["1D", "1W", "1M", "3M", "6M", "1Y"]
@@ -153,20 +154,44 @@ export default function WalletScreen({
 
               {/* Row 2: Balance Value on Left and Change % on Right */}
               <div className="flex justify-between items-end">
-                <h2 className="text-gray-900 dark:text-white font-semibold text-[clamp(1.75rem,6vw,2.25rem)]">$1435.20</h2>
-                <div className="flex items-center">
-                  <span
-                    className={`text-sm sm:text-base md:text-xl px-2.5 sm:px-3 py-1 rounded-lg font-semibold ${
-                      changePct >= 0
-                        ? "text-green-600 dark:text-green-400 bg-green-100 dark:bg-green-900/30"
-                        : "text-red-600 dark:text-red-400 bg-red-100 dark:bg-red-900/30"
-                    }`}
+                <div className="flex items-center gap-2">
+                  <h2 className="text-gray-900 dark:text-white font-semibold text-[clamp(1.75rem,6vw,2.25rem)]">
+                    ${isHidden ? "****.**" : "1435.20"}
+                  </h2>
+                  <button
+                    type="button"
+                    onClick={() => setIsHidden((v) => !v)}
+                    className="p-1 rounded-md hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                    aria-label={isHidden ? "Show balance" : "Hide balance"}
+                    title={isHidden ? "Show balance" : "Hide balance"}
                   >
-                    {changePct >= 0 ? "+" : ""}
-                    {changePct.toFixed(1)}%
-                  </span>
+                    {isHidden ? (
+                      <EyeOff className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+                    ) : (
+                      <Eye className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+                    )}
+                  </button>
+                </div>
+                <div className="flex items-center">
+                  {!isHidden && (
+                    <span
+                      className={`text-sm sm:text-base md:text-xl px-2.5 sm:px-3 py-1 rounded-lg font-semibold ${
+                        changePct >= 0
+                          ? "text-green-600 dark:text-green-400 bg-green-100 dark:bg-green-900/30"
+                          : "text-red-600 dark:text-red-400 bg-red-100 dark:bg-red-900/30"
+                      }`}
+                    >
+                      {changePct >= 0 ? "+" : ""}
+                      {changePct.toFixed(1)}%
+                    </span>
+                  )}
                 </div>
               </div>
+
+              {/* Row 3: Subtext under balance */}
+              <p className="mt-2 text-gray-600 dark:text-gray-300 text-sm">
+                Account active — transact in fiat and crypto now.
+              </p>
             </div>
           </Card>
         </div>
@@ -181,27 +206,35 @@ export default function WalletScreen({
               datasets: [
                 {
                   label: "Balance",
-                  data: currentData.data,
-                  borderColor: borderColor,
+                  data: isHidden
+                    ? currentData.labels.map(() => currentData.data[currentData.data.length - 1])
+                    : currentData.data,
+                  borderColor: isHidden ? "rgba(156, 163, 175, 0.6)" : borderColor,
                   backgroundColor: (context: any) => {
                     const chart = context.chart
                     const { ctx, chartArea } = chart
                     if (!chartArea) return null
 
                     const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom)
-                    gradient.addColorStop(0, `rgba(${brandRgb.r}, ${brandRgb.g}, ${brandRgb.b}, 0.3)`) 
-                    gradient.addColorStop(0.5, `rgba(${brandRgb.r}, ${brandRgb.g}, ${brandRgb.b}, 0.15)`) 
-                    gradient.addColorStop(1, `rgba(${brandRgb.r}, ${brandRgb.g}, ${brandRgb.b}, 0.0)`) 
+                    if (isHidden) {
+                      gradient.addColorStop(0, `rgba(156, 163, 175, 0.25)`) // gray-400 ~
+                      gradient.addColorStop(0.6, `rgba(156, 163, 175, 0.12)`)
+                      gradient.addColorStop(1, `rgba(156, 163, 175, 0.0)`)
+                    } else {
+                      gradient.addColorStop(0, `rgba(${brandRgb.r}, ${brandRgb.g}, ${brandRgb.b}, 0.3)`) 
+                      gradient.addColorStop(0.5, `rgba(${brandRgb.r}, ${brandRgb.g}, ${brandRgb.b}, 0.15)`) 
+                      gradient.addColorStop(1, `rgba(${brandRgb.r}, ${brandRgb.g}, ${brandRgb.b}, 0.0)`) 
+                    }
                     return gradient
                   },
                   fill: true,
                   tension: 0.4,
-                  pointBackgroundColor: borderColor,
+                  pointBackgroundColor: isHidden ? "rgba(156, 163, 175, 0.6)" : borderColor,
                   pointBorderColor: "#ffffff",
                   pointBorderWidth: 2,
-                  pointRadius: 4,
-                  pointHoverRadius: 6,
-                  pointHitRadius: 12,
+                  pointRadius: isHidden ? 0 : 4,
+                  pointHoverRadius: isHidden ? 0 : 6,
+                  pointHitRadius: isHidden ? 0 : 12,
                 },
               ],
             }}
@@ -218,6 +251,7 @@ export default function WalletScreen({
                   display: false,
                 },
                 tooltip: {
+                  enabled: !isHidden,
                   backgroundColor: "rgba(17, 24, 39, 0.95)",
                   titleColor: "#ffffff",
                   bodyColor: "#ffffff",
